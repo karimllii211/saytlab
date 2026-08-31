@@ -3,31 +3,42 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Saytlab — AI ilə Vizual Yaradıcılıq</title>
-<meta name="description" content="Saytlab — sözlərinizi bir neçə saniyədə peşəkar görüntülərə və videolara çevirən AI vizual studiyası." />
+<title>Saytlab — AI ilə Vizual Kontent Studiyası</title>
+<meta name="description" content="Saytlab — bir cümləni bir neçə saniyəyə brend uyğun vizuallara, kampaniya kadrlarına və video sekanslarına çevirən AI studiyası." />
+
+<!-- Tipoqrafiya: geniş, texniki sans-serif (Space Grotesk) + neytral mətn fontu (Inter).
+     DreamMotion editorial serif (Fraunces) əvəzinə tamam fərqli xarakter. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
+<!-- Səhifə yuxarısındakı scroll proqres zolağı -->
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+<!-- Siçanı izləyən xüsusi cursor (yalnız fine pointer cihazlarda görünür) -->
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
 <!-- ================= HEADER ================= -->
 <header class="site-header" id="top">
   <div class="container header-inner">
-    <a href="#top" class="logo">
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="1" y="7" width="3" height="8" rx="1.5" fill="currentColor"/>
-        <rect x="6" y="3" width="3" height="16" rx="1.5" fill="currentColor"/>
-        <rect x="11" y="0" width="3" height="22" rx="1.5" fill="currentColor"/>
-        <rect x="16" y="5" width="3" height="12" rx="1.5" fill="currentColor"/>
+    <a href="#top" class="logo" aria-label="Saytlab ana səhifə">
+      <!-- Monoqram: bir-birinə keçən iki paraleloqram (S/L hissi). Audio waveform DEYİL. -->
+      <svg class="logo-mark" width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 8.5 13 3l9 5.5-9 5.5-9-5.5Z" fill="currentColor" opacity="0.55"/>
+        <path d="M4 17.5 13 12l9 5.5-9 5.5-9-5.5Z" fill="currentColor"/>
       </svg>
       <span>Saytlab</span>
     </a>
 
-    <nav class="main-nav" id="main-nav">
-      <a href="#features">Xüsusiyyətlər</a>
+    <nav class="main-nav" id="mainNav" aria-label="Əsas naviqasiya">
+      <a href="#features">İmkanlar</a>
       <a href="#usecases">İstifadə sahələri</a>
+      <a href="#how">Necə işləyir</a>
       <a href="#gallery">Qalereya</a>
       <a href="#pricing">Qiymətlər</a>
       <a href="#faq">Suallar</a>
@@ -35,404 +46,444 @@
 
     <div class="header-actions">
       <a href="#pricing" class="btn btn-ghost">Daxil ol</a>
-      <a href="#cta" class="btn btn-light">Qeydiyyat</a>
-      <button class="menu-toggle" id="menuToggle" aria-label="Menyunu aç">
-        <span></span><span></span><span></span>
-      </button>
+      <a href="#cta" class="btn btn-solid" data-magnetic>Pulsuz başla</a>
     </div>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Menyunu aç" aria-expanded="false">
+      <span></span><span></span>
+    </button>
   </div>
 </header>
 
-<!-- ================= HERO ================= -->
-<section class="hero">
-  <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-overlay" aria-hidden="true"></div>
-  <div class="container hero-inner">
-    <h1 class="hero-title reveal-text">
-      <span>Saytlab</span> sözlərinizi <em>vizual</em> hekayələrə çevirir
-    </h1>
-    <p class="hero-sub fade-up" data-delay="1">Reklamlar, sosial media və kampaniyalar üçün peşəkar AI şəkil və video yaradın — kodlaşdırma və dizayn bacarığı olmadan.</p>
-    <div class="hero-cta fade-up" data-delay="2">
-      <a href="#cta" class="btn btn-light btn-lg">Yaratmağa başla</a>
-    </div>
-  </div>
-</section>
+<!-- ================= MOBİL MENYU (tam ekran overlay) ================= -->
+<div class="mobile-overlay" id="mobileOverlay" aria-hidden="true">
+  <nav class="mobile-nav">
+    <a href="#features">İmkanlar</a>
+    <a href="#usecases">İstifadə sahələri</a>
+    <a href="#how">Necə işləyir</a>
+    <a href="#gallery">Qalereya</a>
+    <a href="#pricing">Qiymətlər</a>
+    <a href="#faq">Suallar</a>
+    <a href="#cta" class="btn btn-solid mobile-cta">Pulsuz başla</a>
+  </nav>
+</div>
 
-<!-- ================= FEATURES (BENTO) ================= -->
-<section class="section" id="features">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow"><i></i>Saytlab-a giriş</span>
-      <h2>Yaradın, redaktə edin, animasiya edin <span class="muted">və brendə uyğun vizuallar ixrac edin.</span></h2>
-    </div>
+<main>
 
-    <div class="bento-grid reveal">
-      <div class="bento-card">
-        <h3>AI Şəkil Generatoru</h3>
-        <p>Bir cümləni peşəkar şəkillərə, məhsul çəkilişlərinə və kampaniya vizuallarına çevirin.</p>
-        <div class="bento-visual bento-typing">
-          <span class="typing-text">Make it <b>Modern</b></span>
-        </div>
-      </div>
-
-      <div class="bento-card bento-card--wide">
-        <h3>Kinematik Video Generatoru</h3>
-        <p>Hərəkət, əhval-ruhiyyə, kamera istiqaməti və vizual davamlılıqla qısa AI videoları yaradın.</p>
-        <div class="bento-visual bento-frames" aria-hidden="true">
-          <div class="frame-card"></div>
-          <div class="frame-card"></div>
-          <div class="frame-card"></div>
-        </div>
-      </div>
-
-      <div class="bento-card">
-        <h3>Bütün Modellər, Bir Studiya</h3>
-        <p>Aparıcı şəkil və video generasiya iş axınlarına bir təmiz iş sahəsindən çatın.</p>
-      </div>
-
-      <div class="bento-card">
-        <h3>Üslub Şablonları</h3>
-        <p>Fotorealdan animeyə, redaksiyaya, məhsula və ya sürreal görünüşə saniyələr içində keçin.</p>
-        <div class="bento-visual bento-bars" aria-hidden="true">
-          <span></span><span></span><span></span><span></span><span></span>
-        </div>
-      </div>
-
-      <div class="bento-card">
-        <h3>Açar-kadr Nəzarəti</h3>
-        <p>Səhnələri istinad kadrları, kamera işarələri, tempo və vizual istiqamətlə idarə edin.</p>
-        <div class="bento-visual bento-keyframe" aria-hidden="true">
-          <div class="kf-box">BAŞLA</div>
-          <div class="kf-box">SON</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= USE CASES ================= -->
-<section class="section section--alt" id="usecases">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow"><i></i>İstifadə sahələri</span>
-      <h2>Bir AI studiyası ilə hər vizual istiqaməti <span class="muted">kəşf edin.</span></h2>
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="hero">
+    <!-- CSS ilə generasiya olunan mücərrəd fon: hərəkət edən radial-gradient blob-lar + SVG noise.
+         Xarici şəkil yoxdur. Parallax üçün data-parallax dəyəri verilir. -->
+    <div class="hero-bg" aria-hidden="true">
+      <div class="blob blob-1" data-parallax="0.18"></div>
+      <div class="blob blob-2" data-parallax="0.32"></div>
+      <div class="blob blob-3" data-parallax="0.10"></div>
+      <div class="hero-grid" data-parallax="0.05"></div>
     </div>
 
-    <div class="usecase-panel reveal">
-      <div class="usecase-list" id="usecaseList">
-        <button class="usecase-item is-active" data-target="0">
-          <span class="uc-title">Sosial Kampaniyalar</span>
-          <span class="uc-desc">Lansmanlar, reklamlar, reels və gündəlik məzmun üçün platformaya hazır şəkil və qısa video konseptləri yaradın.</span>
-        </button>
-        <button class="usecase-item" data-target="1">
-          <span class="uc-title">Məhsul Vizualları</span>
-        </button>
-        <button class="usecase-item" data-target="2">
-          <span class="uc-title">Video Storibordlar</span>
-        </button>
-        <button class="usecase-item" data-target="3">
-          <span class="uc-title">Brend Eksperimentləri</span>
-        </button>
+    <div class="container hero-inner">
+      <p class="hero-eyebrow" data-hero="1"><span class="dot"></span> Yeni: Saytlab Kadr Rejissoru v3</p>
+
+      <h1 class="hero-title">
+        <!-- Giriş animasiyası: hər söz maskadan aşağıdan yuxarı "qalxır" + yüngül rotasiya.
+             DreamMotion-un blur-clear effektindən fərqli mexanika. -->
+        <span class="line"><span class="word" data-hero="2">Bir</span> <span class="word" data-hero="3">cümlə</span> <span class="word" data-hero="4">yaz —</span></span>
+        <span class="line"><span class="word accent" data-hero="5">brend</span> <span class="word accent" data-hero="6">vizualın</span></span>
+        <span class="line"><span class="word" data-hero="7">hazır</span> <span class="word" data-hero="8">olsun.</span></span>
+      </h1>
+
+      <p class="hero-sub" data-hero="9">
+        Saytlab mətn təsvirini bir neçə saniyəyə kampaniya kadrlarına, sosial post seriyalarına
+        və qısa video sekanslarına çevirir. Rəng, şrift və ton sənin brend kitabına sadiq qalır.
+      </p>
+
+      <div class="hero-actions" data-hero="10">
+        <a href="#cta" class="btn btn-solid btn-lg" data-magnetic>Pulsuz layihə yarat</a>
+        <a href="#how" class="btn btn-outline btn-lg">Necə işləyir</a>
       </div>
 
-      <div class="usecase-preview">
-        <div class="uc-mock">
-          <div class="uc-mock-top">
-            <span>📣 Sosial Kampaniyalar</span>
-            <span class="uc-badge">Paket hazırdır</span>
-          </div>
-          <div class="uc-mock-body">
-            <p class="uc-label">PLATFORMALAR</p>
-            <div class="uc-chip-row">
-              <span class="uc-chip is-on">Instagram</span>
-              <span class="uc-chip">TikTok</span>
-              <span class="uc-chip">YouTube</span>
-              <span class="uc-chip">X</span>
-            </div>
-            <p class="uc-label">FORMAT</p>
-            <div class="uc-chip-row">
-              <span class="uc-chip is-on">Reel · 9:16</span>
-              <span class="uc-chip">Story · 9:16</span>
-              <span class="uc-chip">Lenta · 1:1</span>
-            </div>
-            <div class="uc-toggle-row">
-              <span>Avtomatik başlıq yarat</span>
-              <span class="uc-toggle is-on"></span>
-            </div>
-            <div class="uc-mock-actions">
-              <button class="btn btn-light btn-sm">Kampaniya Yarat</button>
-              <button class="btn btn-ghost btn-sm">Önizlə</button>
+      <!-- Sayğac animasiyalı statistika -->
+      <div class="hero-stats" data-hero="11">
+        <div class="stat"><strong data-count="120000" data-suffix="+">0</strong><span>yaradılmış kadr</span></div>
+        <div class="stat"><strong data-count="4200" data-suffix="+">0</strong><span>komanda</span></div>
+        <div class="stat"><strong data-count="38" data-suffix="s">0</strong><span>orta render vaxtı</span></div>
+      </div>
+    </div>
+
+    <div class="hero-scroll-hint" aria-hidden="true"><span></span>Aşağı sürüşdür</div>
+  </section>
+
+  <!-- ================= FEATURES — BENTO GRID ================= -->
+  <section class="section features" id="features">
+    <div class="container">
+      <header class="section-head reveal" data-dir="up">
+        <p class="kicker">İmkanlar</p>
+        <h2>Bir iş axını, bütün formatlar</h2>
+        <p class="section-lead">Brief-dən son kadra qədər — hər addım eyni pəncərədə.</p>
+      </header>
+
+      <div class="bento">
+        <!-- 1 geniş kart -->
+        <article class="bento-card bento-wide tilt reveal" data-dir="left">
+          <div class="bento-inner">
+            <h3>Brend Beyni</h3>
+            <p>Loqonu, palitranı və səs tonunu bir dəfə yüklə — Saytlab sonrakı hər kadrda onlara sadiq qalır.</p>
+            <!-- Mikro-animasiya: brend rəng çipləri -->
+            <div class="chip-row">
+              <span class="chip"></span><span class="chip"></span><span class="chip"></span>
+              <span class="chip"></span><span class="chip"></span>
             </div>
           </div>
+        </article>
+
+        <!-- 4 normal kart -->
+        <article class="bento-card tilt reveal" data-dir="up">
+          <div class="bento-inner">
+            <h3>Kadr Rejissoru</h3>
+            <p>Kompozisiya, işıq və rakurs üçün hazır ssenari şablonları.</p>
+            <div class="mini-frames"><i></i><i></i><i></i></div>
+          </div>
+        </article>
+
+        <article class="bento-card tilt reveal" data-dir="up">
+          <div class="bento-inner">
+            <h3>Seriya Rejimi</h3>
+            <p>Bir konsept — 12 uyğun variant, bir kliklə.</p>
+            <div class="pulse-grid"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+        </article>
+
+        <article class="bento-card tilt reveal" data-dir="down">
+          <div class="bento-inner">
+            <h3>Canlı Redaktə</h3>
+            <p>Sözlə düzəliş ver: “işığı yumşalt”, “fonu genişlət”.</p>
+            <div class="type-line"><span>“kölgələri azalt”</span><b></b></div>
+          </div>
+        </article>
+
+        <article class="bento-card tilt reveal" data-dir="right">
+          <div class="bento-inner">
+            <h3>İxrac</h3>
+            <p>Post, story, banner və 4K video — hamısı bir eksportda.</p>
+            <div class="ratio-row"><i class="r1"></i><i class="r2"></i><i class="r3"></i></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= LOGO / MARKA ZOLAĞI (marquee) ================= -->
+  <section class="section logos" aria-label="İnteqrasiyalar">
+    <div class="container">
+      <p class="logos-label reveal" data-dir="up">Sevdiyin alətlərlə birlikdə işləyir</p>
+    </div>
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Notion</span><span>Figma</span><span>Slack</span><span>Webflow</span>
+        <span>Canva</span><span>HubSpot</span><span>Linear</span><span>Airtable</span>
+        <!-- Sonsuz axın üçün məzmun təkrarlanır -->
+        <span>Notion</span><span>Figma</span><span>Slack</span><span>Webflow</span>
+        <span>Canva</span><span>HubSpot</span><span>Linear</span><span>Airtable</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= USE-CASE (accordion + canlı preview) ================= -->
+  <section class="section usecases" id="usecases">
+    <div class="container usecases-inner">
+      <header class="section-head reveal" data-dir="up">
+        <p class="kicker">İstifadə sahələri</p>
+        <h2>Hər komanda üçün bir rejim</h2>
+      </header>
+
+      <div class="usecase-layout">
+        <!-- Sol: kliklənən accordion siyahı -->
+        <div class="usecase-list reveal" data-dir="left">
+          <button class="usecase-item is-active" data-uc="marketing">
+            <span class="uc-title">Marketinq kampaniyaları</span>
+            <span class="uc-body">Launch üçün bütün kanal kadrlarını bir gündə deyil, bir saatda hazırla.</span>
+          </button>
+          <button class="usecase-item" data-uc="ecommerce">
+            <span class="uc-title">E-ticarət kataloqu</span>
+            <span class="uc-body">Məhsul şəkillərini vahid işıq və fon dilində standartlaşdır.</span>
+          </button>
+          <button class="usecase-item" data-uc="social">
+            <span class="uc-title">Sosial media axını</span>
+            <span class="uc-body">Həftəlik kontent planını şablon seriyaları ilə doldur.</span>
+          </button>
+          <button class="usecase-item" data-uc="product">
+            <span class="uc-title">Məhsul komandası</span>
+            <span class="uc-body">Feature elanları və changelog vizualları üçün sürətli maketlər.</span>
+          </button>
+        </div>
+
+        <!-- Sağ: aktiv elementə görə dəyişən canlı preview paneli -->
+        <div class="usecase-preview reveal" data-dir="right" id="ucPreview">
+          <div class="uc-window">
+            <div class="uc-window-bar"><i></i><i></i><i></i></div>
+            <div class="uc-window-body">
+              <span class="uc-tag" id="ucTag">Marketinq</span>
+              <h4 id="ucHeading">Yaz launch kampaniyası</h4>
+              <p id="ucText">18 kadr · 3 kanal · brend palitrası tətbiq edildi.</p>
+              <div class="uc-visual" id="ucVisual"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ================= BENEFITS ================= -->
-<section class="section" id="benefits">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow"><i></i>Üstünlüklər</span>
-      <h2>Daha sürətli istehsal, <span class="muted">daha kəskin konseptlər, dəqiqələr içində hazır aktivlər.</span></h2>
-    </div>
-
-    <div class="benefits-grid reveal">
-      <div class="benefit-card">
-        <h4>Sürətli Vizual İstehsal</h4>
-        <p>Uzun istehsal dövrlərini gözləmədən kampaniyaya hazır şəkil və klip yaradın.</p>
-      </div>
-      <div class="benefit-card">
-        <h4>Sabit Brend Görünüşü</h4>
-        <p>Rəngləri, əhval-ruhiyyəni və vizual üslubu hər aktivdə uyğun saxlayın.</p>
-      </div>
-      <div class="benefit-card">
-        <h4>Tam Nəzarət</h4>
-        <p>Mövzu, işıqlandırma, hərəkət, kamera bucağı və kompozisiyanı aydın şəkildə formalaşdırın.</p>
-      </div>
-      <div class="benefit-card">
-        <h4>Daha Çox Yaradıcı Test</h4>
-        <p>Qalibi seçməzdən əvvəl daha çox konsept, thumbnail, reklam və storibord araşdırın.</p>
-      </div>
-      <div class="benefit-card">
-        <h4>Hər Kanal Üçün Hazır</h4>
-        <p>Sosial media, reklamlar, açılış səhifələri və məhsul lansmanları üçün ixrac edin.</p>
-      </div>
-      <div class="benefit-card">
-        <h4>Komandalar Üçün Qurulub</h4>
-        <p>Marketoloqlara, dizaynerlərə və qurucu heyətə bir ortaq AI vizual mühiti verin.</p>
+  <!-- ================= BENEFITS (3x2 grid) ================= -->
+  <section class="section benefits" id="benefits">
+    <div class="container">
+      <header class="section-head reveal" data-dir="up">
+        <p class="kicker">Üstünlüklər</p>
+        <h2>Niyə komandalar Saytlab seçir</h2>
+      </header>
+      <div class="benefit-grid">
+        <article class="benefit-card reveal" data-dir="up"><h3>10× sürət</h3><p>Konseptdən təsdiqə qədər olan dövr saatlarla deyil, dəqiqələrlə ölçülür.</p></article>
+        <article class="benefit-card reveal" data-dir="up"><h3>Brend dəqiqliyi</h3><p>Hər kadr eyni palitra, şrift və ton qaydalarına bağlıdır.</p></article>
+        <article class="benefit-card reveal" data-dir="up"><h3>Sıfır fayl xaosu</h3><p>Versiyalar, variantlar və eksportlar bir layihə içində qalır.</p></article>
+        <article class="benefit-card reveal" data-dir="down"><h3>Komanda nəzarəti</h3><p>Rol əsaslı təsdiq axını ilə heç nə icazəsiz yayımlanmır.</p></article>
+        <article class="benefit-card reveal" data-dir="down"><h3>Açıq inteqrasiya</h3><p>Notion, Figma və Slack ilə iki tərəfli sinxron.</p></article>
+        <article class="benefit-card reveal" data-dir="down"><h3>Proqnozlaşan xərc</h3><p>Sabit aylıq plan — kadr başına gizli ödəniş yoxdur.</p></article>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ================= HOW IT WORKS ================= -->
-<section class="section section--alt" id="how">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow"><i></i>Necə işləyir</span>
-      <h2>Bir cümlədən <span class="muted">hazır vizuala üç sadə addımda.</span></h2>
-    </div>
-
-    <div class="steps-grid reveal">
-      <div class="step-card">
-        <div class="step-visual step-visual--1"></div>
-        <h4>Səhnəni təsvir edin</h4>
-        <p>İstədiyiniz şəkil və ya videonu yazın, üslub, əhval-ruhiyyə, mövzu və format detalları əlavə edin.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-visual step-visual--2"></div>
-        <h4>İstiqaməti dəqiqləşdirin</h4>
-        <p>Nəticə vizyonunuza uyğun olana qədər üslubu, en/uzun nisbətini, hərəkəti tənzimləyin.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-visual step-visual--3"></div>
-        <h4>İxrac edin və yayımlayın</h4>
-        <p>Reklamlar, sosial media, məhsul səhifələri və kampaniyalar üçün hazır vizualları endirin.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= TESTIMONIALS ================= -->
-<section class="section" id="testimonials">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow"><i></i>Rəylər</span>
-      <h2>Yaradıcılar bizim <span class="muted">haqqımızda nə deyir</span></h2>
-    </div>
-
-    <div class="testimonial-track reveal" id="testimonialTrack">
-      <div class="testimonial-card">
-        <p>“Saytlab bir həftəlik reklam konsept işini bir gün ərzində bitirməyimizə kömək etdi. Şəkil keyfiyyəti və üslub nəzarəti hər raundu daha kəskin etdi.”</p>
-        <div class="testimonial-meta"><b>Aygün M.</b><span>Böyümə Yaradıcı Rəhbəri</span></div>
-      </div>
-      <div class="testimonial-card">
-        <p>“Məhsul videolarını storibordlaşdıra, thumbnail yarada və vizual fikirləri redaktə proqramı açmadan sına bilirəm.”</p>
-        <div class="testimonial-meta"><b>Elvin K.</b><span>Qurucu</span></div>
-      </div>
-      <div class="testimonial-card">
-        <p>“Ən yaxşı tərəfi ardıcıllıqdır. Saytlab məhsul çəkilişlərimizi, rənglərimizi və kampaniya əhvalımızı hər formatda uyğun saxlayır.”</p>
-        <div class="testimonial-meta"><b>Nərmin L.</b><span>Brend Dizayneri</span></div>
-      </div>
-      <div class="testimonial-card">
-        <p>“Saytlab AI videonu praktiki hiss etdirir. Sürətli hərəkət konseptləri yaradıb eyni gün müştərilərlə paylaşa bilirəm.”</p>
-        <div class="testimonial-meta"><b>Rəşad T.</b><span>Yaradıcı Direktor</span></div>
+  <!-- ================= NECƏ İŞLƏYİR (3 addım) ================= -->
+  <section class="section how" id="how">
+    <div class="container">
+      <header class="section-head reveal" data-dir="up">
+        <p class="kicker">Necə işləyir</p>
+        <h2>Üç addım, bir axın</h2>
+      </header>
+      <div class="steps">
+        <article class="step reveal" data-dir="left">
+          <div class="step-num">01</div>
+          <div class="step-visual sv-1" aria-hidden="true"></div>
+          <h3>Brend yüklə</h3>
+          <p>Loqo, rənglər və ton — Saytlab brend beynini qurur.</p>
+        </article>
+        <article class="step reveal" data-dir="up">
+          <div class="step-num">02</div>
+          <div class="step-visual sv-2" aria-hidden="true"></div>
+          <h3>Brief yaz</h3>
+          <p>Bir cümlə kifayətdir. İstəsən referans şəkil də əlavə et.</p>
+        </article>
+        <article class="step reveal" data-dir="right">
+          <div class="step-num">03</div>
+          <div class="step-visual sv-3" aria-hidden="true"></div>
+          <h3>Seç və ixrac et</h3>
+          <p>Variantlardan seç, sözlə düzəlt, bütün formatlarda al.</p>
+        </article>
       </div>
     </div>
+  </section>
 
-    <div class="testimonial-nav reveal">
-      <button id="tPrev" aria-label="Əvvəlki">←</button>
-      <button id="tNext" aria-label="Növbəti">→</button>
-    </div>
-  </div>
-</section>
-
-<!-- ================= GALLERY ================= -->
-<section class="section section--alt" id="gallery">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow"><i></i>Qalereya</span>
-      <h2>Saytlab-ı <span class="muted">əməldə görün</span></h2>
-    </div>
-    <div class="gallery-grid reveal">
-      <div class="gallery-item gallery-item--a"></div>
-      <div class="gallery-item gallery-item--b"></div>
-      <div class="gallery-item gallery-item--c"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= PRICING ================= -->
-<section class="section" id="pricing">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow"><i></i>Planlar</span>
-      <h2>Qiymət planları</h2>
-      <p class="section-sub">Yaradıcı çıxışınıza uyğun planı seçin</p>
+  <!-- ================= TESTIMONIALS (carousel) ================= -->
+  <section class="section testimonials" id="testimonials">
+    <div class="container">
+      <header class="section-head reveal" data-dir="up">
+        <p class="kicker">Rəylər</p>
+        <h2>Komandaların dediyi</h2>
+      </header>
     </div>
 
-    <div class="pricing-toggle reveal">
-      <span id="labelMonthly" class="is-active">Aylıq</span>
-      <button class="switch" id="billingSwitch" aria-label="Ödəniş dövrünü dəyiş"><span class="switch-dot"></span></button>
-      <span id="labelYearly">İllik</span>
-      <span class="badge-off">20% ENDİRİM</span>
+    <div class="carousel">
+      <button class="car-btn car-prev" id="tPrev" aria-label="Əvvəlki rəy">&#8592;</button>
+      <div class="car-track" id="testimonialTrack">
+        <figure class="t-card">
+          <blockquote>“Launch kadrlarını hazırlamaq bir həftə çəkirdi. İndi bir səhər.”</blockquote>
+          <figcaption><b>Lalə Məmmədova</b><span>Brend rəhbəri, Orbit</span></figcaption>
+        </figure>
+        <figure class="t-card">
+          <blockquote>“Kataloqumuzdakı 400 məhsul şəkli nəhayət eyni dildə danışır.”</blockquote>
+          <figcaption><b>Rauf Əliyev</b><span>E-ticarət meneceri, Lumen</span></figcaption>
+        </figure>
+        <figure class="t-card">
+          <blockquote>“Dizayn növbəsi yarıya düşdü. Komanda daha çox konsept üzərində işləyir.”</blockquote>
+          <figcaption><b>Nərmin Hüseynli</b><span>Kreativ direktor, Fold</span></figcaption>
+        </figure>
+        <figure class="t-card">
+          <blockquote>“Sözlə redaktə funksiyası sehr kimidir — ‘fonu genişlət’ yazırsan, olur.”</blockquote>
+          <figcaption><b>Elvin Qasımov</b><span>Marketinq lideri, Nova</span></figcaption>
+        </figure>
+      </div>
+      <button class="car-btn car-next" id="tNext" aria-label="Növbəti rəy">&#8594;</button>
     </div>
+  </section>
 
-    <div class="pricing-grid reveal">
-      <div class="price-card">
-        <h3>Başlanğıc</h3>
-        <div class="price"><span class="amount" data-monthly="0" data-yearly="0">₼0</span><span class="period">/ay</span></div>
-        <p>VISIO-nu sınamaq üçün əsas şəkil generasiyası və sadə redaktələr.</p>
-        <a href="#" class="btn btn-outline btn-block">Yaratmağa başla</a>
-        <ul class="feature-list">
-          <li>Aylıq 100 şəkil krediti</li>
-          <li>Əsas şəkil generasiyası</li>
-          <li>İcma dəstəyi</li>
-        </ul>
-      </div>
-
-      <div class="price-card price-card--popular">
-        <span class="popular-badge">Populyar</span>
-        <h3>Pro</h3>
-        <div class="price"><span class="amount" data-monthly="19" data-yearly="15">₼19</span><span class="period">/ay</span></div>
-        <p>Ciddi yaradıcılar və komandalar üçün daha çox kredit, sürətli modellər.</p>
-        <a href="#" class="btn btn-light btn-block">Pro-ya keç</a>
-        <ul class="feature-list">
-          <li>Limitsiz şəkil prompt-ları</li>
-          <li>AI video generasiya krediti</li>
-          <li>Prioritet model girişi</li>
-          <li>Brend üslub şablonları</li>
-        </ul>
-      </div>
-
-      <div class="price-card">
-        <h3>Studiya</h3>
-        <div class="price"><span class="amount-custom">Fərdi</span></div>
-        <p>Fərdi kreditlər, komanda idarəetməsi, premium dəstək və əməkdaşlıq.</p>
-        <a href="#" class="btn btn-outline btn-block">Satışla əlaqə</a>
-        <ul class="feature-list">
-          <li>Paylaşılan komanda iş sahəsi</li>
-          <li>Fərdi model iş axınları</li>
-          <li>Premium dəstək və SLA</li>
-          <li>Təlim və uyğunlaşma</li>
-        </ul>
+  <!-- ================= QALEREYA (3 mücərrəd vizual) ================= -->
+  <section class="section gallery" id="gallery">
+    <div class="container">
+      <header class="section-head reveal" data-dir="up">
+        <p class="kicker">Qalereya</p>
+        <h2>Saytlab ilə yaradılmış nümunələr</h2>
+      </header>
+      <div class="gallery-grid">
+        <figure class="g-card tilt reveal" data-dir="left"><div class="g-visual gv-1"></div><figcaption>Kampaniya · isti palitra</figcaption></figure>
+        <figure class="g-card tilt reveal" data-dir="up"><div class="g-visual gv-2"></div><figcaption>Məhsul seriyası · studiya işığı</figcaption></figure>
+        <figure class="g-card tilt reveal" data-dir="right"><div class="g-visual gv-3"></div><figcaption>Sosial post · gradient mesh</figcaption></figure>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ================= FAQ ================= -->
-<section class="section section--alt" id="faq">
-  <div class="container">
-    <div class="section-head reveal">
-      <span class="eyebrow"><i></i>Suallar</span>
-      <h2>Suallarınıza <span class="muted">aydın cavablar</span></h2>
-    </div>
+  <!-- ================= QİYMƏTLƏR ================= -->
+  <section class="section pricing" id="pricing">
+    <div class="container">
+      <header class="section-head reveal" data-dir="up">
+        <p class="kicker">Qiymətlər</p>
+        <h2>Komandanla birlikdə böyüyən plan</h2>
+      </header>
 
-    <div class="faq-grid reveal">
-      <div class="faq-item">
-        <button class="faq-q">Saytlab ilə nə yarada bilərəm?<span>+</span></button>
-        <div class="faq-a"><p>Reklam, sosial media, məhsul çəkilişi, storibord və kampaniya üçün AI şəkil və qısa videolar yarada bilərsiniz.</p></div>
+      <div class="billing-toggle reveal" data-dir="up">
+        <span id="labelMonthly" class="is-active">Aylıq</span>
+        <button class="switch" id="billingSwitch" role="switch" aria-checked="false" aria-label="İllik ödənişə keç"><i></i></button>
+        <span id="labelYearly">İllik <em>−20%</em></span>
       </div>
-      <div class="faq-item">
-        <button class="faq-q">Pulsuz plan mövcuddurmu?<span>+</span></button>
-        <div class="faq-a"><p>Bəli, Başlanğıc planı ilə əsas funksiyaları pulsuz sına bilərsiniz.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">Dizayn və ya video bacarığı lazımdırmı?<span>+</span></button>
-        <div class="faq-a"><p>Xeyr, sadə mətn təsvirləri ilə peşəkar nəticələr əldə edə bilərsiniz.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">Saytlab-ı kommersiya işləri üçün istifadə edə bilərəmmi?<span>+</span></button>
-        <div class="faq-a"><p>Bəli, Pro və Studiya planlarında yaradılan bütün vizuallar kommersiya istifadəsi üçün uyğundur.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">Saytlab həm şəkil, həm də videonu dəstəkləyirmi?<span>+</span></button>
-        <div class="faq-a"><p>Bəli, eyni iş sahəsindən şəkil və qısa video generasiyası edə bilərsiniz.</p></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">Kreditlər necə işləyir?<span>+</span></button>
-        <div class="faq-a"><p>Hər generasiya seçilmiş model və formata görə müəyyən sayda kredit istifadə edir; kreditlər planınıza görə aylıq yenilənir.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ================= CTA ================= -->
-<section class="section" id="cta">
-  <div class="container">
-    <div class="cta-banner reveal">
-      <div class="cta-content">
-        <h2>Saytlab ilə bu gün<br>yaratmağa başlayın</h2>
-        <p>Növbəti şəklinizi, video konseptinizi, məhsul çəkilişinizi və ya kampaniya səhnənizi saniyələr içində AI ilə yaradın.</p>
-        <a href="#" class="btn btn-light btn-lg">İndi Sına</a>
+      <div class="price-grid">
+        <article class="price-card reveal" data-dir="up">
+          <h3>Başlanğıc</h3>
+          <p class="price"><span class="amount" data-monthly="0" data-yearly="0">₼0</span><span class="per">/ay</span></p>
+          <p class="price-note">Fərdi işlər üçün</p>
+          <ul>
+            <li>Ayda 30 kadr</li>
+            <li>1 brend profili</li>
+            <li>Əsas şablonlar</li>
+            <li>PNG / JPG ixrac</li>
+          </ul>
+          <a href="#cta" class="btn btn-outline btn-block">Başla</a>
+        </article>
+
+        <article class="price-card is-featured reveal" data-dir="up">
+          <span class="badge">Ən populyar</span>
+          <h3>Pro</h3>
+          <p class="price"><span class="amount" data-monthly="49" data-yearly="39">₼49</span><span class="per">/ay</span></p>
+          <p class="price-note">Böyüyən komandalar üçün</p>
+          <ul>
+            <li>Limitsiz kadr</li>
+            <li>5 brend profili</li>
+            <li>Seriya rejimi + canlı redaktə</li>
+            <li>4K video ixrac</li>
+            <li>Notion / Figma / Slack inteqrasiyası</li>
+          </ul>
+          <a href="#cta" class="btn btn-solid btn-block" data-magnetic>Pro-nu seç</a>
+        </article>
+
+        <article class="price-card reveal" data-dir="up">
+          <h3>Studiya</h3>
+          <p class="price"><span class="amount" data-monthly="129" data-yearly="103">₼129</span><span class="per">/ay</span></p>
+          <p class="price-note">Agentliklər üçün</p>
+          <ul>
+            <li>Pro-dakı hər şey</li>
+            <li>Limitsiz brend profili</li>
+            <li>Rol əsaslı təsdiq axını</li>
+            <li>Müştəri iş sahələri</li>
+            <li>Prioritet dəstək</li>
+          </ul>
+          <a href="#cta" class="btn btn-outline btn-block">Satışla əlaqə</a>
+        </article>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
+  <!-- ================= FAQ (2 sütun) ================= -->
+  <section class="section faq" id="faq">
+    <div class="container">
+      <header class="section-head reveal" data-dir="up">
+        <p class="kicker">Suallar</p>
+        <h2>Tez-tez verilən suallar</h2>
+      </header>
+      <div class="faq-grid">
+        <div class="faq-col">
+          <div class="faq-item">
+            <button class="faq-q">Saytlab brend qaydalarımı necə öyrənir?<i></i></button>
+            <div class="faq-a"><p>Loqo, rəng kodları və nümunə materialları yükləyirsən. Sistem bunlardan brend profili qurur və hər kadrda tətbiq edir.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">Yaradılan vizualların hüquqları kimə aiddir?<i></i></button>
+            <div class="faq-a"><p>Bütün çıxışlar sənə məxsusdur — kommersiya istifadəsi daxil, əlavə lisenziya tələb olunmur.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">Komanda ilə birlikdə işləyə bilərəmmi?<i></i></button>
+            <div class="faq-a"><p>Bəli. Pro və Studiya planlarında paylaşılan layihələr, şərh və təsdiq axını var.</p></div>
+          </div>
+        </div>
+        <div class="faq-col">
+          <div class="faq-item">
+            <button class="faq-q">Video ixracı hansı formatlarda olur?<i></i></button>
+            <div class="faq-a"><p>MP4 (H.264) və WebM, 1080p–4K arası. Kadr nisbətləri 1:1, 4:5, 9:16 və 16:9.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">Planı istənilən vaxt dəyişə bilərəmmi?<i></i></button>
+            <div class="faq-a"><p>Bəli, yüksəltmə dərhal, endirmə isə növbəti hesab dövründə qüvvəyə minir.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">Pulsuz planda limit nədir?<i></i></button>
+            <div class="faq-a"><p>Ayda 30 kadr və 1 brend profili. Kredit kartı tələb olunmur.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CTA BANNER ================= -->
+  <section class="section cta-banner" id="cta">
+    <div class="cta-bg" aria-hidden="true"></div>
+    <div class="container cta-inner reveal" data-dir="up">
+      <h2>İlk layihəni bu gün yarat</h2>
+      <p>Kredit kartı yoxdur. 30 kadr pulsuz. İki dəqiqədə ilk nəticə.</p>
+      <a href="#" class="btn btn-solid btn-lg" data-magnetic>Pulsuz başla</a>
+    </div>
+  </section>
+
+</main>
 
 <!-- ================= FOOTER ================= -->
 <footer class="site-footer">
   <div class="container footer-inner">
     <div class="footer-brand">
       <a href="#top" class="logo">
-        <svg width="20" height="20" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="1" y="7" width="3" height="8" rx="1.5" fill="currentColor"/>
-          <rect x="6" y="3" width="3" height="16" rx="1.5" fill="currentColor"/>
-          <rect x="11" y="0" width="3" height="22" rx="1.5" fill="currentColor"/>
-          <rect x="16" y="5" width="3" height="12" rx="1.5" fill="currentColor"/>
+        <svg class="logo-mark" width="24" height="24" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 8.5 13 3l9 5.5-9 5.5-9-5.5Z" fill="currentColor" opacity="0.55"/>
+          <path d="M4 17.5 13 12l9 5.5-9 5.5-9-5.5Z" fill="currentColor"/>
         </svg>
         <span>Saytlab</span>
       </a>
-      <p>Kampaniyalar, məhsul hekayələri, reklamlar və sosial media üçün AI şəkil və video generasiyası.</p>
-      <div class="social-links">
-        <a href="#" aria-label="X">𝕏</a>
-        <a href="#" aria-label="LinkedIn">in</a>
+      <p>Cümləni brend uyğun vizuala çevirən AI studiyası.</p>
+    </div>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>Məhsul</h4>
+        <a href="#features">İmkanlar</a>
+        <a href="#pricing">Qiymətlər</a>
+        <a href="#how">Necə işləyir</a>
+        <a href="#gallery">Qalereya</a>
       </div>
-    </div>
-
-    <div class="footer-col">
-      <h5>Səhifə</h5>
-      <a href="#top">Ana Səhifə</a>
-      <a href="#features">Xüsusiyyətlər</a>
-      <a href="#usecases">İstifadə sahələri</a>
-      <a href="#testimonials">Rəylər</a>
-      <a href="#gallery">Qalereya</a>
-      <a href="#faq">Suallar</a>
-    </div>
-
-    <div class="footer-col">
-      <h5>Sənədlər</h5>
-      <a href="#">Qiymətlər</a>
-      <a href="#">Şərtlər</a>
-      <a href="#">Məxfilik</a>
+      <div class="footer-col">
+        <h4>Şirkət</h4>
+        <a href="#">Haqqımızda</a>
+        <a href="#">Bloq</a>
+        <a href="#">Karyera</a>
+        <a href="#">Əlaqə</a>
+      </div>
+      <div class="footer-col">
+        <h4>Hüquqi</h4>
+        <a href="#">Məxfilik</a>
+        <a href="#">Şərtlər</a>
+        <a href="#">Təhlükəsizlik</a>
+      </div>
     </div>
   </div>
   <div class="container footer-bottom">
     <span>© 2026 Saytlab. Bütün hüquqlar qorunur.</span>
-    <span>Framer ilhamı ilə hazırlanıb</span>
+    <div class="socials" aria-label="Sosial şəbəkələr">
+      <a href="#" aria-label="X (Twitter)"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.2 2H21l-6.5 7.4L22 22h-6.8l-4.7-6.2L4.9 22H2l7-8-7.3-12H8.9l4.3 5.7L18.2 2Zm-1.2 18h1.6L7.1 3.9H5.4L17 20Z"/></svg></a>
+      <a href="#" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm7 0h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05C21.4 8.65 22 11 22 14.1V21h-4v-6c0-1.43-.03-3.27-2-3.27-2 0-2.3 1.56-2.3 3.17V21h-4V9Z"/></svg></a>
+      <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 1.8.25 2.2.42.56.22.96.48 1.38.9.42.42.68.82.9 1.38.17.4.36 1 .42 2.2.07 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 1.8-.42 2.2a3.7 3.7 0 0 1-.9 1.38c-.42.42-.82.68-1.38.9-.4.17-1 .36-2.2.42-1.3.07-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-1.8-.25-2.2-.42a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.17-.4-.36-1-.42-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-1.8.42-2.2.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.4-.17 1-.36 2.2-.42C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.1 0-3.5 0-4.7.07-.9.04-1.4.2-1.7.32-.43.17-.74.37-1.06.7-.32.31-.52.62-.7 1.05-.12.3-.28.8-.32 1.7C3.5 8.8 3.5 9.2 3.5 12s0 3.2.07 4.4c.04.9.2 1.4.32 1.7.17.43.37.74.7 1.06.31.32.62.52 1.05.7.3.12.8.28 1.7.32 1.2.06 1.6.07 4.7.07s3.5 0 4.7-.07c.9-.04 1.4-.2 1.7-.32.43-.17.74-.37 1.06-.7.32-.31.52-.62.7-1.05.12-.3.28-.8.32-1.7.06-1.2.07-1.6.07-4.4s0-3.2-.07-4.4c-.04-.9-.2-1.4-.32-1.7a2.9 2.9 0 0 0-.7-1.06 2.9 2.9 0 0 0-1.05-.7c-.3-.12-.8-.28-1.7-.32C15.5 4 15.1 4 12 4Zm0 3.06a4.94 4.94 0 1 1 0 9.88 4.94 4.94 0 0 1 0-9.88Zm0 1.8a3.14 3.14 0 1 0 0 6.28 3.14 3.14 0 0 0 0-6.28Zm5.15-.9a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3Z"/></svg></a>
+    </div>
   </div>
 </footer>
 
