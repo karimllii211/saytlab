@@ -1,10 +1,441 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
-  <meta charset="UTF-8">
-  <title>Saytlab</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Saytlab — AI ilə Vizual Yaradıcılıq</title>
+<meta name="description" content="Saytlab — sözlərinizi bir neçə saniyədə peşəkar görüntülərə və videolara çevirən AI vizual studiyası." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Salam, bu mənim ilk saytımdır!</h1>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header" id="top">
+  <div class="container header-inner">
+    <a href="#top" class="logo">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="7" width="3" height="8" rx="1.5" fill="currentColor"/>
+        <rect x="6" y="3" width="3" height="16" rx="1.5" fill="currentColor"/>
+        <rect x="11" y="0" width="3" height="22" rx="1.5" fill="currentColor"/>
+        <rect x="16" y="5" width="3" height="12" rx="1.5" fill="currentColor"/>
+      </svg>
+      <span>Saytlab</span>
+    </a>
+
+    <nav class="main-nav" id="main-nav">
+      <a href="#features">Xüsusiyyətlər</a>
+      <a href="#usecases">İstifadə sahələri</a>
+      <a href="#gallery">Qalereya</a>
+      <a href="#pricing">Qiymətlər</a>
+      <a href="#faq">Suallar</a>
+    </nav>
+
+    <div class="header-actions">
+      <a href="#pricing" class="btn btn-ghost">Daxil ol</a>
+      <a href="#cta" class="btn btn-light">Qeydiyyat</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menyunu aç">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="container hero-inner">
+    <h1 class="hero-title reveal-text">
+      <span>Saytlab</span> sözlərinizi <em>vizual</em> hekayələrə çevirir
+    </h1>
+    <p class="hero-sub fade-up" data-delay="1">Reklamlar, sosial media və kampaniyalar üçün peşəkar AI şəkil və video yaradın — kodlaşdırma və dizayn bacarığı olmadan.</p>
+    <div class="hero-cta fade-up" data-delay="2">
+      <a href="#cta" class="btn btn-light btn-lg">Yaratmağa başla</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FEATURES (BENTO) ================= -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow"><i></i>Saytlab-a giriş</span>
+      <h2>Yaradın, redaktə edin, animasiya edin <span class="muted">və brendə uyğun vizuallar ixrac edin.</span></h2>
+    </div>
+
+    <div class="bento-grid reveal">
+      <div class="bento-card">
+        <h3>AI Şəkil Generatoru</h3>
+        <p>Bir cümləni peşəkar şəkillərə, məhsul çəkilişlərinə və kampaniya vizuallarına çevirin.</p>
+        <div class="bento-visual bento-typing">
+          <span class="typing-text">Make it <b>Modern</b></span>
+        </div>
+      </div>
+
+      <div class="bento-card bento-card--wide">
+        <h3>Kinematik Video Generatoru</h3>
+        <p>Hərəkət, əhval-ruhiyyə, kamera istiqaməti və vizual davamlılıqla qısa AI videoları yaradın.</p>
+        <div class="bento-visual bento-frames" aria-hidden="true">
+          <div class="frame-card"></div>
+          <div class="frame-card"></div>
+          <div class="frame-card"></div>
+        </div>
+      </div>
+
+      <div class="bento-card">
+        <h3>Bütün Modellər, Bir Studiya</h3>
+        <p>Aparıcı şəkil və video generasiya iş axınlarına bir təmiz iş sahəsindən çatın.</p>
+      </div>
+
+      <div class="bento-card">
+        <h3>Üslub Şablonları</h3>
+        <p>Fotorealdan animeyə, redaksiyaya, məhsula və ya sürreal görünüşə saniyələr içində keçin.</p>
+        <div class="bento-visual bento-bars" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="bento-card">
+        <h3>Açar-kadr Nəzarəti</h3>
+        <p>Səhnələri istinad kadrları, kamera işarələri, tempo və vizual istiqamətlə idarə edin.</p>
+        <div class="bento-visual bento-keyframe" aria-hidden="true">
+          <div class="kf-box">BAŞLA</div>
+          <div class="kf-box">SON</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= USE CASES ================= -->
+<section class="section section--alt" id="usecases">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow"><i></i>İstifadə sahələri</span>
+      <h2>Bir AI studiyası ilə hər vizual istiqaməti <span class="muted">kəşf edin.</span></h2>
+    </div>
+
+    <div class="usecase-panel reveal">
+      <div class="usecase-list" id="usecaseList">
+        <button class="usecase-item is-active" data-target="0">
+          <span class="uc-title">Sosial Kampaniyalar</span>
+          <span class="uc-desc">Lansmanlar, reklamlar, reels və gündəlik məzmun üçün platformaya hazır şəkil və qısa video konseptləri yaradın.</span>
+        </button>
+        <button class="usecase-item" data-target="1">
+          <span class="uc-title">Məhsul Vizualları</span>
+        </button>
+        <button class="usecase-item" data-target="2">
+          <span class="uc-title">Video Storibordlar</span>
+        </button>
+        <button class="usecase-item" data-target="3">
+          <span class="uc-title">Brend Eksperimentləri</span>
+        </button>
+      </div>
+
+      <div class="usecase-preview">
+        <div class="uc-mock">
+          <div class="uc-mock-top">
+            <span>📣 Sosial Kampaniyalar</span>
+            <span class="uc-badge">Paket hazırdır</span>
+          </div>
+          <div class="uc-mock-body">
+            <p class="uc-label">PLATFORMALAR</p>
+            <div class="uc-chip-row">
+              <span class="uc-chip is-on">Instagram</span>
+              <span class="uc-chip">TikTok</span>
+              <span class="uc-chip">YouTube</span>
+              <span class="uc-chip">X</span>
+            </div>
+            <p class="uc-label">FORMAT</p>
+            <div class="uc-chip-row">
+              <span class="uc-chip is-on">Reel · 9:16</span>
+              <span class="uc-chip">Story · 9:16</span>
+              <span class="uc-chip">Lenta · 1:1</span>
+            </div>
+            <div class="uc-toggle-row">
+              <span>Avtomatik başlıq yarat</span>
+              <span class="uc-toggle is-on"></span>
+            </div>
+            <div class="uc-mock-actions">
+              <button class="btn btn-light btn-sm">Kampaniya Yarat</button>
+              <button class="btn btn-ghost btn-sm">Önizlə</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BENEFITS ================= -->
+<section class="section" id="benefits">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow"><i></i>Üstünlüklər</span>
+      <h2>Daha sürətli istehsal, <span class="muted">daha kəskin konseptlər, dəqiqələr içində hazır aktivlər.</span></h2>
+    </div>
+
+    <div class="benefits-grid reveal">
+      <div class="benefit-card">
+        <h4>Sürətli Vizual İstehsal</h4>
+        <p>Uzun istehsal dövrlərini gözləmədən kampaniyaya hazır şəkil və klip yaradın.</p>
+      </div>
+      <div class="benefit-card">
+        <h4>Sabit Brend Görünüşü</h4>
+        <p>Rəngləri, əhval-ruhiyyəni və vizual üslubu hər aktivdə uyğun saxlayın.</p>
+      </div>
+      <div class="benefit-card">
+        <h4>Tam Nəzarət</h4>
+        <p>Mövzu, işıqlandırma, hərəkət, kamera bucağı və kompozisiyanı aydın şəkildə formalaşdırın.</p>
+      </div>
+      <div class="benefit-card">
+        <h4>Daha Çox Yaradıcı Test</h4>
+        <p>Qalibi seçməzdən əvvəl daha çox konsept, thumbnail, reklam və storibord araşdırın.</p>
+      </div>
+      <div class="benefit-card">
+        <h4>Hər Kanal Üçün Hazır</h4>
+        <p>Sosial media, reklamlar, açılış səhifələri və məhsul lansmanları üçün ixrac edin.</p>
+      </div>
+      <div class="benefit-card">
+        <h4>Komandalar Üçün Qurulub</h4>
+        <p>Marketoloqlara, dizaynerlərə və qurucu heyətə bir ortaq AI vizual mühiti verin.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="section section--alt" id="how">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow"><i></i>Necə işləyir</span>
+      <h2>Bir cümlədən <span class="muted">hazır vizuala üç sadə addımda.</span></h2>
+    </div>
+
+    <div class="steps-grid reveal">
+      <div class="step-card">
+        <div class="step-visual step-visual--1"></div>
+        <h4>Səhnəni təsvir edin</h4>
+        <p>İstədiyiniz şəkil və ya videonu yazın, üslub, əhval-ruhiyyə, mövzu və format detalları əlavə edin.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-visual step-visual--2"></div>
+        <h4>İstiqaməti dəqiqləşdirin</h4>
+        <p>Nəticə vizyonunuza uyğun olana qədər üslubu, en/uzun nisbətini, hərəkəti tənzimləyin.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-visual step-visual--3"></div>
+        <h4>İxrac edin və yayımlayın</h4>
+        <p>Reklamlar, sosial media, məhsul səhifələri və kampaniyalar üçün hazır vizualları endirin.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section class="section" id="testimonials">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow"><i></i>Rəylər</span>
+      <h2>Yaradıcılar bizim <span class="muted">haqqımızda nə deyir</span></h2>
+    </div>
+
+    <div class="testimonial-track reveal" id="testimonialTrack">
+      <div class="testimonial-card">
+        <p>“Saytlab bir həftəlik reklam konsept işini bir gün ərzində bitirməyimizə kömək etdi. Şəkil keyfiyyəti və üslub nəzarəti hər raundu daha kəskin etdi.”</p>
+        <div class="testimonial-meta"><b>Aygün M.</b><span>Böyümə Yaradıcı Rəhbəri</span></div>
+      </div>
+      <div class="testimonial-card">
+        <p>“Məhsul videolarını storibordlaşdıra, thumbnail yarada və vizual fikirləri redaktə proqramı açmadan sına bilirəm.”</p>
+        <div class="testimonial-meta"><b>Elvin K.</b><span>Qurucu</span></div>
+      </div>
+      <div class="testimonial-card">
+        <p>“Ən yaxşı tərəfi ardıcıllıqdır. Saytlab məhsul çəkilişlərimizi, rənglərimizi və kampaniya əhvalımızı hər formatda uyğun saxlayır.”</p>
+        <div class="testimonial-meta"><b>Nərmin L.</b><span>Brend Dizayneri</span></div>
+      </div>
+      <div class="testimonial-card">
+        <p>“Saytlab AI videonu praktiki hiss etdirir. Sürətli hərəkət konseptləri yaradıb eyni gün müştərilərlə paylaşa bilirəm.”</p>
+        <div class="testimonial-meta"><b>Rəşad T.</b><span>Yaradıcı Direktor</span></div>
+      </div>
+    </div>
+
+    <div class="testimonial-nav reveal">
+      <button id="tPrev" aria-label="Əvvəlki">←</button>
+      <button id="tNext" aria-label="Növbəti">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GALLERY ================= -->
+<section class="section section--alt" id="gallery">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow"><i></i>Qalereya</span>
+      <h2>Saytlab-ı <span class="muted">əməldə görün</span></h2>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="gallery-item gallery-item--a"></div>
+      <div class="gallery-item gallery-item--b"></div>
+      <div class="gallery-item gallery-item--c"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRICING ================= -->
+<section class="section" id="pricing">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow"><i></i>Planlar</span>
+      <h2>Qiymət planları</h2>
+      <p class="section-sub">Yaradıcı çıxışınıza uyğun planı seçin</p>
+    </div>
+
+    <div class="pricing-toggle reveal">
+      <span id="labelMonthly" class="is-active">Aylıq</span>
+      <button class="switch" id="billingSwitch" aria-label="Ödəniş dövrünü dəyiş"><span class="switch-dot"></span></button>
+      <span id="labelYearly">İllik</span>
+      <span class="badge-off">20% ENDİRİM</span>
+    </div>
+
+    <div class="pricing-grid reveal">
+      <div class="price-card">
+        <h3>Başlanğıc</h3>
+        <div class="price"><span class="amount" data-monthly="0" data-yearly="0">₼0</span><span class="period">/ay</span></div>
+        <p>VISIO-nu sınamaq üçün əsas şəkil generasiyası və sadə redaktələr.</p>
+        <a href="#" class="btn btn-outline btn-block">Yaratmağa başla</a>
+        <ul class="feature-list">
+          <li>Aylıq 100 şəkil krediti</li>
+          <li>Əsas şəkil generasiyası</li>
+          <li>İcma dəstəyi</li>
+        </ul>
+      </div>
+
+      <div class="price-card price-card--popular">
+        <span class="popular-badge">Populyar</span>
+        <h3>Pro</h3>
+        <div class="price"><span class="amount" data-monthly="19" data-yearly="15">₼19</span><span class="period">/ay</span></div>
+        <p>Ciddi yaradıcılar və komandalar üçün daha çox kredit, sürətli modellər.</p>
+        <a href="#" class="btn btn-light btn-block">Pro-ya keç</a>
+        <ul class="feature-list">
+          <li>Limitsiz şəkil prompt-ları</li>
+          <li>AI video generasiya krediti</li>
+          <li>Prioritet model girişi</li>
+          <li>Brend üslub şablonları</li>
+        </ul>
+      </div>
+
+      <div class="price-card">
+        <h3>Studiya</h3>
+        <div class="price"><span class="amount-custom">Fərdi</span></div>
+        <p>Fərdi kreditlər, komanda idarəetməsi, premium dəstək və əməkdaşlıq.</p>
+        <a href="#" class="btn btn-outline btn-block">Satışla əlaqə</a>
+        <ul class="feature-list">
+          <li>Paylaşılan komanda iş sahəsi</li>
+          <li>Fərdi model iş axınları</li>
+          <li>Premium dəstək və SLA</li>
+          <li>Təlim və uyğunlaşma</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="section section--alt" id="faq">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow"><i></i>Suallar</span>
+      <h2>Suallarınıza <span class="muted">aydın cavablar</span></h2>
+    </div>
+
+    <div class="faq-grid reveal">
+      <div class="faq-item">
+        <button class="faq-q">Saytlab ilə nə yarada bilərəm?<span>+</span></button>
+        <div class="faq-a"><p>Reklam, sosial media, məhsul çəkilişi, storibord və kampaniya üçün AI şəkil və qısa videolar yarada bilərsiniz.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Pulsuz plan mövcuddurmu?<span>+</span></button>
+        <div class="faq-a"><p>Bəli, Başlanğıc planı ilə əsas funksiyaları pulsuz sına bilərsiniz.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Dizayn və ya video bacarığı lazımdırmı?<span>+</span></button>
+        <div class="faq-a"><p>Xeyr, sadə mətn təsvirləri ilə peşəkar nəticələr əldə edə bilərsiniz.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Saytlab-ı kommersiya işləri üçün istifadə edə bilərəmmi?<span>+</span></button>
+        <div class="faq-a"><p>Bəli, Pro və Studiya planlarında yaradılan bütün vizuallar kommersiya istifadəsi üçün uyğundur.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Saytlab həm şəkil, həm də videonu dəstəkləyirmi?<span>+</span></button>
+        <div class="faq-a"><p>Bəli, eyni iş sahəsindən şəkil və qısa video generasiyası edə bilərsiniz.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Kreditlər necə işləyir?<span>+</span></button>
+        <div class="faq-a"><p>Hər generasiya seçilmiş model və formata görə müəyyən sayda kredit istifadə edir; kreditlər planınıza görə aylıq yenilənir.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="section" id="cta">
+  <div class="container">
+    <div class="cta-banner reveal">
+      <div class="cta-content">
+        <h2>Saytlab ilə bu gün<br>yaratmağa başlayın</h2>
+        <p>Növbəti şəklinizi, video konseptinizi, məhsul çəkilişinizi və ya kampaniya səhnənizi saniyələr içində AI ilə yaradın.</p>
+        <a href="#" class="btn btn-light btn-lg">İndi Sına</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a href="#top" class="logo">
+        <svg width="20" height="20" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="7" width="3" height="8" rx="1.5" fill="currentColor"/>
+          <rect x="6" y="3" width="3" height="16" rx="1.5" fill="currentColor"/>
+          <rect x="11" y="0" width="3" height="22" rx="1.5" fill="currentColor"/>
+          <rect x="16" y="5" width="3" height="12" rx="1.5" fill="currentColor"/>
+        </svg>
+        <span>Saytlab</span>
+      </a>
+      <p>Kampaniyalar, məhsul hekayələri, reklamlar və sosial media üçün AI şəkil və video generasiyası.</p>
+      <div class="social-links">
+        <a href="#" aria-label="X">𝕏</a>
+        <a href="#" aria-label="LinkedIn">in</a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h5>Səhifə</h5>
+      <a href="#top">Ana Səhifə</a>
+      <a href="#features">Xüsusiyyətlər</a>
+      <a href="#usecases">İstifadə sahələri</a>
+      <a href="#testimonials">Rəylər</a>
+      <a href="#gallery">Qalereya</a>
+      <a href="#faq">Suallar</a>
+    </div>
+
+    <div class="footer-col">
+      <h5>Sənədlər</h5>
+      <a href="#">Qiymətlər</a>
+      <a href="#">Şərtlər</a>
+      <a href="#">Məxfilik</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 Saytlab. Bütün hüquqlar qorunur.</span>
+    <span>Framer ilhamı ilə hazırlanıb</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
