@@ -44,8 +44,9 @@
   --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);  /* yalnız scroll-reveal pərdəsi */
 
-  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
-  --font-body:    "Inter", system-ui, -apple-system, sans-serif;
+  /* tam fallback zənciri — fontlar gec gələndə səhifə "boş" görünməsin */
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-body:    "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
 /* ---------- 2. Reset / baza ---------- */

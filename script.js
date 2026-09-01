@@ -16,6 +16,13 @@
    • getBoundingClientRect yalnız mouseenter-də (scroll-da yox).
    • Yalnız transform / opacity / clip-path animasiya olunur.
    ========================================================================= */
+
+/* Səhifə yenilənəndə (F5) HƏMİŞƏ başdan açılsın — brauzerin scroll-bərpasını söndür.
+   Faylın ən başında, DOMContentLoaded-dən kənarda: mümkün qədər tez icra olunsun. */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+window.addEventListener('load', () => window.scrollTo(0, 0));  // Safari üçün ehtiyat
+
 document.addEventListener('DOMContentLoaded', () => {
 
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -27,8 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const lerp = (a, b, t) => a + (b - a) * t;
   const clamp = (n, min, max) => Math.min(Math.max(n, min), max);
 
-  // JS işləyir → reveal-in gizli başlanğıc vəziyyətini aktivləşdir
-  document.documentElement.classList.add('js-reveal');
+  // (js-reveal sinfi artıq <head>-dəki inline script ilə əlavə olunub — FOUC-suz)
 
   /* ===================================================================
      0. Sonsuz fon animasiyalarını yalnız öz bölmələri ekranda olarkən işlət.

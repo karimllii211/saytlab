@@ -2,15 +2,21 @@
 <html lang="az">
 <head>
 <meta charset="UTF-8" />
+<!-- Hər şeydən əvvəl: reveal-in gizli başlanğıcını body render olunmadan aktivləşdir
+     (hero mətninin bir an "yanıb-sönməsinin" qarşısını alır) -->
+<script>document.documentElement.classList.add('js-reveal');</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Saytlab — AI ilə Vizual Kontent Studiyası</title>
 <meta name="description" content="Saytlab — bir cümləni bir neçə saniyəyə brend uyğun vizuallara, kampaniya kadrlarına və video sekanslarına çevirən AI studiyası." />
 
-<!-- Tipoqrafiya: geniş, texniki sans-serif (Space Grotesk) + neytral mətn fontu (Inter).
-     DreamMotion editorial serif (Fraunces) əvəzinə tamam fərqli xarakter. -->
+<!-- Tipoqrafiya: Space Grotesk (başlıq) + Inter (mətn) — render-blok OLMADAN yüklənir.
+     media="print" + onload trick: brauzer stylesheet-i arxa planda çəkir, hazır olanda tətbiq edir.
+     Səhifə dərhal fallback fontlarla görünür, sonra yumşaq keçir. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"></noscript>
 
 <link rel="stylesheet" href="style.css" />
 </head>
@@ -484,6 +490,6 @@
   </div>
 </footer>
 
-<script src="script.js"></script>
+<script src="script.js" defer></script>
 </body>
 </html>
