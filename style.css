@@ -294,14 +294,19 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 /* statik — sonsuz "nəbz" silindi; sadə göstərici xətt kifayətdir */
 .hero-scroll-hint span { width: 1px; height: 40px; background: linear-gradient(var(--accent), transparent); opacity: 0.55; }
 
-/* ---------- 10. Scroll reveal — bir dəfəlik, opacity + transform ---------- */
+/* ---------- 10. Scroll reveal — bir dəfəlik, opacity + transform, İSTİQAMƏTLİ ---------- */
 /* Təhlükəsizlik: JS yüklənməzsə məzmun görünən qalır (gizlətmə yalnız js-reveal ilə).
    QEYD: əvvəllər clip-path: inset(0 0 100% 0) istifadə olunurdu — bu, elementin vizual
    sahəsini sıfıra endirdiyi üçün Chromium-un IntersectionObserver-i onu "heç vaxt kəsişmir"
    hesab edirdi və reveal ekrana girəndə belə TETİKLƏNMİRDİ. transform+opacity GPU-da
-   eyni performansla işləyir və bu problemi yaratmır. */
+   eyni performansla işləyir və bu problemi yaratmır.
+   data-dir="up|down|left|right" — HTML-də işarələnən istiqamətə görə başlanğıc translate
+   dəyəri dəyişir (əvvəllər yalnız up işləyirdi, digərləri effektsiz idi — düzəldildi). */
 .reveal { transition: transform 750ms var(--ease-reveal), opacity 550ms var(--ease-reveal); }
 .js-reveal .reveal { transform: translateY(48px); opacity: 0; }
+.js-reveal .reveal[data-dir="down"]  { transform: translateY(-40px); }
+.js-reveal .reveal[data-dir="left"]  { transform: translateX(56px); }
+.js-reveal .reveal[data-dir="right"] { transform: translateX(-56px); }
 .js-reveal .reveal[data-visible] { transform: none; opacity: 1; }
 
 /* ---------- 11. FEATURES — Bento grid ---------- */
@@ -590,11 +595,17 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   pointer-events: none;
 }
 .how-visual-frame.is-active { opacity: 1; }
+/* Span-tərzi giriş: hər forma aşağıdan sürüşərək + kiçik ölçüdən böyüyərək peyda olur
+   (statik "opacity yalnız" keçidi əvəzinə). Yalnız aktiv frame-in forması hərəkət edir. */
 .how-visual-frame .hv-shape {
   width: 44%; aspect-ratio: 1; border-radius: 28%;
   background: linear-gradient(160deg, var(--accent-2), var(--accent-deep) 60%, var(--accent) 100%);
   box-shadow: 0 30px 80px -20px rgba(230,184,102,0.45), inset 0 0 0 1px rgba(255,255,255,0.15);
+  transform: translateY(38px) scale(0.72);
+  opacity: 0;
+  transition: transform 0.7s var(--ease-reveal), opacity 0.6s var(--ease-reveal);
 }
+.how-visual-frame.is-active .hv-shape { transform: none; opacity: 1; }
 .how-visual-frame:nth-child(2) .hv-shape { border-radius: 50%; background: linear-gradient(160deg, #f2d29a, #1f6b4a 70%); }
 .how-visual-frame:nth-child(3) .hv-shape { border-radius: 18px; background: conic-gradient(from 180deg at 50% 50%, #1f6b4a, #3a2a5c, #e6b866, #1f6b4a); }
 
