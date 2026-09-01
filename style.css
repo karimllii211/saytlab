@@ -42,7 +42,11 @@
   /* Keçidlər — standartlaşdırılmış easing dəsti */
   --ease:        cubic-bezier(0.23, 1, 0.32, 1);   /* ease-out: hover, kart, accordion, düymə */
   --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);  /* yalnız scroll-reveal pərdəsi */
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);  /* simmetrik in-out: kiçik UI keçidləri üçün */
+  /* DreamMotion-un canlı saytından JS ilə frame-by-frame ölçülmüş faktiki əyri (expo-out):
+     sürətli başlayır, uzun/yumşaq "iz buraxaraq" dayanır, heç bir overshoot yoxdur.
+     Yalnız scroll-reveal üçün — "premium/üzən" hissi bu əyridən gəlir. */
+  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* tam fallback zənciri — fontlar gec gələndə səhifə "boş" görünməsin */
   --font-display: "Space Grotesk", "Segoe UI", system-ui, -apple-system, sans-serif;
@@ -259,8 +263,8 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
    sahəsini sıfıra endirdiyi üçün Chromium-un IntersectionObserver-i onu "heç vaxt kəsişmir"
    hesab edirdi və reveal ekrana girəndə belə TETİKLƏNMİRDİ. transform+opacity GPU-da
    eyni performansla işləyir və bu problemi yaratmır. */
-.reveal { transition: transform 500ms var(--ease-in-out), opacity 400ms var(--ease-out); }
-.js-reveal .reveal { transform: translateY(28px); opacity: 0; }
+.reveal { transition: transform 750ms var(--ease-reveal), opacity 550ms var(--ease-reveal); }
+.js-reveal .reveal { transform: translateY(48px); opacity: 0; }
 .js-reveal .reveal[data-visible] { transform: none; opacity: 1; }
 
 /* ---------- 11. FEATURES — Bento grid ---------- */
