@@ -287,39 +287,51 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
 
   /* ===================================================================
-     11. Use-case accordion + canlı preview paneli (state indication)
+     11. Domen axtar — DEMO. Real DNS/whois sorğusu YOXDUR; nəticə
+         sırf maket məqsədlidir (deterministik "boş/tutulub" bölgüsü).
      =================================================================== */
-  const ucData = {
-    marketing: { tag: 'Marketinq', heading: 'Yaz launch kampaniyası',    text: '18 kadr · 3 kanal · brend palitrası tətbiq edildi.', c1: '#1f6b4a', c2: '#e6b866' },
-    ecommerce: { tag: 'E-ticarət', heading: 'Kataloq standartlaşdırması', text: '420 məhsul · vahid işıq · avtomatik fon.',           c1: '#c9954a', c2: '#3a2a5c' },
-    social:    { tag: 'Sosial',    heading: 'Həftəlik kontent seriyası',  text: '28 post · 4 şablon · avtomatik ölçüləndirmə.',         c1: '#3a2a5c', c2: '#f2d29a' },
-    product:   { tag: 'Məhsul',    heading: 'Feature elan maketləri',     text: '9 changelog vizualı · 2 dəqiqədə hazır.',              c1: '#1f6b4a', c2: '#f2d29a' },
-  };
-  const ucItems = $$('.usecase-item');
-  const ucBody = $('.uc-window-body');
-  const ucTag = $('#ucTag'), ucHeading = $('#ucHeading'), ucText = $('#ucText'), ucVisual = $('#ucVisual');
-  const setUsecase = (key) => {
-    const d = ucData[key];
-    if (!d) return;
-    ucBody.classList.add('is-swapping');
-    setTimeout(() => {
-      ucTag.textContent = d.tag;
-      ucHeading.textContent = d.heading;
-      ucText.textContent = d.text;
-      ucVisual.style.background = `linear-gradient(135deg, ${d.c1}, ${d.c2})`;
-      ucBody.classList.remove('is-swapping');
-    }, 170);
-  };
-  ucItems.forEach(item => {
-    item.addEventListener('click', () => {
-      ucItems.forEach(i => i.classList.remove('is-active'));
-      item.classList.add('is-active');
-      setUsecase(item.dataset.uc);
+  const domainForm = $('#domainForm');
+  if (domainForm) {
+    const domainInput = $('#domainInput');
+    const domainResult = $('#domainResult');
+    const TLDS = ['.az', '.com', '.com.az', '.net'];
+    domainForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const raw = (domainInput.value || '').trim().toLowerCase()
+        .replace(/\s+/g, '')
+        .replace(/^https?:\/\//, '')
+        .replace(/\/.*$/, '');
+      if (!raw) return;
+      const base = raw.replace(/\.[a-z.]+$/, '') || raw;
+      const rows = TLDS.map((tld, i) => {
+        const taken = (base.length + i) % 3 === 0;   // demo qayda — real yoxlama deyil
+        return `<li class="domain-row ${taken ? 'is-taken' : 'is-free'}">
+            <span class="domain-name">${base}${tld}</span>
+            <span class="domain-status">${taken ? 'Tutulub' : 'Boşdur'}</span>
+          </li>`;
+      }).join('');
+      domainResult.innerHTML =
+        `<p class="domain-result-note">Demo nəticə — real domen yoxlaması deyil. Dəqiq status üçün bizə yazın.</p>
+         <ul class="domain-list">${rows}</ul>`;
+      domainResult.hidden = false;
     });
-  });
+  }
 
   /* ===================================================================
-     12. Pricing aylıq/illik toggle — rəqəmlərdə qısa fade/scale (feedback)
+     12. Əlaqə forması — real backend yoxdur, submit-də təşəkkür mesajı.
+     =================================================================== */
+  const contactForm = $('#contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const note = $('#contactNote');
+      if (note) note.hidden = false;
+      contactForm.reset();
+    });
+  }
+
+  /* ===================================================================
+     13. Pricing aylıq/illik toggle — rəqəmlərdə qısa fade/scale (feedback)
      =================================================================== */
   const billingSwitch = $('#billingSwitch');
   const labelMonthly = $('#labelMonthly');
@@ -341,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
   billingSwitch.addEventListener('click', () => setBilling(!billingSwitch.classList.contains('is-yearly')));
 
   /* ===================================================================
-     13. FAQ accordion — bir anda yalnız biri açıq (grid-template-rows)
+     14. FAQ accordion — bir anda yalnız biri açıq (grid-template-rows)
      =================================================================== */
   $$('.faq-item').forEach(item => {
     $('.faq-q', item).addEventListener('click', () => {
@@ -350,13 +362,5 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!open) item.classList.add('is-open');
     });
   });
-
-  /* ===================================================================
-     14. Testimonials carousel — ox düymələri ilə smooth scroll (spatial)
-     =================================================================== */
-  const track = $('#testimonialTrack');
-  const stepBy = () => (track.querySelector('.t-card')?.offsetWidth || 320) + 18;
-  $('#tNext').addEventListener('click', () => track.scrollBy({ left: stepBy(), behavior: 'smooth' }));
-  $('#tPrev').addEventListener('click', () => track.scrollBy({ left: -stepBy(), behavior: 'smooth' }));
 
 });

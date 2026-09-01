@@ -120,6 +120,12 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .btn-ghost { color: var(--text-muted); }
 .btn-ghost:hover { color: var(--text); }
 
+/* WhatsApp CTA — .btn-solid strukturu üstündə, tanınan WhatsApp yaşılı.
+   Mövcud rəng dəyişənləri ilə yanaşı işləyir, :root palitrasına toxunmur. */
+.btn-whatsapp { background: #25d366; color: #04220f; box-shadow: 0 8px 30px rgba(37, 211, 102, 0.28); }
+.btn-whatsapp:hover { background: #2ee574; }
+.btn-whatsapp svg { width: 17px; height: 17px; }
+
 /* ---------- 5. Scroll proqres zolağı ---------- */
 /* width yox — yalnız transform: scaleX() animasiya olunur (layout yaratmır) */
 .scroll-progress {
@@ -154,6 +160,9 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .logo { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; }
 .logo-mark { color: var(--accent); }
+/* PNG loqo — kvadrat şəkil, sıxılmadan konteynerə sığır. Hündürlük header ritmini pozmasın. */
+.logo-img { height: 36px; width: auto; object-fit: contain; }
+.site-footer .logo-img { height: 30px; }
 
 .main-nav { display: flex; gap: 30px; margin-left: auto; }
 .main-nav a { font-size: 0.92rem; color: var(--text-muted); transition: color 0.2s var(--ease); }
@@ -500,20 +509,91 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .socials a { color: var(--text-muted); transition: color 0.2s var(--ease), transform 0.2s var(--ease); }
 .socials a:hover { color: var(--accent); transform: translateY(-2px); }
 
+/* ---------- 21b. Domen axtar ---------- */
+.domain-search { display: flex; gap: 12px; flex-wrap: wrap; max-width: 560px; }
+.domain-input {
+  flex: 1; min-width: 220px;
+  padding: 14px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-body); font-size: 0.98rem;
+  transition: border-color 0.25s var(--ease);
+}
+.domain-input:focus { outline: none; border-color: var(--accent); }
+.domain-input::placeholder { color: var(--text-dim); }
+.domain-result { margin-top: 28px; max-width: 560px; }
+.domain-result-note { font-size: 0.82rem; color: var(--text-dim); margin-bottom: 14px; }
+.domain-list { display: flex; flex-direction: column; gap: 10px; }
+.domain-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+}
+.domain-name { font-family: var(--font-display); font-size: 1rem; }
+.domain-status { font-family: var(--font-display); font-size: 0.85rem; letter-spacing: 0.04em; white-space: nowrap; }
+.domain-row.is-free { border-color: var(--border-strong); }
+.domain-row.is-free .domain-status { color: var(--accent); }
+.domain-row.is-taken { opacity: 0.55; }
+.domain-row.is-taken .domain-status { color: var(--text-dim); }
+
+/* ---------- 21c. Xidmət kartları ---------- */
+.service-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.service-card {
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  transition: transform 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.service-card:hover { transform: translateY(-4px); border-color: var(--border-strong); }
+.service-card h3 { font-size: 1.12rem; color: var(--accent); margin-bottom: 8px; }
+.service-card p { color: var(--text-muted); font-size: 0.94rem; }
+.services-cta { margin-top: 36px; }
+
+/* ---------- 21d. Əlaqə ---------- */
+.contact-layout { display: grid; grid-template-columns: 1.3fr 1fr; gap: 22px; align-items: start; }
+.contact-form { display: flex; flex-direction: column; gap: 16px; padding: 30px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field span { font-family: var(--font-display); font-size: 0.85rem; color: var(--text-muted); }
+.field input, .field textarea {
+  padding: 12px 14px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-2);
+  color: var(--text);
+  font-family: var(--font-body); font-size: 0.95rem;
+  resize: vertical;
+  transition: border-color 0.25s var(--ease);
+}
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
+.contact-form .btn { align-self: flex-start; }
+.contact-note { color: var(--accent); font-size: 0.9rem; }
+.contact-direct { padding: 30px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); }
+.contact-direct h3 { font-size: 1.15rem; margin-bottom: 18px; }
+.contact-direct ul { display: flex; flex-direction: column; gap: 16px; }
+.contact-direct li { display: flex; flex-direction: column; gap: 3px; }
+.contact-direct li span { font-family: var(--font-display); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-dim); }
+.contact-direct li a { color: var(--text); transition: color 0.2s var(--ease); }
+.contact-direct li a:hover { color: var(--accent); }
+
 /* ---------- 22. Responsiv ---------- */
 @media (max-width: 960px) {
   .main-nav, .header-actions { display: none; }
   .menu-toggle { display: flex; }
   .bento, .benefit-grid, .steps, .gallery-grid, .price-grid { grid-template-columns: 1fr 1fr; }
   .bento-wide { grid-column: span 2; }
-  .usecase-layout { grid-template-columns: 1fr; }
-  .usecase-preview { position: static; }
+  .service-grid { grid-template-columns: 1fr 1fr; }
+  .contact-layout { grid-template-columns: 1fr; }
   .footer-inner { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
   :root { --section-y: clamp(60px, 12vw, 90px); }
-  .bento, .benefit-grid, .steps, .gallery-grid, .price-grid, .faq-grid { grid-template-columns: 1fr; }
+  .bento, .benefit-grid, .steps, .gallery-grid, .price-grid, .faq-grid, .service-grid { grid-template-columns: 1fr; }
   .bento-wide { grid-column: auto; }
   .price-card.is-featured { transform: none; }
   .hero-stats { gap: 24px; }

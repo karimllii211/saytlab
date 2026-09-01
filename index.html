@@ -29,26 +29,23 @@
 <header class="site-header" id="top">
   <div class="container header-inner">
     <a href="#top" class="logo" aria-label="Saytlab ana səhifə">
-      <!-- Monoqram: bir-birinə keçən iki paraleloqram (S/L hissi). Audio waveform DEYİL. -->
-      <svg class="logo-mark" width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M4 8.5 13 3l9 5.5-9 5.5-9-5.5Z" fill="currentColor" opacity="0.55"/>
-        <path d="M4 17.5 13 12l9 5.5-9 5.5-9-5.5Z" fill="currentColor"/>
-      </svg>
+      <!-- Loqo: LogoPngSaytLab.png-dən emal edilmiş (ağ fon şəffaflaşdırılıb + kəsilib) versiya. -->
+      <img class="logo-img" src="logo-saytlab.png" alt="Saytlab" width="40" height="40" />
       <span>Saytlab</span>
     </a>
 
     <nav class="main-nav" id="mainNav" aria-label="Əsas naviqasiya">
-      <a href="#features">İmkanlar</a>
-      <a href="#usecases">İstifadə sahələri</a>
-      <a href="#how">Necə işləyir</a>
-      <a href="#gallery">Qalereya</a>
       <a href="#pricing">Qiymətlər</a>
       <a href="#faq">Suallar</a>
+      <a href="#contact">Əlaqə</a>
     </nav>
 
     <div class="header-actions">
-      <a href="#pricing" class="btn btn-ghost">Daxil ol</a>
-      <a href="#cta" class="btn btn-solid">Pulsuz başla</a>
+      <!-- WhatsApp düyməsi — NÖMRƏNİ DƏYİŞ: 994XXXXXXXXX yerinə real nömrəni yaz (məs. 994501234567), boşluq/artı işarəsi olmadan. -->
+      <a href="https://wa.me/994XXXXXXXXX" target="_blank" rel="noopener noreferrer" class="btn btn-solid btn-whatsapp">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.29-.15-1.7-.84-1.96-.93-.26-.1-.45-.15-.64.14-.19.29-.74.93-.9 1.12-.17.19-.33.21-.62.07-.29-.15-1.22-.45-2.33-1.43-.86-.77-1.44-1.72-1.61-2.01-.17-.29-.02-.45.13-.59.13-.13.29-.34.44-.51.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.14-.64-1.55-.88-2.13-.23-.55-.47-.48-.64-.49l-.55-.01c-.19 0-.5.07-.76.36-.26.29-1 .98-1 2.38s1.02 2.76 1.17 2.95c.14.19 2.01 3.06 4.86 4.29.68.29 1.21.47 1.62.6.68.22 1.3.19 1.79.11.55-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34zM12.05 21.5h-.01a9.4 9.4 0 01-4.8-1.32l-.34-.2-3.57.93.96-3.48-.22-.36a9.42 9.42 0 01-1.44-5.02c0-5.2 4.24-9.44 9.46-9.44 2.53 0 4.9.99 6.69 2.78a9.38 9.38 0 012.77 6.67c0 5.2-4.24 9.44-9.46 9.44zM20.52 3.45A11.14 11.14 0 0012.05 0C5.5 0 .18 5.32.18 11.87c0 2.09.55 4.13 1.6 5.93L.08 24l6.34-1.66a11.9 11.9 0 005.62 1.43h.01c6.55 0 11.87-5.32 11.87-11.87 0-3.17-1.24-6.15-3.4-8.45z"/></svg>
+        WhatsApp
+      </a>
     </div>
 
     <button class="menu-toggle" id="menuToggle" aria-label="Menyunu aç" aria-expanded="false">
@@ -60,13 +57,14 @@
 <!-- ================= MOBİL MENYU (tam ekran overlay) ================= -->
 <div class="mobile-overlay" id="mobileOverlay" aria-hidden="true">
   <nav class="mobile-nav">
-    <a href="#features">İmkanlar</a>
-    <a href="#usecases">İstifadə sahələri</a>
-    <a href="#how">Necə işləyir</a>
-    <a href="#gallery">Qalereya</a>
     <a href="#pricing">Qiymətlər</a>
     <a href="#faq">Suallar</a>
-    <a href="#cta" class="btn btn-solid mobile-cta">Pulsuz başla</a>
+    <a href="#contact">Əlaqə</a>
+    <!-- WhatsApp düyməsi — NÖMRƏNİ DƏYİŞ: 994XXXXXXXXX yerinə real nömrəni yaz. -->
+    <a href="https://wa.me/994XXXXXXXXX" target="_blank" rel="noopener noreferrer" class="btn btn-solid btn-whatsapp mobile-cta">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.29-.15-1.7-.84-1.96-.93-.26-.1-.45-.15-.64.14-.19.29-.74.93-.9 1.12-.17.19-.33.21-.62.07-.29-.15-1.22-.45-2.33-1.43-.86-.77-1.44-1.72-1.61-2.01-.17-.29-.02-.45.13-.59.13-.13.29-.34.44-.51.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.14-.64-1.55-.88-2.13-.23-.55-.47-.48-.64-.49l-.55-.01c-.19 0-.5.07-.76.36-.26.29-1 .98-1 2.38s1.02 2.76 1.17 2.95c.14.19 2.01 3.06 4.86 4.29.68.29 1.21.47 1.62.6.68.22 1.3.19 1.79.11.55-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34zM12.05 21.5h-.01a9.4 9.4 0 01-4.8-1.32l-.34-.2-3.57.93.96-3.48-.22-.36a9.42 9.42 0 01-1.44-5.02c0-5.2 4.24-9.44 9.46-9.44 2.53 0 4.9.99 6.69 2.78a9.38 9.38 0 012.77 6.67c0 5.2-4.24 9.44-9.46 9.44zM20.52 3.45A11.14 11.14 0 0012.05 0C5.5 0 .18 5.32.18 11.87c0 2.09.55 4.13 1.6 5.93L.08 24l6.34-1.66a11.9 11.9 0 005.62 1.43h.01c6.55 0 11.87-5.32 11.87-11.87 0-3.17-1.24-6.15-3.4-8.45z"/></svg>
+      WhatsApp
+    </a>
   </nav>
 </div>
 
@@ -103,8 +101,8 @@
       </p>
 
       <div class="hero-actions" data-hero="10">
-        <a href="#cta" class="btn btn-solid btn-lg" data-magnetic>Pulsuz layihə yarat</a>
-        <a href="#how" class="btn btn-outline btn-lg">Necə işləyir</a>
+        <a href="#contact" class="btn btn-solid btn-lg" data-magnetic>Pulsuz layihə danış</a>
+        <a href="#services" class="btn btn-outline btn-lg">Xidmətlər</a>
       </div>
 
       <!-- Sayğac animasiyalı statistika -->
@@ -118,61 +116,55 @@
     <div class="hero-scroll-hint" aria-hidden="true"><span></span>Aşağı sürüşdür</div>
   </section>
 
-  <!-- ================= FEATURES — BENTO GRID ================= -->
-  <section class="section features" id="features" data-pause-offscreen>
+  <!-- ================= DOMAIN AXTAR ================= -->
+  <section class="section domain" id="domain">
     <div class="container">
       <header class="section-head reveal" data-dir="up">
-        <p class="kicker">İmkanlar</p>
-        <h2>Bir iş axını, bütün formatlar</h2>
-        <p class="section-lead">Brief-dən son kadra qədər — hər addım eyni pəncərədə.</p>
+        <p class="kicker">Domen</p>
+        <h2>Domenini tap</h2>
+        <p class="section-lead">Brendinə uyğun domen adını yoxla və rezerv et. Bir neçə saniyə kifayətdir.</p>
       </header>
 
-      <div class="bento">
-        <!-- 1 geniş kart -->
-        <article class="bento-card bento-wide tilt reveal" data-dir="left">
-          <div class="bento-inner">
-            <h3>Brend Beyni</h3>
-            <p>Loqonu, palitranı və səs tonunu bir dəfə yüklə — Saytlab sonrakı hər kadrda onlara sadiq qalır.</p>
-            <!-- Mikro-animasiya: brend rəng çipləri -->
-            <div class="chip-row">
-              <span class="chip"></span><span class="chip"></span><span class="chip"></span>
-              <span class="chip"></span><span class="chip"></span>
-            </div>
-          </div>
-        </article>
+      <form class="domain-search reveal" data-dir="up" id="domainForm" autocomplete="off">
+        <input type="text" id="domainInput" class="domain-input" placeholder="məsələn: saytlab" aria-label="Domen adı" />
+        <button type="submit" class="btn btn-solid">Axtar</button>
+      </form>
 
-        <!-- 4 normal kart -->
-        <article class="bento-card tilt reveal" data-dir="up">
-          <div class="bento-inner">
-            <h3>Kadr Rejissoru</h3>
-            <p>Kompozisiya, işıq və rakurs üçün hazır ssenari şablonları.</p>
-            <div class="mini-frames"><i></i><i></i><i></i></div>
-          </div>
-        </article>
+      <!-- Nəticə DEMO-dur — real domen/DNS yoxlaması aparılmır (bax script.js). -->
+      <div class="domain-result" id="domainResult" hidden></div>
+    </div>
+  </section>
 
-        <article class="bento-card tilt reveal" data-dir="up">
-          <div class="bento-inner">
-            <h3>Seriya Rejimi</h3>
-            <p>Bir konsept — 12 uyğun variant, bir kliklə.</p>
-            <div class="pulse-grid"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-          </div>
-        </article>
+  <!-- ================= XİDMƏT: VEB-SAYT HAZIRLANMASI ================= -->
+  <section class="section services" id="services">
+    <div class="container">
+      <header class="section-head reveal" data-dir="up">
+        <p class="kicker">Xidmət</p>
+        <h2>Peşəkar veb-sayt hazırlanması</h2>
+        <p class="section-lead">Fikirdən canlı sayta qədər — dizayn, məzmun və texniki quraşdırma bizim üzərimizdə.</p>
+      </header>
 
-        <article class="bento-card tilt reveal" data-dir="down">
-          <div class="bento-inner">
-            <h3>Canlı Redaktə</h3>
-            <p>Sözlə düzəliş ver: “işığı yumşalt”, “fonu genişlət”.</p>
-            <div class="type-line"><span>“kölgələri azalt”</span><b></b></div>
-          </div>
+      <div class="service-grid">
+        <article class="service-card reveal" data-dir="up">
+          <h3>Sürətli təhvil</h3>
+          <p>Standart tanıtım saytları 5–10 iş günü ərzində hazır olur və canlıya çıxır.</p>
         </article>
+        <article class="service-card reveal" data-dir="up">
+          <h3>SEO-uyğun</h3>
+          <p>Təmiz kod, düzgün başlıq strukturu və sürət optimizasiyası ilə axtarışa hazır.</p>
+        </article>
+        <article class="service-card reveal" data-dir="up">
+          <h3>Mobil uyumlu</h3>
+          <p>Telefon, planşet və masaüstü — bütün ekranlarda eyni dərəcədə səliqəli görünüş.</p>
+        </article>
+        <article class="service-card reveal" data-dir="up">
+          <h3>Fərdi dizayn</h3>
+          <p>Şablon deyil — brendinin rənginə, tonuna və məqsədinə uyğun unikal görünüş.</p>
+        </article>
+      </div>
 
-        <article class="bento-card tilt reveal" data-dir="right">
-          <div class="bento-inner">
-            <h3>İxrac</h3>
-            <p>Post, story, banner və 4K video — hamısı bir eksportda.</p>
-            <div class="ratio-row"><i class="r1"></i><i class="r2"></i><i class="r3"></i></div>
-          </div>
-        </article>
+      <div class="services-cta reveal" data-dir="up">
+        <a href="#contact" class="btn btn-solid btn-lg">Layihəni danış</a>
       </div>
     </div>
   </section>
@@ -193,51 +185,6 @@
     </div>
   </section>
 
-  <!-- ================= USE-CASE (accordion + canlı preview) ================= -->
-  <section class="section usecases" id="usecases">
-    <div class="container usecases-inner">
-      <header class="section-head reveal" data-dir="up">
-        <p class="kicker">İstifadə sahələri</p>
-        <h2>Hər komanda üçün bir rejim</h2>
-      </header>
-
-      <div class="usecase-layout">
-        <!-- Sol: kliklənən accordion siyahı -->
-        <div class="usecase-list reveal" data-dir="left">
-          <button class="usecase-item is-active" data-uc="marketing">
-            <span class="uc-title">Marketinq kampaniyaları</span>
-            <span class="uc-body"><span class="uc-body-in"><span>Launch üçün bütün kanal kadrlarını bir gündə deyil, bir saatda hazırla.</span></span></span>
-          </button>
-          <button class="usecase-item" data-uc="ecommerce">
-            <span class="uc-title">E-ticarət kataloqu</span>
-            <span class="uc-body"><span class="uc-body-in"><span>Məhsul şəkillərini vahid işıq və fon dilində standartlaşdır.</span></span></span>
-          </button>
-          <button class="usecase-item" data-uc="social">
-            <span class="uc-title">Sosial media axını</span>
-            <span class="uc-body"><span class="uc-body-in"><span>Həftəlik kontent planını şablon seriyaları ilə doldur.</span></span></span>
-          </button>
-          <button class="usecase-item" data-uc="product">
-            <span class="uc-title">Məhsul komandası</span>
-            <span class="uc-body"><span class="uc-body-in"><span>Feature elanları və changelog vizualları üçün sürətli maketlər.</span></span></span>
-          </button>
-        </div>
-
-        <!-- Sağ: aktiv elementə görə dəyişən canlı preview paneli -->
-        <div class="usecase-preview reveal" data-dir="right" id="ucPreview">
-          <div class="uc-window">
-            <div class="uc-window-bar"><i></i><i></i><i></i></div>
-            <div class="uc-window-body">
-              <span class="uc-tag" id="ucTag">Marketinq</span>
-              <h4 id="ucHeading">Yaz launch kampaniyası</h4>
-              <p id="ucText">18 kadr · 3 kanal · brend palitrası tətbiq edildi.</p>
-              <div class="uc-visual" id="ucVisual"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ================= BENEFITS (3x2 grid) ================= -->
   <section class="section benefits" id="benefits">
     <div class="container">
@@ -252,84 +199,6 @@
         <article class="benefit-card reveal" data-dir="down"><h3>Komanda nəzarəti</h3><p>Rol əsaslı təsdiq axını ilə heç nə icazəsiz yayımlanmır.</p></article>
         <article class="benefit-card reveal" data-dir="down"><h3>Açıq inteqrasiya</h3><p>Notion, Figma və Slack ilə iki tərəfli sinxron.</p></article>
         <article class="benefit-card reveal" data-dir="down"><h3>Proqnozlaşan xərc</h3><p>Sabit aylıq plan — kadr başına gizli ödəniş yoxdur.</p></article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= NECƏ İŞLƏYİR (3 addım) ================= -->
-  <section class="section how" id="how">
-    <div class="container">
-      <header class="section-head reveal" data-dir="up">
-        <p class="kicker">Necə işləyir</p>
-        <h2>Üç addım, bir axın</h2>
-      </header>
-      <div class="steps">
-        <article class="step reveal" data-dir="left">
-          <div class="step-num">01</div>
-          <div class="step-visual sv-1" aria-hidden="true"></div>
-          <h3>Brend yüklə</h3>
-          <p>Loqo, rənglər və ton — Saytlab brend beynini qurur.</p>
-        </article>
-        <article class="step reveal" data-dir="up">
-          <div class="step-num">02</div>
-          <div class="step-visual sv-2" aria-hidden="true"></div>
-          <h3>Brief yaz</h3>
-          <p>Bir cümlə kifayətdir. İstəsən referans şəkil də əlavə et.</p>
-        </article>
-        <article class="step reveal" data-dir="right">
-          <div class="step-num">03</div>
-          <div class="step-visual sv-3" aria-hidden="true"></div>
-          <h3>Seç və ixrac et</h3>
-          <p>Variantlardan seç, sözlə düzəlt, bütün formatlarda al.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= TESTIMONIALS (carousel) ================= -->
-  <section class="section testimonials" id="testimonials">
-    <div class="container">
-      <header class="section-head reveal" data-dir="up">
-        <p class="kicker">Rəylər</p>
-        <h2>Komandaların dediyi</h2>
-      </header>
-    </div>
-
-    <div class="carousel">
-      <button class="car-btn car-prev" id="tPrev" aria-label="Əvvəlki rəy">&#8592;</button>
-      <div class="car-track" id="testimonialTrack">
-        <figure class="t-card">
-          <blockquote>“Launch kadrlarını hazırlamaq bir həftə çəkirdi. İndi bir səhər.”</blockquote>
-          <figcaption><b>Lalə Məmmədova</b><span>Brend rəhbəri, Orbit</span></figcaption>
-        </figure>
-        <figure class="t-card">
-          <blockquote>“Kataloqumuzdakı 400 məhsul şəkli nəhayət eyni dildə danışır.”</blockquote>
-          <figcaption><b>Rauf Əliyev</b><span>E-ticarət meneceri, Lumen</span></figcaption>
-        </figure>
-        <figure class="t-card">
-          <blockquote>“Dizayn növbəsi yarıya düşdü. Komanda daha çox konsept üzərində işləyir.”</blockquote>
-          <figcaption><b>Nərmin Hüseynli</b><span>Kreativ direktor, Fold</span></figcaption>
-        </figure>
-        <figure class="t-card">
-          <blockquote>“Sözlə redaktə funksiyası sehr kimidir — ‘fonu genişlət’ yazırsan, olur.”</blockquote>
-          <figcaption><b>Elvin Qasımov</b><span>Marketinq lideri, Nova</span></figcaption>
-        </figure>
-      </div>
-      <button class="car-btn car-next" id="tNext" aria-label="Növbəti rəy">&#8594;</button>
-    </div>
-  </section>
-
-  <!-- ================= QALEREYA (3 mücərrəd vizual) ================= -->
-  <section class="section gallery" id="gallery">
-    <div class="container">
-      <header class="section-head reveal" data-dir="up">
-        <p class="kicker">Qalereya</p>
-        <h2>Saytlab ilə yaradılmış nümunələr</h2>
-      </header>
-      <div class="gallery-grid">
-        <figure class="g-card tilt reveal" data-dir="left"><div class="g-visual gv-1"></div><figcaption>Kampaniya · isti palitra</figcaption></figure>
-        <figure class="g-card tilt reveal" data-dir="up"><div class="g-visual gv-2"></div><figcaption>Məhsul seriyası · studiya işığı</figcaption></figure>
-        <figure class="g-card tilt reveal" data-dir="right"><div class="g-visual gv-3"></div><figcaption>Sosial post · gradient mesh</figcaption></figure>
       </div>
     </div>
   </section>
@@ -405,31 +274,73 @@
       <div class="faq-grid">
         <div class="faq-col">
           <div class="faq-item">
-            <button class="faq-q">Saytlab brend qaydalarımı necə öyrənir?<i></i></button>
-            <div class="faq-a"><div class="faq-a-in"><p>Loqo, rəng kodları və nümunə materialları yükləyirsən. Sistem bunlardan brend profili qurur və hər kadrda tətbiq edir.</p></div></div>
+            <button class="faq-q">Domeni sizdən ala bilərəmmi?<i></i></button>
+            <div class="faq-a"><div class="faq-a-in"><p>Bəli. Domen seçimi, qeydiyyatı və illik yenilənməsi xidmətə daxil edilə bilər. İstəsəniz, artıq sahib olduğunuz domeni də layihəyə bağlayırıq.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-q">Yaradılan vizualların hüquqları kimə aiddir?<i></i></button>
-            <div class="faq-a"><div class="faq-a-in"><p>Bütün çıxışlar sənə məxsusdur — kommersiya istifadəsi daxil, əlavə lisenziya tələb olunmur.</p></div></div>
+            <button class="faq-q">Bir sayt neçə günə hazır olur?<i></i></button>
+            <div class="faq-a"><div class="faq-a-in"><p>Sadə tanıtım saytı adətən 5–10 iş günü. Daha böyük və ya mağaza tipli layihələrdə müddət ilk görüşdən sonra dəqiqləşir.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-q">Komanda ilə birlikdə işləyə bilərəmmi?<i></i></button>
-            <div class="faq-a"><div class="faq-a-in"><p>Bəli. Pro və Studiya planlarında paylaşılan layihələr, şərh və təsdiq axını var.</p></div></div>
+            <button class="faq-q">Qiymət necə hesablanır?<i></i></button>
+            <div class="faq-a"><div class="faq-a-in"><p>Səhifə sayı, funksionallıq və dizayn həcminə görə. İlkin danışıqdan sonra sabit təklif veririk — sonradan gizli ödəniş çıxmır.</p></div></div>
           </div>
         </div>
         <div class="faq-col">
           <div class="faq-item">
-            <button class="faq-q">Video ixracı hansı formatlarda olur?<i></i></button>
-            <div class="faq-a"><div class="faq-a-in"><p>MP4 (H.264) və WebM, 1080p–4K arası. Kadr nisbətləri 1:1, 4:5, 9:16 və 16:9.</p></div></div>
+            <button class="faq-q">Hazır saytda özüm dəyişiklik edə biləcəyəmmi?<i></i></button>
+            <div class="faq-a"><div class="faq-a-in"><p>Bəli. Təhvildən sonra qısa idarəetmə təlimatı veririk; kiçik düzəlişlər üçün isə aylıq dəstək paketi seçmək olar.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-q">Planı istənilən vaxt dəyişə bilərəmmi?<i></i></button>
-            <div class="faq-a"><div class="faq-a-in"><p>Bəli, yüksəltmə dərhal, endirmə isə növbəti hesab dövründə qüvvəyə minir.</p></div></div>
+            <button class="faq-q">Hostinq və SSL daxildir?<i></i></button>
+            <div class="faq-a"><div class="faq-a-in"><p>İlk ilin hostinqi və SSL sertifikatı adətən paketə daxildir. Sonrakı illər üçün yenilənmə haqqı əvvəlcədən bildirilir.</p></div></div>
           </div>
           <div class="faq-item">
-            <button class="faq-q">Pulsuz planda limit nədir?<i></i></button>
-            <div class="faq-a"><div class="faq-a-in"><p>Ayda 30 kadr və 1 brend profili. Kredit kartı tələb olunmur.</p></div></div>
+            <button class="faq-q">Ödəniş şərtləri necədir?<i></i></button>
+            <div class="faq-a"><div class="faq-a-in"><p>Adətən 50% əvvəlcədən, qalan hissə isə sayt təhvil veriləndə. Detalları WhatsApp və ya əlaqə formu vasitəsilə razılaşdırırıq.</p></div></div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ƏLAQƏ ================= -->
+  <section class="section contact" id="contact">
+    <div class="container">
+      <header class="section-head reveal" data-dir="up">
+        <p class="kicker">Əlaqə</p>
+        <h2>Layihəni danışaq</h2>
+        <p class="section-lead">Qısa mesaj yaz — bir iş günü ərzində cavab veririk. Tələsirsənsə, birbaşa WhatsApp yaz.</p>
+      </header>
+
+      <div class="contact-layout">
+        <!-- Form real backend-ə göndərmir — submit-də sadəcə təşəkkür mesajı göstərir (bax script.js). -->
+        <form class="contact-form reveal" data-dir="left" id="contactForm">
+          <label class="field">
+            <span>Ad</span>
+            <input type="text" name="name" required />
+          </label>
+          <label class="field">
+            <span>E-poçt</span>
+            <input type="email" name="email" required />
+          </label>
+          <label class="field">
+            <span>Mesaj</span>
+            <textarea name="message" rows="4" required></textarea>
+          </label>
+          <button type="submit" class="btn btn-solid">Göndər</button>
+          <p class="contact-note" id="contactNote" hidden>Təşəkkürlər! Mesajın alındı — tezliklə əlaqə saxlayacağıq.</p>
+        </form>
+
+        <div class="contact-direct reveal" data-dir="right">
+          <h3>Birbaşa əlaqə</h3>
+          <ul>
+            <!-- Aşağıdakı əlaqə məlumatlarını real dəyərlərlə əvəz et. -->
+            <li><span>E-poçt</span><a href="mailto:salam@saytlab.az">salam@saytlab.az</a></li>
+            <li><span>Telefon</span><a href="tel:+994XXXXXXXXX">+994 XX XXX XX XX</a></li>
+            <!-- WhatsApp — NÖMRƏNİ DƏYİŞ: 994XXXXXXXXX yerinə real nömrə. -->
+            <li><span>WhatsApp</span><a href="https://wa.me/994XXXXXXXXX" target="_blank" rel="noopener noreferrer">wa.me/994XXXXXXXXX</a></li>
+          </ul>
         </div>
       </div>
     </div>
@@ -439,9 +350,9 @@
   <section class="section cta-banner" id="cta">
     <div class="cta-bg" aria-hidden="true"></div>
     <div class="container cta-inner reveal" data-dir="up">
-      <h2>İlk layihəni bu gün yarat</h2>
-      <p>Kredit kartı yoxdur. 30 kadr pulsuz. İki dəqiqədə ilk nəticə.</p>
-      <a href="#" class="btn btn-solid btn-lg" data-magnetic>Pulsuz başla</a>
+      <h2>İlk layihəni bu gün başlayaq</h2>
+      <p>Pulsuz məsləhət. Sabit qiymət təklifi. Cəmi bir mesaj uzaqlıqda.</p>
+      <a href="#contact" class="btn btn-solid btn-lg" data-magnetic>Bizə yaz</a>
     </div>
   </section>
 
@@ -452,28 +363,24 @@
   <div class="container footer-inner">
     <div class="footer-brand">
       <a href="#top" class="logo">
-        <svg class="logo-mark" width="24" height="24" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 8.5 13 3l9 5.5-9 5.5-9-5.5Z" fill="currentColor" opacity="0.55"/>
-          <path d="M4 17.5 13 12l9 5.5-9 5.5-9-5.5Z" fill="currentColor"/>
-        </svg>
+        <img class="logo-img" src="logo-saytlab.png" alt="Saytlab" width="34" height="34" />
         <span>Saytlab</span>
       </a>
-      <p>Cümləni brend uyğun vizuala çevirən AI studiyası.</p>
+      <p>Domen seçimindən canlı sayta qədər — peşəkar veb-sayt studiyası.</p>
     </div>
     <div class="footer-cols">
       <div class="footer-col">
         <h4>Məhsul</h4>
-        <a href="#features">İmkanlar</a>
+        <a href="#domain">Domen</a>
+        <a href="#services">Xidmətlər</a>
         <a href="#pricing">Qiymətlər</a>
-        <a href="#how">Necə işləyir</a>
-        <a href="#gallery">Qalereya</a>
+        <a href="#faq">Suallar</a>
       </div>
       <div class="footer-col">
         <h4>Şirkət</h4>
-        <a href="#">Haqqımızda</a>
-        <a href="#">Bloq</a>
-        <a href="#">Karyera</a>
-        <a href="#">Əlaqə</a>
+        <a href="#services">Haqqımızda</a>
+        <a href="#faq">Suallar</a>
+        <a href="#contact">Əlaqə</a>
       </div>
       <div class="footer-col">
         <h4>Hüquqi</h4>
