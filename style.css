@@ -241,7 +241,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 
 /* Giriş animasiyası — söz maskası (JS .is-in klassı əlavə edir).
    Gizli başlanğıc yalnız js-reveal ilə — JS olmadan mətn görünür. */
-[data-hero] { transition: transform 0.85s var(--ease), opacity 0.6s var(--ease); }
+[data-hero] { transition: transform 0.6s var(--ease), opacity 0.45s var(--ease); }
 .js-reveal [data-hero] { transform: translateY(115%) rotate(6deg); opacity: 0; }
 .js-reveal [data-hero].is-in { transform: none; opacity: 1; }
 
@@ -253,12 +253,15 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 /* statik — sonsuz "nəbz" silindi; sadə göstərici xətt kifayətdir */
 .hero-scroll-hint span { width: 1px; height: 40px; background: linear-gradient(var(--accent), transparent); opacity: 0.55; }
 
-/* ---------- 10. Scroll reveal — "pərdə açılması" (clip-path), bir dəfəlik ---------- */
+/* ---------- 10. Scroll reveal — bir dəfəlik, opacity + transform ---------- */
 /* Təhlükəsizlik: JS yüklənməzsə məzmun görünən qalır (gizlətmə yalnız js-reveal ilə).
-   Yalnız clip-path + opacity animasiya olunur; istiqamətli transform-lar silindi. */
-.reveal { transition: clip-path 600ms var(--ease-in-out), opacity 400ms var(--ease-out); }
-.js-reveal .reveal { clip-path: inset(0 0 100% 0); opacity: 0; }
-.js-reveal .reveal[data-visible] { clip-path: inset(0 0 0 0); opacity: 1; }
+   QEYD: əvvəllər clip-path: inset(0 0 100% 0) istifadə olunurdu — bu, elementin vizual
+   sahəsini sıfıra endirdiyi üçün Chromium-un IntersectionObserver-i onu "heç vaxt kəsişmir"
+   hesab edirdi və reveal ekrana girəndə belə TETİKLƏNMİRDİ. transform+opacity GPU-da
+   eyni performansla işləyir və bu problemi yaratmır. */
+.reveal { transition: transform 500ms var(--ease-in-out), opacity 400ms var(--ease-out); }
+.js-reveal .reveal { transform: translateY(28px); opacity: 0; }
+.js-reveal .reveal[data-visible] { transform: none; opacity: 1; }
 
 /* ---------- 11. FEATURES — Bento grid ---------- */
 .bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
@@ -507,9 +510,9 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
     transition-duration: 0.001ms !important;
     will-change: auto !important;
   }
-  /* scroll-reveal: pərdə tam açıq, yalnız yüngül opacity keçidi */
+  /* scroll-reveal: heç bir sürüşmə, yalnız yüngül opacity keçidi */
   .reveal {
-    clip-path: inset(0 0 0 0) !important;
+    transform: none !important;
     transition: opacity 200ms ease !important;
     opacity: 1 !important;
   }

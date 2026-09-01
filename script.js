@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       revealIO.unobserve(entry.target);   // VACİB: bir dəfə
     }
-  }, { threshold: 0.15, rootMargin: '-100px' });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
   const revealEls = $$('.reveal');
   revealEls.forEach(el => revealIO.observe(el));
   // Təhlükəsizlik tələsi: nə olursa olsun 4 saniyədən sonra hamısı görünsün
@@ -217,7 +217,9 @@ document.addEventListener('DOMContentLoaded', () => {
      =================================================================== */
   const heroEls = $$('[data-hero]').sort((a, b) => +a.dataset.hero - +b.dataset.hero);
   if (motion) {
-    heroEls.forEach((el, i) => setTimeout(() => el.classList.add('is-in'), 110 + i * 60));
+    // Stagger sıxlaşdırıldı (60ms -> 28ms): 11 element olsa belə son element ~370ms-də başlayır,
+    // öz 0.85s transition-u ilə birlikdə hero cəmi ~1.2s-dən ~0.9s-ə enir — "gec açılır" hissini azaldır.
+    heroEls.forEach((el, i) => setTimeout(() => el.classList.add('is-in'), 60 + i * 28));
   } else {
     heroEls.forEach(el => el.classList.add('is-in'));
   }
