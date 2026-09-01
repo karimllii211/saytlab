@@ -40,8 +40,11 @@
   --section-y: clamp(72px, 11vw, 140px);
 
   /* Keçidlər */
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur: 0.6s;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* kiçik UI keçidləri: hover, toggle, accordion */
+  /* Scroll-reveal üçün ayrıca "Expo Out" profili (Framer/DreamMotion ölçüsünə uyğun):
+     başlanğıcda partlayışlı sürət, sonda uzun yumşaq eniş — "ağır qalxma" hissi */
+  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-reveal: 0.8s;
 
   --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
   --font-body:    "Inter", system-ui, -apple-system, sans-serif;
@@ -278,12 +281,13 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 /* ---------- 10. Scroll reveal (istiqamətli, stagger) ---------- */
 /* Təhlükəsizlik: JS yüklənməzsə/xəta verərsə məzmun görünən qalır.
    Gizli başlanğıc vəziyyəti yalnız <html class="js-reveal"> olduqda tətbiq olunur. */
-.reveal { transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease); }
+.reveal { transition: opacity var(--dur-reveal) var(--ease-reveal), transform var(--dur-reveal) var(--ease-reveal); }
 .js-reveal .reveal { opacity: 0; }
-.js-reveal .reveal[data-dir="up"]    { transform: translateY(48px); }
-.js-reveal .reveal[data-dir="down"]  { transform: translateY(-48px); }
-.js-reveal .reveal[data-dir="left"]  { transform: translateX(-40px); }
-.js-reveal .reveal[data-dir="right"] { transform: translateX(40px); }
+/* daha nəzərə çarpan başlanğıc ofseti + yüngül scale — "kiçikdən böyüyərək oturma" */
+.js-reveal .reveal[data-dir="up"]    { transform: translateY(64px) scale(0.96); }
+.js-reveal .reveal[data-dir="down"]  { transform: translateY(-64px) scale(0.96); }
+.js-reveal .reveal[data-dir="left"]  { transform: translateX(-56px) scale(0.96); }
+.js-reveal .reveal[data-dir="right"] { transform: translateX(56px) scale(0.96); }
 .js-reveal .reveal.is-visible { opacity: 1; transform: none; }
 
 /* ---------- 11. FEATURES — Bento grid ---------- */

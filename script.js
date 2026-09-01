@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!entry.isIntersecting) continue;
       const group = $$('.reveal', entry.target.parentElement).filter(el => !el.classList.contains('is-visible'));
       const idx = Math.max(0, group.indexOf(entry.target));
-      entry.target.style.transitionDelay = (idx * 80) + 'ms';
+      entry.target.style.transitionDelay = (idx * 110) + 'ms';   // daha nəzərə çarpan stagger
       entry.target.classList.add('is-visible');
       // keçid bitəndə transitionDelay-i sıfırla (yenidən hover və s. üçün)
       entry.target.addEventListener('transitionend', function h() {
@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       revealIO.unobserve(entry.target);
     }
-  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+  }, { threshold: 0.1, rootMargin: '0px 0px -10% 0px' });
   const revealEls = $$('.reveal');
   revealEls.forEach(el => revealIO.observe(el));
   // Təhlükəsizlik tələsi: nə olursa olsun 4 saniyədən sonra hamısı görünsün
