@@ -363,4 +363,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  /* ===================================================================
+     15. "Necə işləyir" — sticky panel + pilləli addımlar (scrollytelling).
+         Hər addım ekranın orta xəttinə ən yaxın olanda aktivləşir;
+         sol paneldəki uyğun frame ilə eyni vaxtda dəyişir. Sadə,
+         IntersectionObserver-based — əlavə scroll listener YOXDUR.
+     =================================================================== */
+  const howSteps = $$('.how-step');
+  const howFrames = $$('.how-visual-frame');
+  if (howSteps.length && howFrames.length) {
+    const setActiveStep = (idx) => {
+      howSteps.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+      howFrames.forEach((f, i) => f.classList.toggle('is-active', i === idx));
+    };
+    // Hər addımın CARİ görünürlük nisbətini saxlayırıq (yalnız bu tick-də dəyişənləri
+    // deyil) — ən çox görünən addım həmişə düzgün seçilir, sıçrayış olmur.
+    const ratios = new Map(howSteps.map(s => [s, 0]));
+    const howIO = new IntersectionObserver((entries) => {
+      for (const entry of entries) ratios.set(entry.target, entry.intersectionRatio);
+      let best = null, bestRatio = 0;
+      for (const [el, r] of ratios) { if (r > bestRatio) { bestRatio = r; best = el; } }
+      if (best) setActiveStep(+best.dataset.step);
+    }, { threshold: [0, 0.2, 0.4, 0.6, 0.8, 1], rootMargin: '-10% 0px -10% 0px' });
+    howSteps.forEach(s => howIO.observe(s));
+  }
+
 });

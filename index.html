@@ -35,6 +35,7 @@
     </a>
 
     <nav class="main-nav" id="mainNav" aria-label="Əsas naviqasiya">
+      <a href="#how">Necə işləyir</a>
       <a href="#pricing">Qiymətlər</a>
       <a href="#faq">Suallar</a>
       <a href="#contact">Əlaqə</a>
@@ -57,6 +58,7 @@
 <!-- ================= MOBİL MENYU (tam ekran overlay) ================= -->
 <div class="mobile-overlay" id="mobileOverlay" aria-hidden="true">
   <nav class="mobile-nav">
+    <a href="#how">Necə işləyir</a>
     <a href="#pricing">Qiymətlər</a>
     <a href="#faq">Suallar</a>
     <a href="#contact">Əlaqə</a>
@@ -146,18 +148,22 @@
 
       <div class="service-grid">
         <article class="service-card reveal" data-dir="up">
+          <span class="service-num">01</span>
           <h3>Sürətli təhvil</h3>
           <p>Standart tanıtım saytları 5–10 iş günü ərzində hazır olur və canlıya çıxır.</p>
         </article>
         <article class="service-card reveal" data-dir="up">
+          <span class="service-num">02</span>
           <h3>SEO-uyğun</h3>
           <p>Təmiz kod, düzgün başlıq strukturu və sürət optimizasiyası ilə axtarışa hazır.</p>
         </article>
         <article class="service-card reveal" data-dir="up">
+          <span class="service-num">03</span>
           <h3>Mobil uyumlu</h3>
           <p>Telefon, planşet və masaüstü — bütün ekranlarda eyni dərəcədə səliqəli görünüş.</p>
         </article>
         <article class="service-card reveal" data-dir="up">
+          <span class="service-num">04</span>
           <h3>Fərdi dizayn</h3>
           <p>Şablon deyil — brendinin rənginə, tonuna və məqsədinə uyğun unikal görünüş.</p>
         </article>
@@ -165,6 +171,45 @@
 
       <div class="services-cta reveal" data-dir="up">
         <a href="#contact" class="btn btn-solid btn-lg">Layihəni danış</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= NECƏ İŞLƏYİR — sticky panel + pilləli addımlar ================= -->
+  <section class="section how" id="how">
+    <div class="container">
+      <header class="section-head reveal" data-dir="up">
+        <p class="kicker">Necə işləyir</p>
+        <h2>Fikirdən canlı sayta üç addımda</h2>
+        <p class="section-lead">Hər addım aydın, gözlənti yaradan bir nəticə ilə bitir.</p>
+      </header>
+
+      <div class="how-layout">
+        <div class="how-visual" data-pause-offscreen>
+          <div class="how-visual-stage" id="howStage">
+            <div class="how-visual-frame is-active"><div class="hv-shape"></div></div>
+            <div class="how-visual-frame"><div class="hv-shape"></div></div>
+            <div class="how-visual-frame"><div class="hv-shape"></div></div>
+          </div>
+        </div>
+
+        <div class="how-steps" id="howSteps">
+          <article class="how-step is-active" data-step="0">
+            <span class="how-step-badge">Addım 01</span>
+            <h3>Brief yaz</h3>
+            <p>Brendini, məqsədini və istədiyin bölmələri qısa formda bizə göndər — beş dəqiqə kifayətdir.</p>
+          </article>
+          <article class="how-step" data-step="1">
+            <span class="how-step-badge">Addım 02</span>
+            <h3>Dizayn və məzmun</h3>
+            <p>Komandamız brendinə uyğun dizayn hazırlayır, mətn və vizualları yerləşdirir — sən yalnız təsdiqləyirsən.</p>
+          </article>
+          <article class="how-step" data-step="2">
+            <span class="how-step-badge">Addım 03</span>
+            <h3>Canlıya çıxış</h3>
+            <p>Domen bağlanır, hostinq quraşdırılır və sayt canlıya keçir — istifadəyə tam hazır.</p>
+          </article>
+        </div>
       </div>
     </div>
   </section>
@@ -199,6 +244,22 @@
         <article class="benefit-card reveal" data-dir="down"><h3>Komanda nəzarəti</h3><p>Rol əsaslı təsdiq axını ilə heç nə icazəsiz yayımlanmır.</p></article>
         <article class="benefit-card reveal" data-dir="down"><h3>Açıq inteqrasiya</h3><p>Notion, Figma və Slack ilə iki tərəfli sinxron.</p></article>
         <article class="benefit-card reveal" data-dir="down"><h3>Proqnozlaşan xərc</h3><p>Sabit aylıq plan — kadr başına gizli ödəniş yoxdur.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= NƏTİCƏLƏR — böyük rəqəmli stat bölməsi ================= -->
+  <section class="section results">
+    <div class="container">
+      <header class="section-head reveal" data-dir="up">
+        <p class="kicker">Nəticələr</p>
+        <h2>Rəqəmlərlə Saytlab</h2>
+      </header>
+      <div class="results-grid">
+        <div class="result-stat reveal" data-dir="up"><strong data-count="94" data-suffix="%">0</strong><span>Müştəri məmnuniyyəti</span></div>
+        <div class="result-stat reveal" data-dir="up"><strong data-count="10" data-suffix="×">0</strong><span>Daha sürətli təhvil</span></div>
+        <div class="result-stat reveal" data-dir="up"><strong data-count="240" data-suffix="+">0</strong><span>Hazırlanmış layihə</span></div>
+        <div class="result-stat reveal" data-dir="up"><strong data-count="38" data-suffix="%">0</strong><span>Aşağı əməliyyat xərci</span></div>
       </div>
     </div>
   </section>
@@ -263,16 +324,24 @@
     </div>
   </section>
 
-  <!-- ================= FAQ (2 sütun) ================= -->
+  <!-- ================= FAQ — solda sabit blok, sağda sətir-accordion (Span-tərzi) ================= -->
   <section class="section faq" id="faq">
     <div class="container">
       <header class="section-head reveal" data-dir="up">
         <p class="kicker">Suallar</p>
         <h2>Tez-tez verilən suallar</h2>
+        <p class="section-lead">Saytlab-ı işə salmaqla bağlı bilmək istədiyin hər şey.</p>
       </header>
-      <!-- .faq-a grid konteyner; daxili .faq-a-in grid elementidir (padding onun içində) -->
-      <div class="faq-grid">
-        <div class="faq-col">
+
+      <div class="faq-layout">
+        <div class="faq-aside reveal" data-dir="right">
+          <h3>Başqa sualın var?</h3>
+          <p>Layihəni birbaşa danışmaq istəsən, bir mesaj yaz — təzyiqsiz, sadəcə suallarına cavab veririk.</p>
+          <a href="#contact" class="btn btn-outline">Bizə yaz</a>
+        </div>
+
+        <!-- .faq-a grid konteyner; daxili .faq-a-in grid elementidir (padding onun içində) -->
+        <div class="faq-list reveal" data-dir="left">
           <div class="faq-item">
             <button class="faq-q">Domeni sizdən ala bilərəmmi?<i></i></button>
             <div class="faq-a"><div class="faq-a-in"><p>Bəli. Domen seçimi, qeydiyyatı və illik yenilənməsi xidmətə daxil edilə bilər. İstəsəniz, artıq sahib olduğunuz domeni də layihəyə bağlayırıq.</p></div></div>
@@ -285,8 +354,6 @@
             <button class="faq-q">Qiymət necə hesablanır?<i></i></button>
             <div class="faq-a"><div class="faq-a-in"><p>Səhifə sayı, funksionallıq və dizayn həcminə görə. İlkin danışıqdan sonra sabit təklif veririk — sonradan gizli ödəniş çıxmır.</p></div></div>
           </div>
-        </div>
-        <div class="faq-col">
           <div class="faq-item">
             <button class="faq-q">Hazır saytda özüm dəyişiklik edə biləcəyəmmi?<i></i></button>
             <div class="faq-a"><div class="faq-a-in"><p>Bəli. Təhvildən sonra qısa idarəetmə təlimatı veririk; kiçik düzəlişlər üçün isə aylıq dəstək paketi seçmək olar.</p></div></div>

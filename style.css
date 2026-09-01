@@ -273,10 +273,12 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 
 .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
 
-.hero-stats { display: flex; flex-wrap: wrap; gap: clamp(24px, 5vw, 56px); margin-top: 56px; }
-.hero-stats .stat { display: flex; flex-direction: column; }
-.hero-stats strong { font-family: var(--font-display); font-size: clamp(1.6rem, 3.5vw, 2.3rem); font-weight: 600; color: var(--text); }
-.hero-stats span { font-size: 0.85rem; color: var(--text-dim); margin-top: 4px; }
+/* Span-tərzi: label kiçik/üstdə, dəyər iri/altda, sütunlar arası zərif divider xətti. */
+.hero-stats { display: flex; flex-wrap: wrap; gap: 0; margin-top: 56px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); }
+.hero-stats .stat { display: flex; flex-direction: column; gap: 8px; flex: 1 1 140px; padding: 20px clamp(20px, 4vw, 32px); border-left: 1px solid var(--border); }
+.hero-stats .stat:first-child { border-left: none; }
+.hero-stats span { order: -1; font-family: var(--font-display); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); }
+.hero-stats strong { font-family: var(--font-display); font-size: clamp(1.5rem, 3.2vw, 2.1rem); font-weight: 600; color: var(--text); }
 
 /* Giriş animasiyası — söz maskası (JS .is-in klassı əlavə edir).
    Gizli başlanğıc yalnız js-reveal ilə — JS olmadan mətn görünür. */
@@ -464,11 +466,17 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .price-card li { position: relative; padding-left: 22px; color: var(--text-muted); font-size: 0.92rem; }
 .price-card li::before { content: ""; position: absolute; left: 0; top: 7px; width: 10px; height: 10px; border-radius: 3px; background: var(--accent); opacity: 0.75; }
 
-/* ---------- 19. FAQ ---------- */
-.faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-.faq-col { display: flex; flex-direction: column; gap: 12px; }
-.faq-item { border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); overflow: hidden; }
-.faq-q { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; text-align: left; padding: 20px 22px; font-family: var(--font-display); font-weight: 500; font-size: 1rem; }
+/* ---------- 19. FAQ — Span-tərzi: solda sabit blok, sağda sətir-accordion ---------- */
+.faq-layout { display: grid; grid-template-columns: 0.8fr 1.6fr; gap: 40px; align-items: start; }
+.faq-aside { position: sticky; top: 120px; }
+.faq-aside h3 { font-size: 1.3rem; margin-bottom: 12px; }
+.faq-aside p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; max-width: 320px; }
+
+.faq-list { display: flex; flex-direction: column; }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-item:first-child { border-top: 1px solid var(--border); }
+.faq-q { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; text-align: left; padding: 22px 4px; font-family: var(--font-display); font-weight: 500; font-size: 1.02rem; transition: color 0.2s var(--ease); }
+.faq-item.is-open .faq-q, .faq-q:hover { color: var(--accent-2); }
 .faq-q i { flex: 0 0 auto; width: 14px; height: 14px; position: relative; }
 .faq-q i::before, .faq-q i::after { content: ""; position: absolute; background: var(--accent); transition: transform 0.3s var(--ease), opacity 0.3s var(--ease); }
 .faq-q i::before { left: 0; top: 6px; width: 14px; height: 2px; }
@@ -478,7 +486,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
    Grid elementinin (.faq-a-in) padding-i OLMAMALIDIR ki, 0-a tam yığılsın. */
 .faq-a { display: grid; grid-template-rows: 0fr; overflow: hidden; transition: grid-template-rows 0.3s var(--ease-out); }
 .faq-a-in { min-height: 0; overflow: hidden; }
-.faq-a p { padding: 0 22px 20px; color: var(--text-muted); font-size: 0.94rem; }
+.faq-a p { padding: 0 4px 22px; color: var(--text-muted); font-size: 0.94rem; max-width: 620px; }
 .faq-item.is-open .faq-a { grid-template-rows: 1fr; }
 
 /* ---------- 20. CTA banner ---------- */
@@ -540,7 +548,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .domain-row.is-taken { opacity: 0.55; }
 .domain-row.is-taken .domain-status { color: var(--text-dim); }
 
-/* ---------- 21c. Xidmət kartları ---------- */
+/* ---------- 21c. Xidmət kartları — Span-tərzi nömrələnmiş kartlar ---------- */
 .service-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
 .service-card {
   padding: 26px;
@@ -548,11 +556,79 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   border-radius: var(--r-md);
   background: var(--surface);
   transition: transform 0.3s var(--ease), border-color 0.3s var(--ease);
+  position: relative;
 }
 .service-card:hover { transform: translateY(-4px); border-color: var(--border-strong); }
-.service-card h3 { font-size: 1.12rem; color: var(--accent); margin-bottom: 8px; }
+.service-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 30px; height: 22px; padding-inline: 4px;
+  border-radius: 999px; background: rgba(230,184,102,0.14);
+  font-family: var(--font-display); font-size: 0.72rem; font-weight: 600;
+  color: var(--accent); letter-spacing: 0.02em;
+  margin-bottom: 16px;
+}
+.service-card h3 { font-size: 1.12rem; color: var(--text); margin-bottom: 8px; }
 .service-card p { color: var(--text-muted); font-size: 0.94rem; }
 .services-cta { margin-top: 36px; }
+
+/* ---------- 21e. Necə işləyir — sticky panel + pilləli addımlar (Span-tərzi scrollytelling) ---------- */
+.how-layout { display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px; align-items: start; }
+.how-visual {
+  position: sticky; top: 100px;
+  height: min(70vh, 560px);
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border);
+  background: radial-gradient(120% 100% at 50% 0%, var(--surface-2), var(--bg-2) 70%);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.how-visual-stage { position: relative; width: 100%; height: 100%; }
+.how-visual-frame {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.5s var(--ease);
+  pointer-events: none;
+}
+.how-visual-frame.is-active { opacity: 1; }
+.how-visual-frame .hv-shape {
+  width: 44%; aspect-ratio: 1; border-radius: 28%;
+  background: linear-gradient(160deg, var(--accent-2), var(--accent-deep) 60%, var(--accent) 100%);
+  box-shadow: 0 30px 80px -20px rgba(230,184,102,0.45), inset 0 0 0 1px rgba(255,255,255,0.15);
+}
+.how-visual-frame:nth-child(2) .hv-shape { border-radius: 50%; background: linear-gradient(160deg, #f2d29a, #1f6b4a 70%); }
+.how-visual-frame:nth-child(3) .hv-shape { border-radius: 18px; background: conic-gradient(from 180deg at 50% 50%, #1f6b4a, #3a2a5c, #e6b866, #1f6b4a); }
+
+.how-steps { display: flex; flex-direction: column; padding-block: 8vh; }
+.how-step {
+  position: relative;
+  padding: 32px 0 32px 34px;
+  border-left: 1px solid var(--border);
+  opacity: 0.4;
+  transition: opacity 0.4s var(--ease);
+}
+.how-step.is-active { opacity: 1; }
+.how-step::before {
+  content: ""; position: absolute; left: -5px; top: 36px;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--text-dim);
+  box-shadow: 0 0 0 4px var(--bg);
+  transition: background-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.how-step.is-active::before { background: var(--accent); box-shadow: 0 0 0 4px var(--bg), 0 0 0 7px rgba(230,184,102,0.22); }
+.how-step-badge {
+  display: inline-block; padding: 5px 12px; border-radius: 999px;
+  background: rgba(230,184,102,0.14); color: var(--accent-2);
+  font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.06em;
+  margin-bottom: 12px;
+}
+.how-step h3 { font-size: 1.35rem; margin-bottom: 8px; }
+.how-step p { color: var(--text-muted); font-size: 0.96rem; max-width: 420px; }
+
+/* ---------- 21f. Nəticələr — böyük rəqəmli stat bölməsi (Span-tərzi) ---------- */
+.results-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; text-align: center; }
+.result-stat { padding: 30px 16px; }
+.result-stat strong { display: block; font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 600; color: var(--accent-2); }
+.result-stat span { display: block; margin-top: 10px; color: var(--text-muted); font-size: 0.95rem; }
 
 /* ---------- 21d. Əlaqə ---------- */
 .contact-layout { display: grid; grid-template-columns: 1.3fr 1fr; gap: 22px; align-items: start; }
@@ -589,15 +665,22 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   .service-grid { grid-template-columns: 1fr 1fr; }
   .contact-layout { grid-template-columns: 1fr; }
   .footer-inner { grid-template-columns: 1fr; }
+  .how-layout { grid-template-columns: 1fr; }
+  .how-visual { position: static; height: 320px; order: -1; margin-bottom: 8px; }
+  .results-grid { grid-template-columns: 1fr 1fr; }
+  .faq-layout { grid-template-columns: 1fr; }
+  .faq-aside { position: static; }
 }
 
 @media (max-width: 768px) {
   :root { --section-y: clamp(60px, 12vw, 90px); }
-  .bento, .benefit-grid, .steps, .gallery-grid, .price-grid, .faq-grid, .service-grid { grid-template-columns: 1fr; }
+  .bento, .benefit-grid, .steps, .gallery-grid, .price-grid, .service-grid { grid-template-columns: 1fr; }
   .bento-wide { grid-column: auto; }
   .price-card.is-featured { transform: none; }
-  .hero-stats { gap: 24px; }
+  .hero-stats { gap: 0; }
+  .hero-stats .stat { flex: 1 1 45%; }
   .footer-cols { grid-template-columns: 1fr 1fr; }
+  .results-grid { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 420px) {
