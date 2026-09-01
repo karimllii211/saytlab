@@ -71,7 +71,7 @@
 <main>
 
   <!-- ================= HERO ================= -->
-  <section class="hero" id="hero">
+  <section class="hero" id="hero" data-pause-offscreen>
     <!-- CSS ilə generasiya olunan mücərrəd fon: hərəkət edən radial-gradient blob-lar + SVG noise.
          Xarici şəkil yoxdur. Parallax üçün data-parallax dəyəri verilir. -->
     <div class="hero-bg" aria-hidden="true">
@@ -114,7 +114,7 @@
   </section>
 
   <!-- ================= FEATURES — BENTO GRID ================= -->
-  <section class="section features" id="features">
+  <section class="section features" id="features" data-pause-offscreen>
     <div class="container">
       <header class="section-head reveal" data-dir="up">
         <p class="kicker">İmkanlar</p>
@@ -173,7 +173,7 @@
   </section>
 
   <!-- ================= LOGO / MARKA ZOLAĞI (marquee) ================= -->
-  <section class="section logos" aria-label="İnteqrasiyalar">
+  <section class="section logos" aria-label="İnteqrasiyalar" data-pause-offscreen>
     <div class="container">
       <p class="logos-label reveal" data-dir="up">Sevdiyin alətlərlə birlikdə işləyir</p>
     </div>
@@ -201,19 +201,19 @@
         <div class="usecase-list reveal" data-dir="left">
           <button class="usecase-item is-active" data-uc="marketing">
             <span class="uc-title">Marketinq kampaniyaları</span>
-            <span class="uc-body">Launch üçün bütün kanal kadrlarını bir gündə deyil, bir saatda hazırla.</span>
+            <span class="uc-body"><span class="uc-body-in"><span>Launch üçün bütün kanal kadrlarını bir gündə deyil, bir saatda hazırla.</span></span></span>
           </button>
           <button class="usecase-item" data-uc="ecommerce">
             <span class="uc-title">E-ticarət kataloqu</span>
-            <span class="uc-body">Məhsul şəkillərini vahid işıq və fon dilində standartlaşdır.</span>
+            <span class="uc-body"><span class="uc-body-in"><span>Məhsul şəkillərini vahid işıq və fon dilində standartlaşdır.</span></span></span>
           </button>
           <button class="usecase-item" data-uc="social">
             <span class="uc-title">Sosial media axını</span>
-            <span class="uc-body">Həftəlik kontent planını şablon seriyaları ilə doldur.</span>
+            <span class="uc-body"><span class="uc-body-in"><span>Həftəlik kontent planını şablon seriyaları ilə doldur.</span></span></span>
           </button>
           <button class="usecase-item" data-uc="product">
             <span class="uc-title">Məhsul komandası</span>
-            <span class="uc-body">Feature elanları və changelog vizualları üçün sürətli maketlər.</span>
+            <span class="uc-body"><span class="uc-body-in"><span>Feature elanları və changelog vizualları üçün sürətli maketlər.</span></span></span>
           </button>
         </div>
 
@@ -252,7 +252,7 @@
   </section>
 
   <!-- ================= NECƏ İŞLƏYİR (3 addım) ================= -->
-  <section class="section how" id="how">
+  <section class="section how" id="how" data-pause-offscreen>
     <div class="container">
       <header class="section-head reveal" data-dir="up">
         <p class="kicker">Necə işləyir</p>
@@ -315,7 +315,7 @@
   </section>
 
   <!-- ================= QALEREYA (3 mücərrəd vizual) ================= -->
-  <section class="section gallery" id="gallery">
+  <section class="section gallery" id="gallery" data-pause-offscreen>
     <div class="container">
       <header class="section-head reveal" data-dir="up">
         <p class="kicker">Qalereya</p>
@@ -396,33 +396,34 @@
         <p class="kicker">Suallar</p>
         <h2>Tez-tez verilən suallar</h2>
       </header>
+      <!-- .faq-a grid konteyner; daxili .faq-a-in grid elementidir (padding onun içində) -->
       <div class="faq-grid">
         <div class="faq-col">
           <div class="faq-item">
             <button class="faq-q">Saytlab brend qaydalarımı necə öyrənir?<i></i></button>
-            <div class="faq-a"><p>Loqo, rəng kodları və nümunə materialları yükləyirsən. Sistem bunlardan brend profili qurur və hər kadrda tətbiq edir.</p></div>
+            <div class="faq-a"><div class="faq-a-in"><p>Loqo, rəng kodları və nümunə materialları yükləyirsən. Sistem bunlardan brend profili qurur və hər kadrda tətbiq edir.</p></div></div>
           </div>
           <div class="faq-item">
             <button class="faq-q">Yaradılan vizualların hüquqları kimə aiddir?<i></i></button>
-            <div class="faq-a"><p>Bütün çıxışlar sənə məxsusdur — kommersiya istifadəsi daxil, əlavə lisenziya tələb olunmur.</p></div>
+            <div class="faq-a"><div class="faq-a-in"><p>Bütün çıxışlar sənə məxsusdur — kommersiya istifadəsi daxil, əlavə lisenziya tələb olunmur.</p></div></div>
           </div>
           <div class="faq-item">
             <button class="faq-q">Komanda ilə birlikdə işləyə bilərəmmi?<i></i></button>
-            <div class="faq-a"><p>Bəli. Pro və Studiya planlarında paylaşılan layihələr, şərh və təsdiq axını var.</p></div>
+            <div class="faq-a"><div class="faq-a-in"><p>Bəli. Pro və Studiya planlarında paylaşılan layihələr, şərh və təsdiq axını var.</p></div></div>
           </div>
         </div>
         <div class="faq-col">
           <div class="faq-item">
             <button class="faq-q">Video ixracı hansı formatlarda olur?<i></i></button>
-            <div class="faq-a"><p>MP4 (H.264) və WebM, 1080p–4K arası. Kadr nisbətləri 1:1, 4:5, 9:16 və 16:9.</p></div>
+            <div class="faq-a"><div class="faq-a-in"><p>MP4 (H.264) və WebM, 1080p–4K arası. Kadr nisbətləri 1:1, 4:5, 9:16 və 16:9.</p></div></div>
           </div>
           <div class="faq-item">
             <button class="faq-q">Planı istənilən vaxt dəyişə bilərəmmi?<i></i></button>
-            <div class="faq-a"><p>Bəli, yüksəltmə dərhal, endirmə isə növbəti hesab dövründə qüvvəyə minir.</p></div>
+            <div class="faq-a"><div class="faq-a-in"><p>Bəli, yüksəltmə dərhal, endirmə isə növbəti hesab dövründə qüvvəyə minir.</p></div></div>
           </div>
           <div class="faq-item">
             <button class="faq-q">Pulsuz planda limit nədir?<i></i></button>
-            <div class="faq-a"><p>Ayda 30 kadr və 1 brend profili. Kredit kartı tələb olunmur.</p></div>
+            <div class="faq-a"><div class="faq-a-in"><p>Ayda 30 kadr və 1 brend profili. Kredit kartı tələb olunmur.</p></div></div>
           </div>
         </div>
       </div>
@@ -430,7 +431,7 @@
   </section>
 
   <!-- ================= CTA BANNER ================= -->
-  <section class="section cta-banner" id="cta">
+  <section class="section cta-banner" id="cta" data-pause-offscreen>
     <div class="cta-bg" aria-hidden="true"></div>
     <div class="container cta-inner reveal" data-dir="up">
       <h2>İlk layihəni bu gün yarat</h2>

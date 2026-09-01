@@ -20,6 +20,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // JS işləyir → reveal-in gizli başlanğıc vəziyyətini aktivləşdir
   document.documentElement.classList.add('js-reveal');
+
+  /* ===================================================================
+     0. Sonsuz fon animasiyalarını yalnız öz bölmələri ekranda olarkən işlət.
+        Tək IntersectionObserver bütün [data-pause-offscreen] konteynerlərini
+        idarə edir; CSS: animation-play-state: var(--anim-state, running).
+     =================================================================== */
+  const pauseIO = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      entry.target.style.setProperty('--anim-state', entry.isIntersecting ? 'running' : 'paused');
+    }
+  }, { threshold: 0, rootMargin: '200px 0px' });
+  $$('[data-pause-offscreen]').forEach(el => pauseIO.observe(el));
   const lerp = (a, b, t) => a + (b - a) * t;
   const clamp = (n, min, max) => Math.min(Math.max(n, min), max);
 
