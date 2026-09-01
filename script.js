@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
      =================================================================== */
   const pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
   let scrollY = window.scrollY;
+  let lastScrollY = scrollY;
   let scrollDirty = true;
   let docMax = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
 
@@ -106,10 +107,37 @@ document.addEventListener('DOMContentLoaded', () => {
   })) : [];
 
   /* ===================================================================
+     4b. Hero mouse-glow — dairəvi işıq, YALNIZ hero daxilində, fine pointer-də.
+         Sabit ölçü/blur/rəng, yalnız transform (translate3d) rAF-də yenilənir.
+     =================================================================== */
+  const heroSection = $('#hero');
+  const heroGlow = $('[data-hero-glow]');
+  const glow = (heroSection && heroGlow && finePointer && motion)
+    ? { el: heroGlow, rect: null, active: false, x: 0, y: 0 }
+    : null;
+  if (glow) {
+    heroSection.addEventListener('mouseenter', () => {
+      glow.rect = heroSection.getBoundingClientRect();
+      glow.active = true;
+      glow.el.classList.add('is-active');
+    });
+    heroSection.addEventListener('mousemove', (e) => {
+      if (!glow.rect) glow.rect = heroSection.getBoundingClientRect();
+      glow.x = e.clientX - glow.rect.left;
+      glow.y = e.clientY - glow.rect.top;
+    });
+    heroSection.addEventListener('mouseleave', () => {
+      glow.active = false;
+      glow.el.classList.remove('is-active');
+    });
+  }
+
+  /* ===================================================================
      5. Proqres zolağı + header vəziyyəti
      =================================================================== */
   const progress = $('#scrollProgress');
   const header = $('.site-header');
+  const HEADER_HIDE_AFTER = 120; // bu həddən əvvəl header həmişə görünür (yuxarıda gizlənmə olmasın)
 
   /* ===================================================================
      6. TƏK rAF loop
@@ -145,12 +173,30 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    // --- hero mouse-glow (yalnız aktiv olanda) ---
+    if (glow && glow.active) {
+      glow.el.style.transform = `translate3d(${glow.x.toFixed(1)}px, ${glow.y.toFixed(1)}px, 0)`;
+    }
+
     // --- scroll-driven (yalnız dəyişəndə) ---
     if (scrollDirty) {
       scrollDirty = false;
       const ratio = clamp(scrollY / docMax, 0, 1);
       progress.style.transform = `scaleX(${ratio.toFixed(4)})`;
       header.classList.toggle('is-scrolled', scrollY > 24);
+
+      // Header: aşağı scroll → gizlən, yuxarı scroll (və ya başa yaxın) → görün.
+      // Kiçik "jitter" (trackpad, mobil bounce) yanlış tetiklənməsin deyə min. fərq şərti qoyulub.
+      const delta = scrollY - lastScrollY;
+      if (scrollY <= HEADER_HIDE_AFTER) {
+        header.classList.remove('is-hidden');
+      } else if (delta > 4) {
+        header.classList.add('is-hidden');
+      } else if (delta < -4) {
+        header.classList.remove('is-hidden');
+      }
+      lastScrollY = scrollY;
+
       for (let i = 0; i < parallax.length; i++) {
         const p = parallax[i];
         // müstəqil `translate` — CSS @keyframes (transform) ilə toqquşmur

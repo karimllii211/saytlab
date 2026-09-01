@@ -64,7 +64,11 @@ body {
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.6;
-  overflow-x: hidden;
+  /* VACİB: `overflow-x: hidden` body-ni "scroll konteyneri" edir və bu, .site-header-in
+     position:sticky-sini tamamilə sındırır (header heç vaxt yapışmırdı, sadəcə səhifə ilə
+     axıb gedirdi). `clip` (html-də olduğu kimi) eyni "üfüqi daşmanı gizlət" effektini verir,
+     amma scroll konteyneri yaratmır — sticky düzgün işləyir. */
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -132,9 +136,11 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   position: sticky; top: 0; z-index: 100;
   padding-block: 14px;
   /* backdrop-filter animasiya EDİLMİR (hər scroll frame-də arxa fonu blur edərdi) —
-     yalnız rəng/kənar keçir, blur is-scrolled ilə sərt açılır */
-  transition: background-color 0.3s var(--ease), border-color 0.3s var(--ease);
+     yalnız rəng/kənar keçir, blur is-scrolled ilə sərt açılır.
+     translate3d ayrıca transition-da — rəng keçidi ilə eyni frame-i "jank" etməsin deyə GPU qatı öz-özünədir. */
+  transition: background-color 0.3s var(--ease), border-color 0.3s var(--ease), transform 0.35s var(--ease);
   border-bottom: 1px solid transparent;
+  will-change: transform;
 }
 .site-header.is-scrolled {
   background: rgba(10, 23, 18, 0.72);
@@ -142,6 +148,9 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   -webkit-backdrop-filter: blur(14px);
   border-bottom-color: var(--border);
 }
+/* Aşağı doğru scroll edəndə gizlən, yuxarı doğru scroll edəndə (və ya səhifənin başında) görün.
+   Sinif idarəsi JS-də, rAF-də, yalnız istiqamət dəyişəndə (bax script.js). */
+.site-header.is-hidden { transform: translate3d(0, -100%, 0); }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .logo { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; }
 .logo-mark { color: var(--accent); }
@@ -202,6 +211,23 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 @keyframes float1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(6%, 4%) scale(1.08); } }
 @keyframes float2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-5%, 6%) scale(1.12); } }
 @keyframes float3 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(4%, -5%) scale(1.06); } }
+
+/* Mouse-təqib edən dairəvi işıq — yalnız hero daxilində (fine pointer, JS ilə aktivləşir).
+   Ölçü/blur/rəng SABİTDİR — hərəkət yalnız JS-in yazdığı `translate` ilə (rAF-də, will-change yalnız
+   fine pointer olanda). Filter/blur hər frame-də YENİDƏN hesablanmır — ona görə ucuzdur. */
+.hero-glow {
+  position: absolute;
+  top: 0; left: 0;
+  width: 520px; height: 520px;
+  margin: -260px 0 0 -260px;   /* mərkəzi pointer koordinatına gətirir */
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(230,184,102,0.16) 0%, rgba(230,184,102,0.07) 38%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+  will-change: transform;
+  pointer-events: none;
+}
+.hero-glow.is-active { opacity: 1; }
 
 /* SVG naxış / grid overlay */
 .hero-grid {
@@ -524,4 +550,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   .blob, .marquee-track, .pulse-grid i,
   [class*="spin"], [class*="pulse"], [class*="breathe"] { animation: none !important; }
   [data-hero] { opacity: 1 !important; transform: none !important; }
+  /* header həmişə görünən qalır, mouse-glow heç görünmür */
+  .site-header.is-hidden { transform: none !important; }
+  .hero-glow { display: none !important; }
 }
