@@ -347,11 +347,19 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 
 /* ---------- 12. Logo marquee ---------- */
 .logos { padding-block: clamp(48px, 7vw, 84px); }
-.logos-label { text-align: center; color: var(--text-dim); font-family: var(--font-display); letter-spacing: 0.05em; font-size: 0.9rem; margin-bottom: 34px; }
 .marquee { overflow: hidden; position: relative; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
-.marquee-track { display: flex; gap: 64px; width: max-content; animation: marquee 26s linear infinite; animation-play-state: var(--anim-state, running); will-change: transform; }
+.marquee-track { display: flex; align-items: center; gap: 64px; width: max-content; animation: marquee 26s linear infinite; animation-play-state: var(--anim-state, running); will-change: transform; }
 .marquee:hover .marquee-track { animation-play-state: paused; }
-.marquee-track span { font-family: var(--font-display); font-weight: 500; font-size: 1.4rem; color: var(--text-dim); white-space: nowrap; }
+.marquee-track .marquee-logo {
+  height: clamp(24px, 3.4vw, 34px);
+  width: auto;
+  flex: 0 0 auto;
+  object-fit: contain;
+  filter: grayscale(1) opacity(0.65);
+  transition: filter 0.3s var(--ease);
+}
+.marquee:hover .marquee-track .marquee-logo,
+.marquee-track .marquee-logo:hover { filter: grayscale(0) opacity(1); }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 /* ---------- 13. Benefits 3x2 ---------- */
@@ -534,6 +542,44 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   transition: opacity .18s var(--ease-reveal), transform .18s var(--ease-reveal);
 }
 
+/* ---------- 22c. Xüsusi cursor — kiçik dot + interaktiv elementlərdə LED glow ----------
+   Yalnız JS fine-pointer + motion cihazlarda işə düşür (html.cursor-custom).
+   Mobil/touch və reduced-motion → sinif əlavə olunmur, sistem cursoru qalır. */
+html.cursor-custom, html.cursor-custom * { cursor: none !important; }
+
+.cursor-dot, .cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  translate: -50% -50%;
+  opacity: 0;
+  transition: opacity .25s var(--ease), width .2s var(--ease), height .2s var(--ease), background-color .2s var(--ease);
+}
+.cursor-custom .cursor-dot, .cursor-custom .cursor-ring { opacity: 1; }
+
+.cursor-dot {
+  width: 7px; height: 7px;
+  background: var(--accent);
+}
+.cursor-ring {
+  width: 30px; height: 30px;
+  border: 1.5px solid rgba(230, 184, 102, 0.5);
+  background: rgba(230, 184, 102, 0.04);
+}
+/* İnteraktiv/canlı sahə üzərində — LED işıqlı (neon-glow) halqa */
+.cursor-custom.cursor-hot .cursor-ring {
+  width: 46px; height: 46px;
+  border-color: var(--accent);
+  background: rgba(230, 184, 102, 0.10);
+  box-shadow: 0 0 12px 2px var(--glow), 0 0 24px 6px rgba(230, 184, 102, 0.25), inset 0 0 10px rgba(230, 184, 102, 0.25);
+}
+.cursor-custom.cursor-hot .cursor-dot { background: var(--accent-2); }
+/* Pəncərədən çıxanda gizlə */
+.cursor-custom.cursor-hidden .cursor-dot,
+.cursor-custom.cursor-hidden .cursor-ring { opacity: 0; }
+
 /* ---------- 23. Hərəkət azaltma (əlçatanlıq + performans) ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -557,6 +603,9 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   /* header həmişə görünən qalır, mouse-glow heç görünmür */
   .site-header.is-hidden { transform: none !important; }
   .hero-glow { display: none !important; }
+  /* xüsusi cursor — reduced-motion-da sistem cursoruna qayıt */
+  html.cursor-custom, html.cursor-custom * { cursor: auto !important; }
+  .cursor-dot, .cursor-ring { display: none !important; }
   /* səhifə keçidi — fade/slide olmadan */
   .js-reveal body,
   .js-reveal body.is-leaving { opacity: 1 !important; transform: none !important; transition: none !important; }

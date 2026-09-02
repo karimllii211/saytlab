@@ -170,6 +170,41 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ===================================================================
+     4c. Xüsusi cursor — boşluqda kiçik dot, klikə bilən / interaktiv
+         elementlərin üzərində LED-glow halqa.
+         • Yalnız fine-pointer + motion (mobil/touch-da ümumiyyətlə işə düşmür).
+         • Mövqe YALNIZ real maus hərəkətinə cavab verir — ayrıca/avtomatik
+           heç bir animasiya yoxdur (əvvəlki silinmiş versiyanın səbəbi).
+         • Mövqe yenilənməsi aşağıdakı TƏK rAF loop-unda (6-cı bölmə).
+     =================================================================== */
+  const HOT_CURSOR = 'a, button, input, textarea, select, label, summary, [role="button"], [data-order], .faq-q, .marquee';
+  const cursor = (finePointer && motion) ? (() => {
+    const dot = document.createElement('div');
+    const ring = document.createElement('div');
+    dot.className = 'cursor-dot';
+    ring.className = 'cursor-ring';
+    dot.setAttribute('aria-hidden', 'true');
+    ring.setAttribute('aria-hidden', 'true');
+    document.body.append(dot, ring);
+    const root = document.documentElement;
+    root.classList.add('cursor-custom');
+
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest?.(HOT_CURSOR)) root.classList.add('cursor-hot');
+    }, { passive: true });
+    document.addEventListener('mouseout', (e) => {
+      if (e.target.closest?.(HOT_CURSOR) && !e.relatedTarget?.closest?.(HOT_CURSOR)) {
+        root.classList.remove('cursor-hot');
+      }
+    }, { passive: true });
+    root.addEventListener('mouseleave', () => root.classList.add('cursor-hidden'), { passive: true });
+    root.addEventListener('mouseenter', () => root.classList.remove('cursor-hidden'), { passive: true });
+    window.addEventListener('blur', () => root.classList.add('cursor-hidden'));
+
+    return { dot, ring, rx: pointer.x, ry: pointer.y };
+  })() : null;
+
+  /* ===================================================================
      5. Proqres zolağı + header vəziyyəti
      =================================================================== */
   const progress = $('#scrollProgress');
@@ -213,6 +248,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- hero mouse-glow (yalnız aktiv olanda) ---
     if (glow && glow.active) {
       glow.el.style.transform = `translate3d(${glow.x.toFixed(1)}px, ${glow.y.toFixed(1)}px, 0)`;
+    }
+
+    // --- xüsusi cursor: dot dəqiq maus mövqeyində, halqa yüngül gecikmə ilə ---
+    if (cursor) {
+      cursor.dot.style.transform = `translate3d(${pointer.x}px, ${pointer.y}px, 0)`;
+      cursor.rx = lerp(cursor.rx, pointer.x, 0.2);
+      cursor.ry = lerp(cursor.ry, pointer.y, 0.2);
+      cursor.ring.style.transform = `translate3d(${cursor.rx.toFixed(2)}px, ${cursor.ry.toFixed(2)}px, 0)`;
     }
 
     // --- scroll-driven (yalnız dəyişəndə) ---
