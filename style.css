@@ -339,29 +339,18 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .benefit-card h3 { font-size: 1.15rem; color: var(--accent); margin-bottom: 8px; }
 .benefit-card p { color: var(--text-muted); font-size: 0.94rem; }
 
-/* ---------- 14. Qiymətlər — tək paket kartı ---------- */
+/* ---------- 14. Qiymətlər — 3 müddət kartı ---------- */
 .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: start; }
-/* Tək kart: mərkəzləşdir + eni məhdudlaşdır */
-.price-grid--single { grid-template-columns: 1fr; max-width: 460px; margin-inline: auto; }
-.pricing .section-head { margin-inline: auto; text-align: center; }
 .price-card { padding: 32px 28px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); position: relative; }
-.price-card.is-featured { border-color: var(--accent); background: linear-gradient(180deg, var(--surface-2), var(--surface)); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
-.price-card h3 { font-size: 1.2rem; margin-bottom: 18px; }
-.price-card ul { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+.price-card.is-featured { border-color: var(--accent); background: linear-gradient(180deg, var(--surface-2), var(--surface)); box-shadow: 0 20px 60px rgba(0,0,0,0.4); transform: translateY(-10px); }
+.price-card .badge { position: absolute; top: -12px; left: 28px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-display); font-size: 0.72rem; padding: 5px 12px; border-radius: 999px; letter-spacing: 0.04em; }
+.price-card h3 { font-size: 1.2rem; margin-bottom: 6px; }
+.price-tag { display: flex; align-items: baseline; gap: 4px; margin-bottom: 22px; font-family: var(--font-display); }
+.price-tag strong { font-size: 2.4rem; font-weight: 600; color: var(--accent-2); }
+.price-tag span { color: var(--text-dim); font-size: 1rem; }
+.price-card ul { display: flex; flex-direction: column; gap: 10px; margin-bottom: 26px; }
 .price-card li { position: relative; padding-left: 22px; color: var(--text-muted); font-size: 0.95rem; }
 .price-card li::before { content: ""; position: absolute; left: 0; top: 7px; width: 10px; height: 10px; border-radius: 3px; background: var(--accent); opacity: 0.75; }
-
-/* Müddət variantları — 3 sətir */
-.price-terms { display: flex; flex-direction: column; gap: 8px; margin-bottom: 26px; }
-.price-term {
-  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
-  padding: 12px 16px;
-  border: 1px solid var(--border);
-  border-radius: var(--r-sm);
-  background: var(--bg-2);
-}
-.price-term span { color: var(--text-muted); font-family: var(--font-display); font-size: 0.9rem; }
-.price-term strong { font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; color: var(--accent-2); }
 
 /* ---------- 19. FAQ — sətir-accordion (tam en) ---------- */
 .faq-layout { display: block; }
