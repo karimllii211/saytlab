@@ -388,8 +388,8 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .socials a { color: var(--text-muted); transition: color 0.2s var(--ease), transform 0.2s var(--ease); }
 .socials a:hover { color: var(--accent); transform: translateY(-2px); }
 
-/* ---------- 21c. Xidmət kartları — Span-tərzi nömrələnmiş kartlar ---------- */
-.service-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+/* ---------- 21c. Xidmət kartları — Span-tərzi nömrələnmiş kartlar (3 kart) ---------- */
+.service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .service-card {
   padding: 26px;
   border: 1px solid var(--border);
@@ -410,6 +410,28 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .service-card h3 { font-size: 1.12rem; color: var(--text); margin-bottom: 8px; }
 .service-card p { color: var(--text-muted); font-size: 0.94rem; }
 .services-cta { margin-top: 36px; }
+
+/* ---------- 21g. Haqqımızda — Missiya + Yanaşmamız blokları ---------- */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.about-card {
+  padding: 30px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  transition: border-color 0.3s var(--ease);
+}
+.about-card:hover { border-color: var(--border-strong); }
+.about-label {
+  display: inline-block;
+  margin-bottom: 14px;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.about-card p { color: var(--text-muted); font-size: 1rem; line-height: 1.7; }
 
 /* ---------- 21e. Necə işləyir — sticky panel + pilləli addımlar (Span-tərzi scrollytelling) ---------- */
 .how-layout { display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px; align-items: start; }
@@ -501,7 +523,8 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   .main-nav, .header-actions { display: none; }
   .menu-toggle { display: flex; }
   .benefit-grid, .price-grid { grid-template-columns: 1fr 1fr; }
-  .service-grid { grid-template-columns: 1fr 1fr; }
+  .service-grid { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: 1fr; }
   .how-layout { grid-template-columns: 1fr; }
   .how-visual { position: static; height: 320px; order: -1; margin-bottom: 8px; }
   .results-grid { grid-template-columns: 1fr 1fr; }
