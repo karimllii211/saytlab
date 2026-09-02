@@ -117,12 +117,6 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .btn-outline { border: 1px solid var(--border-strong); color: var(--text); }
 .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
-/* WhatsApp CTA — .btn-solid strukturu üstündə, tanınan WhatsApp yaşılı.
-   Mövcud rəng dəyişənləri ilə yanaşı işləyir, :root palitrasına toxunmur. */
-.btn-whatsapp { background: #25d366; color: #04220f; box-shadow: 0 8px 30px rgba(37, 211, 102, 0.28); }
-.btn-whatsapp:hover { background: #2ee574; }
-.btn-whatsapp svg { width: 17px; height: 17px; }
-
 /* ---------- 5. Scroll proqres zolağı ---------- */
 /* width yox — yalnız transform: scaleX() animasiya olunur (layout yaratmır) */
 .scroll-progress {
@@ -155,7 +149,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
    Sinif idarəsi JS-də, rAF-də, yalnız istiqamət dəyişəndə (bax script.js). */
 .site-header.is-hidden { transform: translate3d(0, -100%, 0); }
 /* Header konteyneri tam enə yayılır — loqo ekranın sol kənarına (yalnız --gutter qədər),
-   menyu + WhatsApp isə sağ kənara "yapışır". Ortada süni boşluq qalmır.
+   menyu isə sağ kənara "yapışır". Ortada süni boşluq qalmır.
    Sayt bölmələri əvvəlki kimi --container (1180px) daxilində mərkəzləşməkdə davam edir. */
 .site-header .header-inner { max-width: none; }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
@@ -167,8 +161,6 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .main-nav { display: flex; gap: 30px; }
 .main-nav a { font-size: 0.92rem; color: var(--text-muted); transition: color 0.2s var(--ease); }
 .main-nav a:hover { color: var(--text); }
-
-.header-actions { display: flex; align-items: center; gap: 12px; }
 
 .menu-toggle { display: none; width: 40px; height: 40px; flex-direction: column; gap: 5px; align-items: center; justify-content: center; }
 .menu-toggle span { width: 20px; height: 2px; background: var(--text); transition: transform 0.3s var(--ease), opacity 0.3s var(--ease); }
@@ -195,10 +187,6 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .mobile-overlay.is-open .mobile-nav a:nth-child(2) { transition-delay: 0.17s; }
 .mobile-overlay.is-open .mobile-nav a:nth-child(3) { transition-delay: 0.22s; }
 .mobile-overlay.is-open .mobile-nav a:nth-child(4) { transition-delay: 0.27s; }
-.mobile-overlay.is-open .mobile-nav a:nth-child(5) { transition-delay: 0.32s; }
-.mobile-overlay.is-open .mobile-nav a:nth-child(6) { transition-delay: 0.37s; }
-.mobile-overlay.is-open .mobile-nav a:nth-child(7) { transition-delay: 0.42s; }
-.mobile-cta { margin-top: 12px; font-size: 1rem !important; }
 
 /* ---------- 9. HERO ---------- */
 .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; padding-block: 120px 80px; }
@@ -542,7 +530,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 
 /* ---------- 22. Responsiv ---------- */
 @media (max-width: 960px) {
-  .main-nav, .header-actions { display: none; }
+  .main-nav { display: none; }
   .menu-toggle { display: flex; }
   .benefit-grid, .price-grid { grid-template-columns: 1fr 1fr; }
   .service-grid { grid-template-columns: 1fr; }
