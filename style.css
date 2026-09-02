@@ -154,7 +154,11 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 /* Aşağı doğru scroll edəndə gizlən, yuxarı doğru scroll edəndə (və ya səhifənin başında) görün.
    Sinif idarəsi JS-də, rAF-də, yalnız istiqamət dəyişəndə (bax script.js). */
 .site-header.is-hidden { transform: translate3d(0, -100%, 0); }
-.header-inner { display: flex; align-items: center; justify-content: flex-start; gap: 24px; }
+/* Header konteyneri tam enə yayılır — loqo ekranın sol kənarına (yalnız --gutter qədər),
+   menyu + WhatsApp isə sağ kənara "yapışır". Ortada süni boşluq qalmır.
+   Sayt bölmələri əvvəlki kimi --container (1180px) daxilində mərkəzləşməkdə davam edir. */
+.site-header .header-inner { max-width: none; }
+.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .logo { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; margin-right: auto; }
 /* PNG loqo — kvadrat şəkil, sıxılmadan konteynerə sığır. Hündürlük header ritmini pozmasın. */
 .logo-img { height: 36px; width: auto; object-fit: contain; }
