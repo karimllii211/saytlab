@@ -388,37 +388,6 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .socials a { color: var(--text-muted); transition: color 0.2s var(--ease), transform 0.2s var(--ease); }
 .socials a:hover { color: var(--accent); transform: translateY(-2px); }
 
-/* ---------- 21b. Domen axtar ---------- */
-.domain-search { display: flex; gap: 12px; flex-wrap: wrap; max-width: 560px; }
-.domain-input {
-  flex: 1; min-width: 220px;
-  padding: 14px 20px;
-  border-radius: 999px;
-  border: 1px solid var(--border-strong);
-  background: var(--surface);
-  color: var(--text);
-  font-family: var(--font-body); font-size: 0.98rem;
-  transition: border-color 0.25s var(--ease);
-}
-.domain-input:focus { outline: none; border-color: var(--accent); }
-.domain-input::placeholder { color: var(--text-dim); }
-.domain-result { margin-top: 28px; max-width: 560px; }
-.domain-result-note { font-size: 0.82rem; color: var(--text-dim); margin-bottom: 14px; }
-.domain-list { display: flex; flex-direction: column; gap: 10px; }
-.domain-row {
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 16px 20px;
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  background: var(--surface);
-}
-.domain-name { font-family: var(--font-display); font-size: 1rem; }
-.domain-status { font-family: var(--font-display); font-size: 0.85rem; letter-spacing: 0.04em; white-space: nowrap; }
-.domain-row.is-free { border-color: var(--border-strong); }
-.domain-row.is-free .domain-status { color: var(--accent); }
-.domain-row.is-taken { opacity: 0.55; }
-.domain-row.is-taken .domain-status { color: var(--text-dim); }
-
 /* ---------- 21c. Xidmət kartları — Span-tərzi nömrələnmiş kartlar ---------- */
 .service-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
 .service-card {

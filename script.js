@@ -302,61 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ===================================================================
-     11. Domen axtar — DEMO. Real DNS/whois sorğusu YOXDUR; nəticə
-         sırf maket məqsədlidir (deterministik "boş/tutulub" bölgüsü).
-     =================================================================== */
-  const domainForm = $('#domainForm');
-  if (domainForm) {
-    const domainInput = $('#domainInput');
-    const domainResult = $('#domainResult');
-    const TLDS = ['.az', '.com', '.com.az', '.net'];
-    domainForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const raw = (domainInput.value || '').trim().toLowerCase()
-        .replace(/\s+/g, '')
-        .replace(/^https?:\/\//, '')
-        .replace(/\/.*$/, '');
-      if (!raw) return;
-      // Yalnız domen-adı üçün icazəli simvollar saxlanılır (a-z 0-9 - .) — həm demo
-      // nəticəni təmiz saxlayır, həm də əlavə təhlükəsizlik qatıdır.
-      const clean = raw.replace(/[^a-z0-9.-]/g, '');
-      const base = clean.replace(/\.[a-z.]+$/, '') || clean;
-      if (!base) return;
-
-      // VACİB: nəticələr innerHTML ilə YOX, textContent ilə qurulur — istifadəçi
-      // inputu heç vaxt HTML kimi şərh olunmur (XSS qarşısı alınır).
-      const note = document.createElement('p');
-      note.className = 'domain-result-note';
-      note.textContent = 'Demo nəticə — real domen yoxlaması deyil. Dəqiq status üçün bizə yazın.';
-
-      const list = document.createElement('ul');
-      list.className = 'domain-list';
-
-      TLDS.forEach((tld, i) => {
-        const taken = (base.length + i) % 3 === 0;   // demo qayda — real yoxlama deyil
-
-        const li = document.createElement('li');
-        li.className = 'domain-row ' + (taken ? 'is-taken' : 'is-free');
-
-        const name = document.createElement('span');
-        name.className = 'domain-name';
-        name.textContent = base + tld;
-
-        const status = document.createElement('span');
-        status.className = 'domain-status';
-        status.textContent = taken ? 'Tutulub' : 'Boşdur';
-
-        li.append(name, status);
-        list.append(li);
-      });
-
-      domainResult.replaceChildren(note, list);
-      domainResult.hidden = false;
-    });
-  }
-
-  /* ===================================================================
-     12. Əlaqə forması — real backend yoxdur, submit-də təşəkkür mesajı.
+     11. Əlaqə forması — real backend yoxdur, submit-də təşəkkür mesajı.
      =================================================================== */
   const contactForm = $('#contactForm');
   if (contactForm) {
@@ -369,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ===================================================================
-     13. Pricing aylıq/illik toggle — rəqəmlərdə qısa fade/scale (feedback)
+     12. Pricing aylıq/illik toggle — rəqəmlərdə qısa fade/scale (feedback)
      =================================================================== */
   const billingSwitch = $('#billingSwitch');
   const labelMonthly = $('#labelMonthly');
@@ -391,7 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
   billingSwitch.addEventListener('click', () => setBilling(!billingSwitch.classList.contains('is-yearly')));
 
   /* ===================================================================
-     14. FAQ accordion — bir anda yalnız biri açıq (grid-template-rows)
+     13. FAQ accordion — bir anda yalnız biri açıq (grid-template-rows)
      =================================================================== */
   $$('.faq-item').forEach(item => {
     $('.faq-q', item).addEventListener('click', () => {
@@ -402,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ===================================================================
-     15. "Necə işləyir" — sticky panel + pilləli addımlar (scrollytelling).
+     14. "Necə işləyir" — sticky panel + pilləli addımlar (scrollytelling).
          Hər addım ekranın orta xəttinə ən yaxın olanda aktivləşir;
          sol paneldəki uyğun frame ilə eyni vaxtda dəyişir. Sadə,
          IntersectionObserver-based — əlavə scroll listener YOXDUR.
