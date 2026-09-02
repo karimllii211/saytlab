@@ -35,8 +35,8 @@
   --shadow-2: 0 24px 60px rgba(0,0,0,0.45);
 
   /* Ölçü / ritm */
-  --container: 1180px;
-  --gutter: clamp(20px, 5vw, 48px);
+  --container: 1120px;                     /* cüzi daraldıldı — məzmun daha mərkəzli görünsün */
+  --gutter: clamp(22px, 5.5vw, 60px);      /* yan boşluqlar bir qədər artırıldı */
   --section-y: clamp(72px, 11vw, 140px);
 
   /* Keçidlər — standartlaşdırılmış easing dəsti */
@@ -174,12 +174,13 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   background-image: radial-gradient(circle at 80% 10%, rgba(230,184,102,0.16), transparent 45%);
   display: flex; align-items: center; justify-content: center;
   /* "Pərdə" effekti: yuxarıdan aşağı açılan tam ekran panel */
+  -webkit-clip-path: inset(0 0 100% 0);
   clip-path: inset(0 0 100% 0);
   opacity: 0;
-  transition: clip-path 0.5s var(--ease), opacity 0.35s var(--ease);
+  transition: -webkit-clip-path 0.5s var(--ease), clip-path 0.5s var(--ease), opacity 0.35s var(--ease);
   visibility: hidden;
 }
-.mobile-overlay.is-open { clip-path: inset(0 0 0% 0); opacity: 1; visibility: visible; }
+.mobile-overlay.is-open { -webkit-clip-path: inset(0 0 0% 0); clip-path: inset(0 0 0% 0); opacity: 1; visibility: visible; }
 .mobile-nav { display: flex; flex-direction: column; gap: 26px; text-align: center; }
 .mobile-nav a { font-family: var(--font-display); font-size: 1.7rem; font-weight: 500; opacity: 0; transform: translateY(18px); transition: opacity 0.4s var(--ease), transform 0.4s var(--ease); }
 .mobile-overlay.is-open .mobile-nav a { opacity: 1; transform: none; }
@@ -233,6 +234,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
     linear-gradient(rgba(233,190,122,0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(233,190,122,0.05) 1px, transparent 1px);
   background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 80%);
   mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 80%);
 }
 /* Fon üzərində zərif noise (SVG data-uri) */
@@ -246,11 +248,15 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 9px;
+  max-width: 100%;
   padding: 7px 15px; border: 1px solid var(--border); border-radius: 999px;
-  font-family: var(--font-display); font-size: 0.8rem; color: var(--text-muted);
+  font-family: var(--font-display); font-size: 0.8rem; line-height: 1.35; color: var(--text-muted);
   margin-bottom: 28px;
 }
-.hero-eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(230,184,102,0.18); }
+.hero-eyebrow .dot { flex: 0 0 auto; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(230,184,102,0.18); }
+@media (max-width: 420px) {
+  .hero-eyebrow { font-size: 0.72rem; padding: 6px 13px; border-radius: 18px; }
+}
 
 .hero-title { font-size: clamp(2.6rem, 8vw, 5.4rem); font-weight: 600; }
 .hero-title .line { display: block; overflow: hidden; padding-bottom: 0.08em; }
@@ -379,7 +385,9 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .site-footer .container { max-width: none; }
 .footer-inner { display: grid; grid-template-columns: 1fr; gap: 40px; padding-bottom: 48px; }
 .footer-brand p { color: var(--text-dim); font-size: 0.92rem; margin-top: 14px; max-width: 420px; }
-.footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap; padding-block: 24px; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-dim); }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 14px 24px; flex-wrap: wrap; padding-block: 24px; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-dim); }
+/* "Qaydalar · Məxfilik" + sosial ikonlar — sağda bir qrup, © solda */
+.footer-bottom-right { display: flex; align-items: center; gap: 14px 22px; flex-wrap: wrap; }
 .footer-links { display: flex; gap: 20px; }
 .footer-links a { color: var(--text-muted); transition: color 0.2s var(--ease); }
 .footer-links a:hover { color: var(--accent); }
@@ -432,65 +440,6 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 }
 .about-card p { color: var(--text-muted); font-size: 1rem; line-height: 1.7; }
 
-/* ---------- 21e. Necə işləyir — sticky panel + pilləli addımlar (Span-tərzi scrollytelling) ---------- */
-.how-layout { display: grid; grid-template-columns: 1fr 1.1fr; gap: 48px; align-items: start; }
-.how-visual {
-  position: sticky; top: 100px;
-  height: min(70vh, 560px);
-  border-radius: var(--r-xl);
-  border: 1px solid var(--border);
-  background: radial-gradient(120% 100% at 50% 0%, var(--surface-2), var(--bg-2) 70%);
-  overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-}
-.how-visual-stage { position: relative; width: 100%; height: 100%; }
-.how-visual-frame {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; transition: opacity 0.5s var(--ease);
-  pointer-events: none;
-}
-.how-visual-frame.is-active { opacity: 1; }
-/* Span-tərzi giriş: hər forma aşağıdan sürüşərək + kiçik ölçüdən böyüyərək peyda olur
-   (statik "opacity yalnız" keçidi əvəzinə). Yalnız aktiv frame-in forması hərəkət edir. */
-.how-visual-frame .hv-shape {
-  width: 44%; aspect-ratio: 1; border-radius: 28%;
-  background: linear-gradient(160deg, var(--accent-2), var(--accent-deep) 60%, var(--accent) 100%);
-  box-shadow: 0 30px 80px -20px rgba(230,184,102,0.45), inset 0 0 0 1px rgba(255,255,255,0.15);
-  transform: translateY(38px) scale(0.72);
-  opacity: 0;
-  transition: transform 0.7s var(--ease-reveal), opacity 0.6s var(--ease-reveal);
-}
-.how-visual-frame.is-active .hv-shape { transform: none; opacity: 1; }
-.how-visual-frame:nth-child(2) .hv-shape { border-radius: 50%; background: linear-gradient(160deg, #f2d29a, #1f6b4a 70%); }
-.how-visual-frame:nth-child(3) .hv-shape { border-radius: 18px; background: conic-gradient(from 180deg at 50% 50%, #1f6b4a, #3a2a5c, #e6b866, #1f6b4a); }
-
-.how-steps { display: flex; flex-direction: column; padding-block: 8vh; }
-.how-step {
-  position: relative;
-  padding: 32px 0 32px 34px;
-  border-left: 1px solid var(--border);
-  opacity: 0.4;
-  transition: opacity 0.4s var(--ease);
-}
-.how-step.is-active { opacity: 1; }
-.how-step::before {
-  content: ""; position: absolute; left: -5px; top: 36px;
-  width: 9px; height: 9px; border-radius: 50%;
-  background: var(--text-dim);
-  box-shadow: 0 0 0 4px var(--bg);
-  transition: background-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
-}
-.how-step.is-active::before { background: var(--accent); box-shadow: 0 0 0 4px var(--bg), 0 0 0 7px rgba(230,184,102,0.22); }
-.how-step-badge {
-  display: inline-block; padding: 5px 12px; border-radius: 999px;
-  background: rgba(230,184,102,0.14); color: var(--accent-2);
-  font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.06em;
-  margin-bottom: 12px;
-}
-.how-step h3 { font-size: 1.35rem; margin-bottom: 8px; }
-.how-step p { color: var(--text-muted); font-size: 0.96rem; max-width: 420px; }
-
 /* ---------- 21d. Əlaqə — sadələşdirilmiş: yalnız e-poçt + telefon, ikonlu ---------- */
 .contact-layout { max-width: 460px; }
 .contact-direct { padding: 30px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); }
@@ -524,8 +473,6 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   .benefit-grid, .price-grid { grid-template-columns: 1fr 1fr; }
   .service-grid { grid-template-columns: 1fr; }
   .about-grid { grid-template-columns: 1fr; }
-  .how-layout { grid-template-columns: 1fr; }
-  .how-visual { position: static; height: 320px; order: -1; margin-bottom: 8px; }
 }
 
 @media (max-width: 768px) {
@@ -540,7 +487,26 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   :root { --gutter: 18px; }
   .hero { padding-block: 100px 60px; }
   .hero-title { font-size: clamp(2.1rem, 11vw, 3rem); }
-  .footer-bottom { flex-direction: column; align-items: flex-start; }
+  /* Footer alt sətri: alt-alta, mərkəzləşdirilmiş */
+  .footer-bottom { flex-direction: column; align-items: center; text-align: center; gap: 14px; }
+  .footer-bottom-right { flex-direction: column; gap: 12px; }
+  .footer-bottom-right .footer-links,
+  .footer-bottom-right .socials { justify-content: center; }
+}
+
+/* ---------- 22b. Səhifə keçidi — sürətli fade + slight-slide ---------- */
+/* Yalnız JS aktiv olduqda (js-reveal <html>-ə əlavə olunur). JS olmadan səhifə
+   normal görünür — heç nə gizlənmir. index.html, privacy.html, terms.html. */
+.js-reveal body {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .25s ease, transform .25s ease;
+}
+.js-reveal body.page-ready { opacity: 1; transform: none; }
+.js-reveal body.is-leaving {
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity .18s ease, transform .18s ease;
 }
 
 /* ---------- 23. Hərəkət azaltma (əlçatanlıq + performans) ---------- */
@@ -565,4 +531,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   /* header həmişə görünən qalır, mouse-glow heç görünmür */
   .site-header.is-hidden { transform: none !important; }
   .hero-glow { display: none !important; }
+  /* səhifə keçidi — fade/slide olmadan */
+  .js-reveal body,
+  .js-reveal body.is-leaving { opacity: 1 !important; transform: none !important; transition: none !important; }
 }

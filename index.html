@@ -3,8 +3,20 @@
 <head>
 <meta charset="UTF-8" />
 <!-- Hər şeydən əvvəl: reveal-in gizli başlanğıcını body render olunmadan aktivləşdir
-     (hero mətninin bir an "yanıb-sönməsinin" qarşısını alır) -->
-<script>document.documentElement.classList.add('js-reveal');</script>
+     (hero mətninin bir an "yanıb-sönməsinin" qarşısını alır) + səhifə fade-in tetikləyicisi -->
+<script>
+  document.documentElement.classList.add('js-reveal');
+  addEventListener('DOMContentLoaded', function () {
+    var ready = function () { document.body.classList.add('page-ready'); };
+    requestAnimationFrame(ready);
+    setTimeout(ready, 60);          // arxa-plan tab / rAF gecikməsi üçün ehtiyat
+  });
+  addEventListener('pageshow', function (e) {
+    // brauzer "geri" düyməsi (bfcache) — səhifə keşdən qayıdanda görünən qalsın
+    if (e.persisted) document.body.classList.remove('is-leaving');
+    document.body.classList.add('page-ready');
+  });
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Saytlab — AI ilə Vizual Kontent Studiyası</title>
 <meta name="description" content="Saytlab — bir cümləni bir neçə saniyəyə brend uyğun vizuallara, kampaniya kadrlarına və video sekanslarına çevirən AI studiyası." />
@@ -74,7 +86,7 @@
     </div>
 
     <div class="container hero-inner">
-      <p class="hero-eyebrow" data-hero="1"><span class="dot"></span> Veb-sayt + Domain — bir yerdə</p>
+      <p class="hero-eyebrow" data-hero="1"><span class="dot"></span> Veb-sayt + Domain + Özəl E-poçt — bir yerdə</p>
 
       <h1 class="hero-title">
         <!-- Giriş animasiyası: hər söz maskadan aşağıdan yuxarı "qalxır" + yüngül rotasiya. -->
@@ -89,8 +101,7 @@
       </p>
 
       <div class="hero-actions" data-hero="8">
-        <!-- NÖMRƏNİ DƏYİŞ: 994XXXXXXXXX yerinə real WhatsApp nömrəsini yaz (məs. 994501234567), boşluq/artı işarəsi olmadan. -->
-        <a href="https://wa.me/994XXXXXXXXX" target="_blank" rel="noopener noreferrer" class="btn btn-solid btn-lg" data-magnetic>Layihəyə Başla</a>
+        <a href="#pricing" class="btn btn-solid btn-lg" data-magnetic>Layihəyə Başla</a>
       </div>
 
       <!-- Niyə Biz? — qısa vurğu sətri -->
@@ -167,45 +178,6 @@
     </div>
   </section>
 
-  <!-- ================= NECƏ İŞLƏYİR — sticky panel + pilləli addımlar ================= -->
-  <section class="section how" id="how">
-    <div class="container">
-      <header class="section-head reveal" data-dir="up">
-        <p class="kicker">Necə işləyir</p>
-        <h2>Hər keçid, hər animasiya düşünülmüş üç addım</h2>
-        <p class="section-lead">Saytınızı elə qururuq ki, açıldığı ilk saniyədən yumşaq keçidlər, hərəkətli elementlər və müasir interfeys hiss olunsun.</p>
-      </header>
-
-      <div class="how-layout">
-        <div class="how-visual" data-pause-offscreen>
-          <div class="how-visual-stage" id="howStage">
-            <div class="how-visual-frame is-active"><div class="hv-shape"></div></div>
-            <div class="how-visual-frame"><div class="hv-shape"></div></div>
-            <div class="how-visual-frame"><div class="hv-shape"></div></div>
-          </div>
-        </div>
-
-        <div class="how-steps" id="howSteps">
-          <article class="how-step is-active" data-step="0">
-            <span class="how-step-badge">Addım 01</span>
-            <h3>Brief və istiqamət</h3>
-            <p>Brendinizi, məqsədinizi və istədiyiniz hissi bizə danışırsınız — biz saytın hərəkət dilini, keçid ritmini və vizual tonunu bu brief üzərində qururuq.</p>
-          </article>
-          <article class="how-step" data-step="1">
-            <span class="how-step-badge">Addım 02</span>
-            <h3>Dizayn, məzmun və hərəkət</h3>
-            <p>Hər bölmə üçün müasir UI/UX, scroll ilə açılan animasiyalar və yumşaq keçidlər hazırlayırıq. Siz canlı önizləmədə görüb təsdiqləyirsiniz.</p>
-          </article>
-          <article class="how-step" data-step="2">
-            <span class="how-step-badge">Addım 03</span>
-            <h3>Sürət optimizasiyası və canlıya çıxış</h3>
-            <p>Animasiyaları performans üçün cilalayır, domeni və hostinqi bağlayır və saytı canlıya çıxarırıq — həm sürətli, həm də axıcı görünən nəticə ilə.</p>
-          </article>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ================= LOGO / MARKA ZOLAĞI (marquee) ================= -->
   <section class="section logos" aria-label="İnteqrasiyalar" data-pause-offscreen>
     <div class="container">
@@ -250,7 +222,9 @@
       </header>
 
       <div class="price-grid">
-        <!-- NÖMRƏNİ DƏYİŞ: 994XXXXXXXXX yerinə real WhatsApp nömrəsini yaz. -->
+        <!-- "Sifariş et" linkləri script.js-də hər kartın adı + qiyməti ilə əvvəlcədən
+             doldurulmuş WhatsApp mesajına çevrilir (?text=...). Aşağıdakı href
+             yalnız JS işləməsə fallback kimi qalır. -->
         <article class="price-card reveal" data-dir="up">
           <h3>1 illik</h3>
           <p class="price-tag"><strong>100</strong><span>₼</span></p>
@@ -260,7 +234,7 @@
             <li>1 peşəkar e-poçt</li>
             <li>Limitsiz dəstək</li>
           </ul>
-          <a href="https://wa.me/994XXXXXXXXX" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-block">Sifariş et</a>
+          <a href="https://wa.me/994103136941" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-block" data-order>Sifariş et</a>
         </article>
 
         <article class="price-card is-featured reveal" data-dir="up">
@@ -273,7 +247,7 @@
             <li>1 peşəkar e-poçt</li>
             <li>Limitsiz dəstək</li>
           </ul>
-          <a href="https://wa.me/994XXXXXXXXX" target="_blank" rel="noopener noreferrer" class="btn btn-solid btn-block">Sifariş et</a>
+          <a href="https://wa.me/994103136941" target="_blank" rel="noopener noreferrer" class="btn btn-solid btn-block" data-order>Sifariş et</a>
         </article>
 
         <article class="price-card reveal" data-dir="up">
@@ -285,7 +259,7 @@
             <li>1 peşəkar e-poçt</li>
             <li>Limitsiz dəstək</li>
           </ul>
-          <a href="https://wa.me/994XXXXXXXXX" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-block">Sifariş et</a>
+          <a href="https://wa.me/994103136941" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-block" data-order>Sifariş et</a>
         </article>
       </div>
     </div>
@@ -360,7 +334,7 @@
               </span>
               <span class="contact-meta">
                 <span class="contact-label">Telefon</span>
-                <a href="tel:+994XXXXXXXXX">+994 XX XXX XX XX</a>
+                <a href="tel:+994103136941">+994 10 313 69 41</a>
               </span>
             </li>
           </ul>
@@ -385,13 +359,15 @@
   </div>
   <div class="container footer-bottom">
     <span>© 2026 Saytlab. Bütün hüquqlar qorunur.</span>
-    <nav class="footer-links" aria-label="Hüquqi">
-      <a href="terms.html">Qaydalar</a>
-      <a href="privacy.html">Məxfilik</a>
-    </nav>
-    <div class="socials" aria-label="Sosial şəbəkələr">
-      <a href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.91h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94Z"/></svg></a>
-      <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 1.8.25 2.2.42.56.22.96.48 1.38.9.42.42.68.82.9 1.38.17.4.36 1 .42 2.2.07 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 1.8-.42 2.2a3.7 3.7 0 0 1-.9 1.38c-.42.42-.82.68-1.38.9-.4.17-1 .36-2.2.42-1.3.07-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-1.8-.25-2.2-.42a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.17-.4-.36-1-.42-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-1.8.42-2.2.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.4-.17 1-.36 2.2-.42C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.1 0-3.5 0-4.7.07-.9.04-1.4.2-1.7.32-.43.17-.74.37-1.06.7-.32.31-.52.62-.7 1.05-.12.3-.28.8-.32 1.7C3.5 8.8 3.5 9.2 3.5 12s0 3.2.07 4.4c.04.9.2 1.4.32 1.7.17.43.37.74.7 1.06.31.32.62.52 1.05.7.3.12.8.28 1.7.32 1.2.06 1.6.07 4.7.07s3.5 0 4.7-.07c.9-.04 1.4-.2 1.7-.32.43-.17.74-.37 1.06-.7.32-.31.52-.62.7-1.05.12-.3.28-.8.32-1.7.06-1.2.07-1.6.07-4.4s0-3.2-.07-4.4c-.04-.9-.2-1.4-.32-1.7a2.9 2.9 0 0 0-.7-1.06 2.9 2.9 0 0 0-1.05-.7c-.3-.12-.8-.28-1.7-.32C15.5 4 15.1 4 12 4Zm0 3.06a4.94 4.94 0 1 1 0 9.88 4.94 4.94 0 0 1 0-9.88Zm0 1.8a3.14 3.14 0 1 0 0 6.28 3.14 3.14 0 0 0 0-6.28Zm5.15-.9a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3Z"/></svg></a>
+    <div class="footer-bottom-right">
+      <nav class="footer-links" aria-label="Hüquqi">
+        <a href="terms.html">Qaydalar</a>
+        <a href="privacy.html">Məxfilik</a>
+      </nav>
+      <div class="socials" aria-label="Sosial şəbəkələr">
+      <a href="https://www.facebook.com/saytlab" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.91h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94Z"/></svg></a>
+      <a href="https://www.instagram.com/sayt.lab/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 1.8.25 2.2.42.56.22.96.48 1.38.9.42.42.68.82.9 1.38.17.4.36 1 .42 2.2.07 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 1.8-.42 2.2a3.7 3.7 0 0 1-.9 1.38c-.42.42-.82.68-1.38.9-.4.17-1 .36-2.2.42-1.3.07-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-1.8-.25-2.2-.42a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.17-.4-.36-1-.42-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-1.8.42-2.2.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.4-.17 1-.36 2.2-.42C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.1 0-3.5 0-4.7.07-.9.04-1.4.2-1.7.32-.43.17-.74.37-1.06.7-.32.31-.52.62-.7 1.05-.12.3-.28.8-.32 1.7C3.5 8.8 3.5 9.2 3.5 12s0 3.2.07 4.4c.04.9.2 1.4.32 1.7.17.43.37.74.7 1.06.31.32.62.52 1.05.7.3.12.8.28 1.7.32 1.2.06 1.6.07 4.7.07s3.5 0 4.7-.07c.9-.04 1.4-.2 1.7-.32.43-.17.74-.37 1.06-.7.32-.31.52-.62.7-1.05.12-.3.28-.8.32-1.7.06-1.2.07-1.6.07-4.4s0-3.2-.07-4.4c-.04-.9-.2-1.4-.32-1.7a2.9 2.9 0 0 0-.7-1.06 2.9 2.9 0 0 0-1.05-.7c-.3-.12-.8-.28-1.7-.32C15.5 4 15.1 4 12 4Zm0 3.06a4.94 4.94 0 1 1 0 9.88 4.94 4.94 0 0 1 0-9.88Zm0 1.8a3.14 3.14 0 1 0 0 6.28 3.14 3.14 0 0 0 0-6.28Zm5.15-.9a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3Z"/></svg></a>
+      </div>
     </div>
   </div>
 </footer>

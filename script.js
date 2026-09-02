@@ -213,24 +213,65 @@ document.addEventListener('DOMContentLoaded', () => {
         Element ekrana girəndən 100px sonra tetiklənir, sonra unobserve.
         Yuxarı-aşağı scroll təkrar animasiya YARATMIR.
      =================================================================== */
+  const reveal = (el, idx) => {
+    if (el.hasAttribute('data-visible')) return;
+    el.style.transitionDelay = (Math.max(0, idx) * 60) + 'ms';   // qısa stagger
+    el.setAttribute('data-visible', '');
+    el.addEventListener('transitionend', function h() {
+      el.style.transitionDelay = '';
+      el.removeEventListener('transitionend', h);
+    });
+    revealIO.unobserve(el);
+  };
   const revealIO = new IntersectionObserver((entries) => {
     for (const entry of entries) {
       if (!entry.isIntersecting) continue;
       const group = $$('.reveal', entry.target.parentElement).filter(el => !el.hasAttribute('data-visible'));
-      const idx = Math.max(0, group.indexOf(entry.target));
-      entry.target.style.transitionDelay = (idx * 60) + 'ms';   // qısa stagger (30–80ms aralığı)
-      entry.target.setAttribute('data-visible', '');
-      entry.target.addEventListener('transitionend', function h() {
-        entry.target.style.transitionDelay = '';
-        entry.target.removeEventListener('transitionend', h);
-      });
-      revealIO.unobserve(entry.target);   // VACİB: bir dəfə
+      reveal(entry.target, group.indexOf(entry.target));
     }
-  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+    // threshold 0 + faiz-əsaslı rootMargin — həm desktop, həm mobil (Safari) üçün etibarlı.
+  }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+
   const revealEls = $$('.reveal');
   revealEls.forEach(el => revealIO.observe(el));
-  // Təhlükəsizlik tələsi: nə olursa olsun 4 saniyədən sonra hamısı görünsün
-  setTimeout(() => revealEls.forEach(el => el.setAttribute('data-visible', '')), 4000);
+
+  /* Fallback: bəzi mobil brauzerlərdə (xüsusən iOS Safari) IntersectionObserver
+     scroll zamanı gecikə və ya buraxa bilər. Ona görə scroll/resize/load-da da
+     ekranda olan .reveal elementlərini əl ilə açırıq. Ekrandan aşağıda qalanlara
+     toxunmuruq ki, öz istiqamətli animasiyaları ilə açılsınlar. Köhnə "4s-də
+     hamısını aç" tələsi silindi — o, uzun mobil səhifədə vaxtından əvvəl işə düşüb
+     animasiyaları "söndürürdü". */
+  let pending = revealEls.slice();
+  const revealInView = () => {
+    if (!pending.length) return;
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    pending = pending.filter(el => {
+      if (el.hasAttribute('data-visible')) return false;
+      const r = el.getBoundingClientRect();
+      if (r.top < vh * 0.92 && r.bottom > 0) {
+        const group = $$('.reveal', el.parentElement).filter(g => !g.hasAttribute('data-visible'));
+        reveal(el, group.indexOf(el));
+        return false;
+      }
+      return true;
+    });
+    if (!pending.length) {
+      window.removeEventListener('scroll', revealInView);
+      window.removeEventListener('resize', revealInView);
+    }
+  };
+  window.addEventListener('scroll', revealInView, { passive: true });
+  window.addEventListener('resize', revealInView, { passive: true });
+  window.addEventListener('load', revealInView);
+  setTimeout(revealInView, 200);
+  // Bəzi mobil webview-larda scroll event-i gec/az atəşlənir — ilk 20 saniyə ərzində
+  // hər 1.5s-də bir görünən elementləri yoxla. Ekrandan aşağıdakılara toxunulmur,
+  // ona görə animasiyalar "vaxtından əvvəl sönmür".
+  let ticks = 0;
+  const revealPoll = setInterval(() => {
+    revealInView();
+    if (++ticks > 13 || !pending.length) clearInterval(revealPoll);
+  }, 1500);
 
   /* ===================================================================
      8. Sayğac animasiyası — scroll ilə görünəndə 0 → hədəf (bir dəfə)
@@ -302,6 +343,23 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ===================================================================
+     10c. Ayrı səhifələrə (Qaydalar / Məxfilik) keçiddə sürətli fade-out,
+          sonra yönləndir — belə ki keçid hər iki tərəfdən hamar görünsün.
+          (privacy.html / terms.html öz daxili script-i ilə fade-in edir.)
+     =================================================================== */
+  $$('a[href$="terms.html"], a[href$="privacy.html"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0 || link.target === '_blank') return;
+      e.preventDefault();
+      const url = link.href;
+      if (prefersReduced) { window.location.href = url; return; }
+      setMenu(false);
+      document.body.classList.add('is-leaving');
+      setTimeout(() => { window.location.href = url; }, 190);
+    });
+  });
+
+  /* ===================================================================
      11. FAQ accordion — bir anda yalnız biri açıq (grid-template-rows)
      =================================================================== */
   $$('.faq-item').forEach(item => {
@@ -313,28 +371,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ===================================================================
-     12. "Necə işləyir" — sticky panel + pilləli addımlar (scrollytelling).
-         Hər addım ekranın orta xəttinə ən yaxın olanda aktivləşir;
-         sol paneldəki uyğun frame ilə eyni vaxtda dəyişir. Sadə,
-         IntersectionObserver-based — əlavə scroll listener YOXDUR.
+     12. Pricing "Sifariş et" — hər kart üçün plan adı + qiymətlə əvvəlcədən
+         doldurulmuş WhatsApp mesajı qurulur. HTML-dəki href yalnız fallback.
      =================================================================== */
-  const howSteps = $$('.how-step');
-  const howFrames = $$('.how-visual-frame');
-  if (howSteps.length && howFrames.length) {
-    const setActiveStep = (idx) => {
-      howSteps.forEach((s, i) => s.classList.toggle('is-active', i === idx));
-      howFrames.forEach((f, i) => f.classList.toggle('is-active', i === idx));
-    };
-    // Hər addımın CARİ görünürlük nisbətini saxlayırıq (yalnız bu tick-də dəyişənləri
-    // deyil) — ən çox görünən addım həmişə düzgün seçilir, sıçrayış olmur.
-    const ratios = new Map(howSteps.map(s => [s, 0]));
-    const howIO = new IntersectionObserver((entries) => {
-      for (const entry of entries) ratios.set(entry.target, entry.intersectionRatio);
-      let best = null, bestRatio = 0;
-      for (const [el, r] of ratios) { if (r > bestRatio) { bestRatio = r; best = el; } }
-      if (best) setActiveStep(+best.dataset.step);
-    }, { threshold: [0, 0.2, 0.4, 0.6, 0.8, 1], rootMargin: '-10% 0px -10% 0px' });
-    howSteps.forEach(s => howIO.observe(s));
-  }
+  const WA_NUMBER = '994103136941';
+  $$('.price-card').forEach(card => {
+    const link = $('a[data-order]', card);
+    if (!link) return;
+    const plan = ($('h3', card)?.textContent || '').trim();
+    const price = ($('.price-tag strong', card)?.textContent || '').trim();
+    if (!plan || !price) return;
+    const msg = `Salam, ${plan} planını (₼${price}) sifariş etmək istəyirəm.`;
+    link.href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+  });
 
 });
