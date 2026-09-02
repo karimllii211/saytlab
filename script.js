@@ -58,6 +58,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const lerp = (a, b, t) => a + (b - a) * t;
   const clamp = (n, min, max) => Math.min(Math.max(n, min), max);
 
+  /* Bölmə id-si → tab başlığında görünəcək təmiz ad.
+     "html", fayl adı və ya texniki heç nə YOXDUR — yalnız insan-oxunaqlı ad. */
+  const SECTION_TITLES = {
+    hero:     'Saytlab',
+    services: 'Xidmət — Saytlab',
+    about:    'Haqqımızda — Saytlab',
+    benefits: 'Üstünlüklər — Saytlab',
+    pricing:  'Qiymətlər — Saytlab',
+    faq:      'Suallar — Saytlab',
+    contact:  'Əlaqə — Saytlab',
+  };
+  const DEFAULT_TITLE = 'Saytlab';
+
   // (js-reveal sinfi artıq <head>-dəki inline script ilə əlavə olunub — FOUC-suz)
 
   /* ===================================================================
@@ -270,6 +283,33 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
 
   revealEls.forEach(el => revealIO.observe(el));
+
+  /* ===================================================================
+     7b. Tab başlığı — scroll ilə hansı bölmədə olduğunu göstərir.
+         Səhifənin ÖZÜ dəyişmir, YALNIZ brauzer tabındakı yazı yenilənir.
+         DOM-a yazı yalnız kəsişmə dəyişəndə olur (hər frame-də yox) — rAF strukturuna toxunmur.
+     =================================================================== */
+  const titleSections = Object.keys(SECTION_TITLES)
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+
+  if (titleSections.length) {
+    let currentTitleId = null;
+    const titleIO = new IntersectionObserver((entries) => {
+      // Ekranda görünən bölmələr arasından ən çox görünəni (ratio ən böyük) seç.
+      let best = null;
+      for (const entry of entries) {
+        if (entry.isIntersecting && (!best || entry.intersectionRatio > best.intersectionRatio)) {
+          best = entry;
+        }
+      }
+      if (best && best.target.id !== currentTitleId) {
+        currentTitleId = best.target.id;
+        document.title = SECTION_TITLES[currentTitleId] || DEFAULT_TITLE;
+      }
+    }, { threshold: [0.35, 0.5, 0.65] });   // bölmənin ~35–65%-i görünəndə tetiklənir
+    titleSections.forEach(el => titleIO.observe(el));
+  }
 
   /* ===================================================================
      8. Sayğac animasiyası — scroll ilə görünəndə 0 → hədəf (bir dəfə)
