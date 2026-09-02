@@ -117,9 +117,6 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .btn-outline { border: 1px solid var(--border-strong); color: var(--text); }
 .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
-.btn-ghost { color: var(--text-muted); }
-.btn-ghost:hover { color: var(--text); }
-
 /* WhatsApp CTA — .btn-solid strukturu üstündə, tanınan WhatsApp yaşılı.
    Mövcud rəng dəyişənləri ilə yanaşı işləyir, :root palitrasına toxunmur. */
 .btn-whatsapp { background: #25d366; color: #04220f; box-shadow: 0 8px 30px rgba(37, 211, 102, 0.28); }
@@ -157,14 +154,13 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 /* Aşağı doğru scroll edəndə gizlən, yuxarı doğru scroll edəndə (və ya səhifənin başında) görün.
    Sinif idarəsi JS-də, rAF-də, yalnız istiqamət dəyişəndə (bax script.js). */
 .site-header.is-hidden { transform: translate3d(0, -100%, 0); }
-.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-.logo { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; }
-.logo-mark { color: var(--accent); }
+.header-inner { display: flex; align-items: center; justify-content: flex-start; gap: 24px; }
+.logo { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em; margin-right: auto; }
 /* PNG loqo — kvadrat şəkil, sıxılmadan konteynerə sığır. Hündürlük header ritmini pozmasın. */
 .logo-img { height: 36px; width: auto; object-fit: contain; }
 .site-footer .logo-img { height: 30px; }
 
-.main-nav { display: flex; gap: 30px; margin-left: auto; }
+.main-nav { display: flex; gap: 30px; }
 .main-nav a { font-size: 0.92rem; color: var(--text-muted); transition: color 0.2s var(--ease); }
 .main-nav a:hover { color: var(--text); }
 
@@ -309,60 +305,9 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .js-reveal .reveal[data-dir="right"] { transform: translateX(-56px); }
 .js-reveal .reveal[data-visible] { transform: none; opacity: 1; }
 
-/* ---------- 11. FEATURES — Bento grid ---------- */
-.bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-.bento-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 28px;
-  min-height: 240px;
-  position: relative;
-  overflow: hidden;
-  transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
-}
-/* tilt üçün 3D kontekst yalnız .tilt elementlərində — bütün kartlarda deyil */
-.tilt { transform-style: preserve-3d; }
-
-/* will-change yalnız daimi transform alan elementlərə (parallax qatı, magnit düymələr).
-   .tilt kartlarında will-change JS ilə yalnız hover müddətində əlavə/silinir. */
+/* will-change yalnız daimi transform alan elementlərə: parallax qatı və magnit düymələr
+   (hər ikisi yalnız hero + CTA banner-də). */
 [data-magnetic], [data-parallax] { will-change: transform; }
-.bento-card:hover { border-color: var(--border-strong); }
-.bento-card::before {
-  content: ""; position: absolute; inset: 0; opacity: 0; transition: opacity 0.4s var(--ease);
-  background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 0%), rgba(230,184,102,0.12), transparent 70%);
-}
-.bento-card:hover::before { opacity: 1; }
-.bento-wide { grid-column: span 2; }
-.bento-inner { position: relative; z-index: 1; }
-.bento-card h3 { font-size: 1.3rem; margin-bottom: 10px; }
-.bento-card p { color: var(--text-muted); font-size: 0.96rem; }
-
-/* Bento vizual detalları — statik (hover mikro-animasiyaları silindi) */
-.chip-row { display: flex; gap: 10px; margin-top: 24px; }
-.chip { width: 34px; height: 34px; border-radius: 9px; }
-.chip:nth-child(1){ background:#1f6b4a } .chip:nth-child(2){ background:#e6b866 }
-.chip:nth-child(3){ background:#3a2a5c } .chip:nth-child(4){ background:#f2d29a }
-.chip:nth-child(5){ background:#0d1e17; border:1px solid var(--border-strong) }
-
-.mini-frames { display: flex; gap: 8px; margin-top: 22px; }
-.mini-frames i { flex: 1; height: 46px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-2); }
-
-/* Yeganə saxlanılan bento daxili sonsuz animasiyası — "AI variant generasiyası" hissi */
-.pulse-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 22px; max-width: 120px; }
-.pulse-grid i { aspect-ratio: 1; border-radius: 6px; background: var(--accent); border: 1px solid var(--border); opacity: 0.18; animation: pulseFade 2.4s ease-in-out infinite; animation-play-state: var(--anim-state, running); }
-.pulse-grid i:nth-child(2){ animation-delay: .2s } .pulse-grid i:nth-child(3){ animation-delay: .4s }
-.pulse-grid i:nth-child(4){ animation-delay: .6s } .pulse-grid i:nth-child(5){ animation-delay: .8s } .pulse-grid i:nth-child(6){ animation-delay: 1s }
-@keyframes pulseFade { 0%,100% { opacity: 0.16; } 50% { opacity: 0.75; } }
-
-/* statik karet işarəsi (yanıb-sönmə silindi) */
-.type-line { display: flex; align-items: center; gap: 4px; margin-top: 22px; font-family: var(--font-display); font-size: 0.9rem; color: var(--accent-2); }
-.type-line b { width: 8px; height: 16px; background: var(--accent); opacity: 0.9; }
-
-.ratio-row { display: flex; align-items: flex-end; gap: 8px; margin-top: 22px; }
-.ratio-row i { border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-2); }
-.ratio-row .r1 { width: 40px; height: 40px; } .ratio-row .r2 { width: 32px; height: 46px; } .ratio-row .r3 { width: 54px; height: 30px; }
-.bento-card:hover .ratio-row i { border-color: var(--accent); }
 
 /* ---------- 12. Logo marquee ---------- */
 .logos { padding-block: clamp(48px, 7vw, 84px); }
@@ -373,82 +318,14 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .marquee-track span { font-family: var(--font-display); font-weight: 500; font-size: 1.4rem; color: var(--text-dim); white-space: nowrap; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
-/* ---------- 13. Use-case ---------- */
-.usecase-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
-.usecase-list { display: flex; flex-direction: column; gap: 10px; }
-.usecase-item {
-  text-align: left; width: 100%;
-  padding: 20px 22px; border-radius: var(--r-md);
-  border: 1px solid var(--border);
-  background: var(--surface);
-  transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
-}
-.usecase-item .uc-title { display: block; font-family: var(--font-display); font-weight: 500; font-size: 1.08rem; }
-/* grid-template-rows texnikası (max-height reflow-undan yüngül).
-   .uc-body-in = grid elementi (padding-siz → 0-a yığılır); mətn onun daxilində. */
-.usecase-item .uc-body { display: grid; grid-template-rows: 0fr; overflow: hidden; opacity: 0; transition: grid-template-rows 0.3s var(--ease-out), opacity 0.25s var(--ease-out); }
-.usecase-item .uc-body-in { min-height: 0; overflow: hidden; }
-.usecase-item .uc-body-in > span { display: block; padding-top: 10px; color: var(--text-muted); font-size: 0.94rem; }
-.usecase-item.is-active { border-color: var(--accent); background: var(--surface-2); }
-.usecase-item.is-active .uc-body { grid-template-rows: 1fr; opacity: 1; }
-
-.usecase-preview { position: sticky; top: 100px; }
-.uc-window { border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--bg-2); overflow: hidden; box-shadow: var(--shadow-1); }
-.uc-window-bar { display: flex; gap: 7px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
-.uc-window-bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--surface-2); }
-.uc-window-body { padding: 26px; }
-.uc-tag { display: inline-block; padding: 5px 12px; border-radius: 999px; background: rgba(230,184,102,0.16); color: var(--accent-2); font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.06em; }
-.uc-window-body h4 { font-size: 1.5rem; margin: 14px 0 8px; }
-.uc-window-body p { color: var(--text-muted); font-size: 0.95rem; }
-/* Fon dəyişimi ani olur; "canlılıq" .uc-window-body-nin opacity keçidi ilə verilir */
-.uc-visual { margin-top: 22px; height: 180px; border-radius: var(--r-md); background: linear-gradient(135deg, var(--uc-c1, #1f6b4a), var(--uc-c2, #e6b866)); position: relative; overflow: hidden; }
-.uc-visual::after { content: ""; position: absolute; inset: 0; background-image: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), transparent 45%); }
-.uc-window-body { transition: opacity 0.22s var(--ease); }
-.uc-window-body.is-swapping { opacity: 0.3; }
-
-/* ---------- 14. Benefits 3x2 ---------- */
+/* ---------- 13. Benefits 3x2 ---------- */
 .benefit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .benefit-card { padding: 26px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); transition: transform 0.3s var(--ease), border-color 0.3s var(--ease); }
 .benefit-card:hover { transform: translateY(-4px); border-color: var(--border-strong); }
 .benefit-card h3 { font-size: 1.15rem; color: var(--accent); margin-bottom: 8px; }
 .benefit-card p { color: var(--text-muted); font-size: 0.94rem; }
 
-/* ---------- 15. Necə işləyir ---------- */
-.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; counter-reset: step; }
-.step { padding: 26px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); }
-.step-num { font-family: var(--font-display); font-size: 0.9rem; color: var(--text-dim); letter-spacing: 0.1em; }
-.step-visual { height: 150px; border-radius: var(--r-md); margin: 16px 0 18px; position: relative; overflow: hidden; border: 1px solid var(--border); }
-/* "Necə işləyir" vizualları — statik (spin/breathe silindi) */
-.sv-1 { background: conic-gradient(from 180deg at 50% 50%, #1f6b4a, #0d1e17, #1f6b4a); }
-.sv-2 { background: repeating-linear-gradient(45deg, #17301f 0 12px, #12261d 12px 24px); }
-.sv-2::after { content: ""; position: absolute; inset: 20% 15%; border-radius: 10px; background: var(--accent); opacity: 0.6; }
-.sv-3 { background: radial-gradient(circle at 50% 120%, #e6b866, #12261d 60%); }
-.step h3 { font-size: 1.2rem; margin-bottom: 8px; }
-.step p { color: var(--text-muted); font-size: 0.94rem; }
-
-/* ---------- 16. Testimonials carousel ---------- */
-.carousel { position: relative; display: flex; align-items: center; gap: 12px; padding-inline: var(--gutter); max-width: calc(var(--container) + 2 * var(--gutter)); margin: 0 auto; }
-.car-track { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-block: 8px; }
-.car-track::-webkit-scrollbar { display: none; }
-.t-card { scroll-snap-align: start; flex: 0 0 clamp(280px, 42vw, 440px); background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 30px; }
-.t-card blockquote { font-family: var(--font-display); font-size: 1.15rem; line-height: 1.45; }
-.t-card figcaption { margin-top: 20px; display: flex; flex-direction: column; gap: 2px; }
-.t-card figcaption b { font-weight: 600; }
-.t-card figcaption span { color: var(--text-dim); font-size: 0.85rem; }
-.car-btn { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--border-strong); font-size: 1.1rem; color: var(--text); transition: background 0.25s var(--ease), color 0.25s var(--ease); }
-.car-btn:hover { background: var(--accent); color: var(--accent-ink); }
-
-/* ---------- 17. Qalereya ---------- */
-.gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-.g-card { border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; background: var(--surface); }
-.g-visual { height: 260px; position: relative; overflow: hidden; }
-.g-visual::after { content: ""; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E"); mix-blend-mode: overlay; }
-.gv-1 { background: linear-gradient(135deg, #c9954a, #3a2a5c 70%); }
-.gv-2 { background: radial-gradient(circle at 30% 20%, #f2d29a, #1f6b4a 70%); }
-.gv-3 { background: conic-gradient(from 90deg, #1f6b4a, #e6b866, #3a2a5c, #1f6b4a); }
-.g-card figcaption { padding: 16px 20px; font-family: var(--font-display); font-size: 0.9rem; color: var(--text-muted); }
-
-/* ---------- 18. Qiymətlər ---------- */
+/* ---------- 14. Qiymətlər ---------- */
 .billing-toggle { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 44px; font-family: var(--font-display); font-size: 0.95rem; color: var(--text-dim); }
 .billing-toggle .is-active { color: var(--text); }
 .billing-toggle em { color: var(--accent); font-style: normal; font-size: 0.8rem; }
@@ -511,12 +388,8 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 
 /* ---------- 21. Footer ---------- */
 .site-footer { border-top: 1px solid var(--border); padding-top: 64px; }
-.footer-inner { display: grid; grid-template-columns: 1.4fr 2fr; gap: 40px; padding-bottom: 48px; }
-.footer-brand p { color: var(--text-dim); font-size: 0.92rem; margin-top: 14px; max-width: 280px; }
-.footer-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-.footer-col h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-dim); margin-bottom: 14px; }
-.footer-col a { display: block; color: var(--text-muted); font-size: 0.92rem; padding: 5px 0; transition: color 0.2s var(--ease); }
-.footer-col a:hover { color: var(--accent); }
+.footer-inner { display: grid; grid-template-columns: 1fr; gap: 40px; padding-bottom: 48px; }
+.footer-brand p { color: var(--text-dim); font-size: 0.92rem; margin-top: 14px; max-width: 420px; }
 .footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 24px; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-dim); }
 .socials { display: flex; gap: 14px; }
 .socials a { color: var(--text-muted); transition: color 0.2s var(--ease), transform 0.2s var(--ease); }
@@ -671,11 +544,9 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 @media (max-width: 960px) {
   .main-nav, .header-actions { display: none; }
   .menu-toggle { display: flex; }
-  .bento, .benefit-grid, .steps, .gallery-grid, .price-grid { grid-template-columns: 1fr 1fr; }
-  .bento-wide { grid-column: span 2; }
+  .benefit-grid, .price-grid { grid-template-columns: 1fr 1fr; }
   .service-grid { grid-template-columns: 1fr 1fr; }
   .contact-layout { grid-template-columns: 1fr; }
-  .footer-inner { grid-template-columns: 1fr; }
   .how-layout { grid-template-columns: 1fr; }
   .how-visual { position: static; height: 320px; order: -1; margin-bottom: 8px; }
   .results-grid { grid-template-columns: 1fr 1fr; }
@@ -685,12 +556,10 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 
 @media (max-width: 768px) {
   :root { --section-y: clamp(60px, 12vw, 90px); }
-  .bento, .benefit-grid, .steps, .gallery-grid, .price-grid, .service-grid { grid-template-columns: 1fr; }
-  .bento-wide { grid-column: auto; }
+  .benefit-grid, .price-grid, .service-grid { grid-template-columns: 1fr; }
   .price-card.is-featured { transform: none; }
   .hero-stats { gap: 0; }
   .hero-stats .stat { flex: 1 1 45%; }
-  .footer-cols { grid-template-columns: 1fr 1fr; }
   .results-grid { grid-template-columns: 1fr 1fr; }
 }
 
@@ -698,11 +567,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   :root { --gutter: 18px; }
   .hero { padding-block: 100px 60px; }
   .hero-title { font-size: clamp(2.1rem, 11vw, 3rem); }
-  .footer-cols { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
-  .carousel { padding-inline: 10px; gap: 6px; }
-  .car-btn { width: 38px; height: 38px; }
-  .t-card { flex-basis: 76vw; padding: 24px; }
 }
 
 /* ---------- 23. Hərəkət azaltma (əlçatanlıq + performans) ---------- */
