@@ -390,7 +390,10 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .site-footer .container { max-width: none; }
 .footer-inner { display: grid; grid-template-columns: 1fr; gap: 40px; padding-bottom: 48px; }
 .footer-brand p { color: var(--text-dim); font-size: 0.92rem; margin-top: 14px; max-width: 420px; }
-.footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 24px; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-dim); }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap; padding-block: 24px; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-dim); }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a { color: var(--text-muted); transition: color 0.2s var(--ease); }
+.footer-links a:hover { color: var(--accent); }
 .socials { display: flex; gap: 14px; }
 .socials a { color: var(--text-muted); transition: color 0.2s var(--ease), transform 0.2s var(--ease); }
 .socials a:hover { color: var(--accent); transform: translateY(-2px); }
@@ -518,6 +521,11 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .contact-label { font-family: var(--font-display); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-dim); }
 .contact-direct li a { color: var(--text); transition: color 0.2s var(--ease); word-break: break-word; }
 .contact-direct li a:hover { color: var(--accent); }
+
+/* ---------- 21h. Hüquqi bölmələr — Qaydalar / Məxfilik ---------- */
+.legal-body { max-width: 760px; }
+.legal-body p { color: var(--text-muted); font-size: 0.96rem; margin-bottom: 16px; }
+.legal-body p strong { color: var(--text); font-family: var(--font-display); font-weight: 600; }
 
 /* ---------- 22. Responsiv ---------- */
 @media (max-width: 960px) {
