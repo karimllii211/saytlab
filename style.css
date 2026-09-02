@@ -392,6 +392,10 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 
 /* ---------- 21. Footer ---------- */
 .site-footer { border-top: 1px solid var(--border); padding-top: 64px; }
+/* Header ilə eyni məntiq: footer sətirləri --container (1180px) daxilində sıxılmır,
+   tam enə yayılır — yalnız --gutter qədər yan boşluq qalır. Mobil/tablet-də
+   (viewport < 1180px) bu heç nəyi dəyişmir, yalnız geniş ekranlara təsir edir. */
+.site-footer .container { max-width: none; }
 .footer-inner { display: grid; grid-template-columns: 1fr; gap: 40px; padding-bottom: 48px; }
 .footer-brand p { color: var(--text-dim); font-size: 0.92rem; margin-top: 14px; max-width: 420px; }
 .footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 24px; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-dim); }
