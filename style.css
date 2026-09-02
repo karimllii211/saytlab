@@ -35,8 +35,8 @@
   --shadow-2: 0 24px 60px rgba(0,0,0,0.45);
 
   /* Ölçü / ritm */
-  --container: 1120px;                     /* cüzi daraldıldı — məzmun daha mərkəzli görünsün */
-  --gutter: clamp(22px, 5.5vw, 60px);      /* yan boşluqlar bir qədər artırıldı */
+  --container: 1220px;                     /* geniş/açıq görünüş — məzmun kənarlara yaxın "nəfəs alır" */
+  --gutter: clamp(20px, 4.5vw, 48px);      /* orta yan boşluq */
   --section-y: clamp(72px, 11vw, 140px);
 
   /* Keçidlər — VAHİD "Framer" easing əyrisi (span.framer.ai-dan frame-by-frame ölçülmüş).
