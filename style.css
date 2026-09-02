@@ -39,14 +39,13 @@
   --gutter: clamp(22px, 5.5vw, 60px);      /* yan boşluqlar bir qədər artırıldı */
   --section-y: clamp(72px, 11vw, 140px);
 
-  /* Keçidlər — standartlaşdırılmış easing dəsti */
-  --ease:        cubic-bezier(0.23, 1, 0.32, 1);   /* ease-out: hover, kart, accordion, düymə */
-  --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);  /* simmetrik in-out: kiçik UI keçidləri üçün */
-  /* DreamMotion-un canlı saytından JS ilə frame-by-frame ölçülmüş faktiki əyri (expo-out):
-     sürətli başlayır, uzun/yumşaq "iz buraxaraq" dayanır, heç bir overshoot yoxdur.
-     Yalnız scroll-reveal üçün — "premium/üzən" hissi bu əyridən gəlir. */
-  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Keçidlər — VAHİD "Framer" easing əyrisi (span.framer.ai-dan frame-by-frame ölçülmüş).
+     cubic-bezier(0.44, 0, 0.56, 1): hamar, simmetrik in-out — "üzən/premium" hiss.
+     Bütün ad variantları eyni əyriyə baxır ki, sayt boyu vahid hərəkət dili olsun. */
+  --ease:        cubic-bezier(0.44, 0, 0.56, 1);
+  --ease-out:    cubic-bezier(0.44, 0, 0.56, 1);
+  --ease-in-out: cubic-bezier(0.44, 0, 0.56, 1);
+  --ease-reveal: cubic-bezier(0.44, 0, 0.56, 1);
 
   /* tam fallback zənciri — fontlar gec gələndə səhifə "boş" görünməsin */
   --font-display: "Space Grotesk", "Segoe UI", system-ui, -apple-system, sans-serif;
@@ -57,6 +56,15 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: clip; }
+
+/* ---------- 1b. Lenis smooth-scroll (JS-də işə salınır — script.js) ----------
+   Lenis <html>-ə .lenis / .lenis-smooth / .lenis-stopped siniflərini əlavə edir.
+   prefers-reduced-motion və ya Lenis yüklənməzsə bu siniflər olmur, native scroll işləyir. */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: clip; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
 
 body {
   background: var(--bg);
@@ -318,12 +326,18 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
    eyni performansla işləyir və bu problemi yaratmır.
    data-dir="up|down|left|right" — HTML-də işarələnən istiqamətə görə başlanğıc translate
    dəyəri dəyişir (əvvəllər yalnız up işləyirdi, digərləri effektsiz idi — düzəldildi). */
-.reveal { transition: transform 750ms var(--ease-reveal), opacity 550ms var(--ease-reveal); }
-.js-reveal .reveal { transform: translateY(48px); opacity: 0; }
-.js-reveal .reveal[data-dir="down"]  { transform: translateY(-40px); }
-.js-reveal .reveal[data-dir="left"]  { transform: translateX(56px); }
-.js-reveal .reveal[data-dir="right"] { transform: translateX(-56px); }
-.js-reveal .reveal[data-visible] { transform: none; opacity: 1; }
+/* İstiqamətli sürüşmə + yüngül skala + yumşaq blur ("fokuslanma" hissi).
+   Blur mobil-də söndürülür (aşağıda 768px media) — mobil GPU-larda bahalıdır.
+   will-change JS-də yalnız açılış anında qoyulur (bax script.js reveal()). */
+.reveal {
+  transition: transform 700ms var(--ease-reveal), opacity 600ms var(--ease-reveal), filter 600ms var(--ease-reveal);
+  filter: blur(0px);
+}
+.js-reveal .reveal { transform: translateY(44px) scale(0.985); opacity: 0; filter: blur(2px); }
+.js-reveal .reveal[data-dir="down"]  { transform: translateY(-38px) scale(0.985); }
+.js-reveal .reveal[data-dir="left"]  { transform: translateX(52px) scale(0.985); }
+.js-reveal .reveal[data-dir="right"] { transform: translateX(-52px) scale(0.985); }
+.js-reveal .reveal[data-visible] { transform: none; opacity: 1; filter: blur(0px); }
 
 /* will-change yalnız daimi transform alan elementlərə: parallax qatı və magnit düymələr
    (hər ikisi yalnız hero + CTA banner-də). */
@@ -340,15 +354,17 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 
 /* ---------- 13. Benefits 3x2 ---------- */
 .benefit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-.benefit-card { padding: 26px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); transition: transform 0.3s var(--ease), border-color 0.3s var(--ease); }
+.benefit-card { padding: 26px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); transition: transform 0.25s var(--ease), border-color 0.25s var(--ease); }
 .benefit-card:hover { transform: translateY(-4px); border-color: var(--border-strong); }
 .benefit-card h3 { font-size: 1.15rem; color: var(--accent); margin-bottom: 8px; }
 .benefit-card p { color: var(--text-muted); font-size: 0.94rem; }
 
 /* ---------- 14. Qiymətlər — 3 müddət kartı ---------- */
 .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: start; }
-.price-card { padding: 32px 28px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); position: relative; }
+.price-card { padding: 32px 28px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); position: relative; transition: transform 0.25s var(--ease), border-color 0.25s var(--ease); will-change: transform; }
 .price-card.is-featured { border-color: var(--accent); background: linear-gradient(180deg, var(--surface-2), var(--surface)); box-shadow: 0 20px 60px rgba(0,0,0,0.4); transform: translateY(-10px); }
+.price-card:hover { border-color: var(--border-strong); transform: translateY(-4px); }
+.price-card.is-featured:hover { transform: translateY(-14px); }
 .price-card .badge { position: absolute; top: -12px; left: 28px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-display); font-size: 0.72rem; padding: 5px 12px; border-radius: 999px; letter-spacing: 0.04em; }
 .price-card h3 { font-size: 1.2rem; margin-bottom: 6px; }
 .price-tag { display: flex; align-items: baseline; gap: 4px; margin-bottom: 22px; font-family: var(--font-display); }
@@ -402,8 +418,9 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   background: var(--surface);
-  transition: transform 0.3s var(--ease), border-color 0.3s var(--ease);
+  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease);
   position: relative;
+  will-change: transform;
 }
 .service-card:hover { transform: translateY(-4px); border-color: var(--border-strong); }
 .service-num {
@@ -425,9 +442,9 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
   background: var(--surface);
-  transition: border-color 0.3s var(--ease);
+  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
 }
-.about-card:hover { border-color: var(--border-strong); }
+.about-card:hover { border-color: var(--border-strong); transform: translateY(-4px); }
 .about-label {
   display: inline-block;
   margin-bottom: 14px;
@@ -479,8 +496,14 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   :root { --section-y: clamp(60px, 12vw, 90px); }
   .benefit-grid, .price-grid, .service-grid { grid-template-columns: 1fr; }
   .price-card.is-featured { transform: none; }
+  .price-card.is-featured:hover { transform: translateY(-4px); }
   .hero-stats { gap: 0; }
   .hero-stats .stat { flex: 1 1 45%; }
+
+  /* mobil GPU-larda blur bahalıdır — reveal-də filter söndürülür, yalnız translate+opacity qalır */
+  .reveal { transition: transform 640ms var(--ease-reveal), opacity 560ms var(--ease-reveal); }
+  .js-reveal .reveal,
+  .js-reveal .reveal[data-visible] { filter: none; }
 }
 
 @media (max-width: 420px) {
@@ -500,13 +523,13 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .js-reveal body {
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity .25s ease, transform .25s ease;
+  transition: opacity .25s var(--ease-reveal), transform .25s var(--ease-reveal);
 }
 .js-reveal body.page-ready { opacity: 1; transform: none; }
 .js-reveal body.is-leaving {
   opacity: 0;
   transform: translateY(-8px);
-  transition: opacity .18s ease, transform .18s ease;
+  transition: opacity .18s var(--ease-reveal), transform .18s var(--ease-reveal);
 }
 
 /* ---------- 23. Hərəkət azaltma (əlçatanlıq + performans) ---------- */

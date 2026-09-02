@@ -21,11 +21,35 @@
    Faylın ən başında, DOMContentLoaded-dən kənarda: mümkün qədər tez icra olunsun. */
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 window.scrollTo(0, 0);
-window.addEventListener('load', () => window.scrollTo(0, 0));  // Safari üçün ehtiyat
+
+/* ===================================================================
+   LENIS smooth-scroll — inertial/yumşaq scroll (Framer saytlarındakı hiss).
+   • Yalnız transform/scroll-position dəyişir, layout-a toxunmur.
+   • prefers-reduced-motion və ya CDN yüklənməzsə → native scroll (fallback).
+   • `lenis` dəyişəni fayl əhatəsindədir — DOMContentLoaded daxilində istifadə olunur
+     (loqo kliki → başa qayıt, mobil menyu → arxa scroll kilidi).
+   =================================================================== */
+const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let lenis = null;
+if (!REDUCED_MOTION && typeof window.Lenis === 'function') {
+  lenis = new window.Lenis({
+    duration: 1.1,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // expo ease-out
+    smoothWheel: true,
+  });
+  const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf); };
+  requestAnimationFrame(raf);
+}
+
+// F5-dən sonra da tam yuxarıda başla (Safari bəzən load-dan sonra köhnə mövqeyə sıçrayır)
+window.addEventListener('load', () => {
+  if (lenis) lenis.scrollTo(0, { immediate: true });
+  else window.scrollTo(0, 0);
+});
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const prefersReduced = REDUCED_MOTION;
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const motion = !prefersReduced;
 
@@ -216,9 +240,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const reveal = (el, idx) => {
     if (el.hasAttribute('data-visible')) return;
     el.style.transitionDelay = (Math.max(0, idx) * 60) + 'ms';   // qısa stagger
+    el.style.willChange = 'transform, opacity, filter';          // yalnız açılış anında
     el.setAttribute('data-visible', '');
     el.addEventListener('transitionend', function h() {
       el.style.transitionDelay = '';
+      el.style.willChange = '';                                  // GPU qatını burax
       el.removeEventListener('transitionend', h);
     });
     revealIO.unobserve(el);
@@ -322,6 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
     menuToggle.setAttribute('aria-expanded', String(open));
     overlay.setAttribute('aria-hidden', String(!open));
     document.body.style.overflow = open ? 'hidden' : '';
+    if (lenis) { open ? lenis.stop() : lenis.start(); }   // arxa fon scroll-unu kilidlə/aç
   };
   menuToggle.addEventListener('click', () => setMenu(!overlay.classList.contains('is-open')));
   $$('.mobile-nav a').forEach(a => a.addEventListener('click', () => setMenu(false)));
@@ -337,8 +364,28 @@ document.addEventListener('DOMContentLoaded', () => {
     logoLink.addEventListener('click', (e) => {
       e.preventDefault();
       setMenu(false);
-      window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
+      if (lenis) lenis.scrollTo(0, { duration: 1.1 });
+      else window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
       history.replaceState(null, '', location.pathname + location.search);
+    });
+  });
+
+  /* ===================================================================
+     10b2. Daxili çapa (#) linkləri — Lenis aktivdirsə onun smooth scrollTo-su
+           ilə (native "auto" jump əvəzinə). Header hündürlüyü qədər offset.
+           Loqo (.logo) istisnadır — öz handler-i var.
+     =================================================================== */
+  $$('a[href^="#"]:not(.logo)').forEach(link => {
+    const hash = link.getAttribute('href');
+    if (!hash || hash.length < 2) return;
+    link.addEventListener('click', (e) => {
+      const target = document.getElementById(hash.slice(1));
+      if (!target) return;
+      e.preventDefault();
+      setMenu(false);
+      if (lenis) lenis.scrollTo(target, { offset: -78, duration: 1.1 });
+      else target.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
+      history.replaceState(null, '', hash);
     });
   });
 
