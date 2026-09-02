@@ -302,17 +302,40 @@ document.addEventListener('DOMContentLoaded', () => {
         .replace(/^https?:\/\//, '')
         .replace(/\/.*$/, '');
       if (!raw) return;
-      const base = raw.replace(/\.[a-z.]+$/, '') || raw;
-      const rows = TLDS.map((tld, i) => {
+      // Yalnız domen-adı üçün icazəli simvollar saxlanılır (a-z 0-9 - .) — həm demo
+      // nəticəni təmiz saxlayır, həm də əlavə təhlükəsizlik qatıdır.
+      const clean = raw.replace(/[^a-z0-9.-]/g, '');
+      const base = clean.replace(/\.[a-z.]+$/, '') || clean;
+      if (!base) return;
+
+      // VACİB: nəticələr innerHTML ilə YOX, textContent ilə qurulur — istifadəçi
+      // inputu heç vaxt HTML kimi şərh olunmur (XSS qarşısı alınır).
+      const note = document.createElement('p');
+      note.className = 'domain-result-note';
+      note.textContent = 'Demo nəticə — real domen yoxlaması deyil. Dəqiq status üçün bizə yazın.';
+
+      const list = document.createElement('ul');
+      list.className = 'domain-list';
+
+      TLDS.forEach((tld, i) => {
         const taken = (base.length + i) % 3 === 0;   // demo qayda — real yoxlama deyil
-        return `<li class="domain-row ${taken ? 'is-taken' : 'is-free'}">
-            <span class="domain-name">${base}${tld}</span>
-            <span class="domain-status">${taken ? 'Tutulub' : 'Boşdur'}</span>
-          </li>`;
-      }).join('');
-      domainResult.innerHTML =
-        `<p class="domain-result-note">Demo nəticə — real domen yoxlaması deyil. Dəqiq status üçün bizə yazın.</p>
-         <ul class="domain-list">${rows}</ul>`;
+
+        const li = document.createElement('li');
+        li.className = 'domain-row ' + (taken ? 'is-taken' : 'is-free');
+
+        const name = document.createElement('span');
+        name.className = 'domain-name';
+        name.textContent = base + tld;
+
+        const status = document.createElement('span');
+        status.className = 'domain-status';
+        status.textContent = taken ? 'Tutulub' : 'Boşdur';
+
+        li.append(name, status);
+        list.append(li);
+      });
+
+      domainResult.replaceChildren(note, list);
       domainResult.hidden = false;
     });
   }
