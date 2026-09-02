@@ -511,10 +511,11 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .contact-direct li a { color: var(--text); transition: color 0.2s var(--ease); word-break: break-word; }
 .contact-direct li a:hover { color: var(--accent); }
 
-/* ---------- 21h. Hüquqi bölmələr — Qaydalar / Məxfilik ---------- */
+/* ---------- 21h. Hüquqi səhifələr — Qaydalar / Məxfilik (terms.html, privacy.html) ---------- */
 .legal-body { max-width: 760px; }
 .legal-body p { color: var(--text-muted); font-size: 0.96rem; margin-bottom: 16px; }
 .legal-body p strong { color: var(--text); font-family: var(--font-display); font-weight: 600; }
+.legal-back { margin-top: 28px; }
 
 /* ---------- 22. Responsiv ---------- */
 @media (max-width: 960px) {
