@@ -287,6 +287,21 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
 
   /* ===================================================================
+     10b. Loqo klikləndə səhifə HƏMİŞƏ tam yuxarıya qayıtsın.
+          #top header elementindədir, amma URL-də artıq "#top" varsa brauzer
+          təkrar scroll etmir — ona görə açıq handler yazılır. Mobil menyu
+          açıqdırsa bağlanır. prefers-reduced-motion-da ani, əks halda smooth.
+     =================================================================== */
+  $$('a.logo').forEach(logoLink => {
+    logoLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      setMenu(false);
+      window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
+      history.replaceState(null, '', location.pathname + location.search);
+    });
+  });
+
+  /* ===================================================================
      11. Domen axtar — DEMO. Real DNS/whois sorğusu YOXDUR; nəticə
          sırf maket məqsədlidir (deterministik "boş/tutulub" bölgüsü).
      =================================================================== */
