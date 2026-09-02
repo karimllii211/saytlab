@@ -502,12 +502,6 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .how-step h3 { font-size: 1.35rem; margin-bottom: 8px; }
 .how-step p { color: var(--text-muted); font-size: 0.96rem; max-width: 420px; }
 
-/* ---------- 21f. Nəticələr — böyük rəqəmli stat bölməsi (Span-tərzi) ---------- */
-.results-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; text-align: center; }
-.result-stat { padding: 30px 16px; }
-.result-stat strong { display: block; font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 600; color: var(--accent-2); }
-.result-stat span { display: block; margin-top: 10px; color: var(--text-muted); font-size: 0.95rem; }
-
 /* ---------- 21d. Əlaqə — sadələşdirilmiş: yalnız e-poçt + telefon, ikonlu ---------- */
 .contact-layout { max-width: 460px; }
 .contact-direct { padding: 30px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); }
@@ -537,7 +531,6 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   .about-grid { grid-template-columns: 1fr; }
   .how-layout { grid-template-columns: 1fr; }
   .how-visual { position: static; height: 320px; order: -1; margin-bottom: 8px; }
-  .results-grid { grid-template-columns: 1fr 1fr; }
   .faq-layout { grid-template-columns: 1fr; }
   .faq-aside { position: static; }
 }
@@ -548,7 +541,6 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   .price-card.is-featured { transform: none; }
   .hero-stats { gap: 0; }
   .hero-stats .stat { flex: 1 1 45%; }
-  .results-grid { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 420px) {
