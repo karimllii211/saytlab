@@ -318,8 +318,10 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 /* statik — sonsuz "nəbz" silindi; sadə göstərici xətt kifayətdir */
 .hero-scroll-hint span { width: 1px; height: 40px; background: linear-gradient(var(--accent), transparent); opacity: 0.55; }
 
-/* ---------- 10. Scroll reveal — bir dəfəlik, opacity + transform, İSTİQAMƏTLİ ---------- */
-/* Təhlükəsizlik: JS yüklənməzsə məzmun görünən qalır (gizlətmə yalnız js-reveal ilə).
+/* ---------- 10. Scroll reveal — TƏKRARLANAN, opacity + transform + blur, İSTİQAMƏTLİ ---------- */
+/* JS (script.js §7) `data-visible`-i element view-port-a girəndə əlavə, çıxanda SİLİR —
+   ona görə keçid iki tərəflidir: hər dəfə yenidən görünəndə animasiya təkrar işləyir.
+   Təhlükəsizlik: JS yüklənməzsə məzmun görünən qalır (gizlətmə yalnız js-reveal ilə).
    QEYD: əvvəllər clip-path: inset(0 0 100% 0) istifadə olunurdu — bu, elementin vizual
    sahəsini sıfıra endirdiyi üçün Chromium-un IntersectionObserver-i onu "heç vaxt kəsişmir"
    hesab edirdi və reveal ekrana girəndə belə TETİKLƏNMİRDİ. transform+opacity GPU-da
@@ -541,9 +543,10 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
     transition-duration: 0.001ms !important;
     will-change: auto !important;
   }
-  /* scroll-reveal: heç bir sürüşmə, yalnız yüngül opacity keçidi */
-  .reveal {
+  /* scroll-reveal: heç bir sürüşmə/blur — həmişə görünən (təkrarlanan gizlətmə də ləğv olunur) */
+  .reveal, .reveal[data-visible] {
     transform: none !important;
+    filter: none !important;
     transition: opacity 200ms ease !important;
     opacity: 1 !important;
   }

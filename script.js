@@ -233,71 +233,43 @@ document.addEventListener('DOMContentLoaded', () => {
   requestAnimationFrame(frame);
 
   /* ===================================================================
-     7. Scroll-reveal — "pərdə açılması" (clip-path), BİR DƏFƏ.
-        Element ekrana girəndən 100px sonra tetiklənir, sonra unobserve.
-        Yuxarı-aşağı scroll təkrar animasiya YARATMIR.
+     7. Scroll-reveal — TƏKRARLANAN (Framer saytlarındakı kimi).
+        Element hər dəfə view-port-a girəndə animasiya olur; çıxanda
+        gizli başlanğıc vəziyyətinə (`.js-reveal .reveal` — transform/opacity/blur)
+        qayıdır. Yuxarı scroll da daxil — məhdudiyyət yoxdur, unobserve YOXDUR.
+        QEYD: sayğaclar (`[data-count]`) AYRI observer-dədir (aşağıda, bir dəfəlik).
      =================================================================== */
-  const reveal = (el, idx) => {
-    if (el.hasAttribute('data-visible')) return;
-    el.style.transitionDelay = (Math.max(0, idx) * 60) + 'ms';   // qısa stagger
-    el.style.willChange = 'transform, opacity, filter';          // yalnız açılış anında
-    el.setAttribute('data-visible', '');
-    el.addEventListener('transitionend', function h() {
-      el.style.transitionDelay = '';
-      el.style.willChange = '';                                  // GPU qatını burax
+  const revealEls = $$('.reveal');
+  // stagger indeksi bir dəfə hesablanır (eyni valideyn altında sıra nömrəsi)
+  revealEls.forEach(el => {
+    const sibs = $$('.reveal', el.parentElement);
+    el.dataset.revealI = String(Math.max(0, sibs.indexOf(el)));
+  });
+  // keçid bitəndə GPU qatını burax (will-change yalnız animasiya müddətində qalır)
+  const releaseWillChange = (el) => {
+    el.addEventListener('transitionend', function h(e) {
+      if (e.target !== el) return;
+      el.style.willChange = '';
       el.removeEventListener('transitionend', h);
     });
-    revealIO.unobserve(el);
   };
   const revealIO = new IntersectionObserver((entries) => {
     for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-      const group = $$('.reveal', entry.target.parentElement).filter(el => !el.hasAttribute('data-visible'));
-      reveal(entry.target, group.indexOf(entry.target));
+      const el = entry.target;
+      el.style.willChange = 'transform, opacity, filter';
+      if (entry.isIntersecting) {
+        el.style.transitionDelay = (+el.dataset.revealI * 55) + 'ms';   // qısa stagger (giriş)
+        el.setAttribute('data-visible', '');
+      } else {
+        el.style.transitionDelay = '0ms';                                // çıxış — gecikməsiz
+        el.removeAttribute('data-visible');                              // gizli vəziyyətə qayıt
+      }
+      releaseWillChange(el);
     }
-    // threshold 0 + faiz-əsaslı rootMargin — həm desktop, həm mobil (Safari) üçün etibarlı.
+    // threshold/rootMargin dəyişdirilmədi — yalnız "bir dəfəlik" məntiq "təkrarlanan"a çevrildi.
   }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
 
-  const revealEls = $$('.reveal');
   revealEls.forEach(el => revealIO.observe(el));
-
-  /* Fallback: bəzi mobil brauzerlərdə (xüsusən iOS Safari) IntersectionObserver
-     scroll zamanı gecikə və ya buraxa bilər. Ona görə scroll/resize/load-da da
-     ekranda olan .reveal elementlərini əl ilə açırıq. Ekrandan aşağıda qalanlara
-     toxunmuruq ki, öz istiqamətli animasiyaları ilə açılsınlar. Köhnə "4s-də
-     hamısını aç" tələsi silindi — o, uzun mobil səhifədə vaxtından əvvəl işə düşüb
-     animasiyaları "söndürürdü". */
-  let pending = revealEls.slice();
-  const revealInView = () => {
-    if (!pending.length) return;
-    const vh = window.innerHeight || document.documentElement.clientHeight;
-    pending = pending.filter(el => {
-      if (el.hasAttribute('data-visible')) return false;
-      const r = el.getBoundingClientRect();
-      if (r.top < vh * 0.92 && r.bottom > 0) {
-        const group = $$('.reveal', el.parentElement).filter(g => !g.hasAttribute('data-visible'));
-        reveal(el, group.indexOf(el));
-        return false;
-      }
-      return true;
-    });
-    if (!pending.length) {
-      window.removeEventListener('scroll', revealInView);
-      window.removeEventListener('resize', revealInView);
-    }
-  };
-  window.addEventListener('scroll', revealInView, { passive: true });
-  window.addEventListener('resize', revealInView, { passive: true });
-  window.addEventListener('load', revealInView);
-  setTimeout(revealInView, 200);
-  // Bəzi mobil webview-larda scroll event-i gec/az atəşlənir — ilk 20 saniyə ərzində
-  // hər 1.5s-də bir görünən elementləri yoxla. Ekrandan aşağıdakılara toxunulmur,
-  // ona görə animasiyalar "vaxtından əvvəl sönmür".
-  let ticks = 0;
-  const revealPoll = setInterval(() => {
-    revealInView();
-    if (++ticks > 13 || !pending.length) clearInterval(revealPoll);
-  }, 1500);
 
   /* ===================================================================
      8. Sayğac animasiyası — scroll ilə görünəndə 0 → hədəf (bir dəfə)
