@@ -302,29 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ===================================================================
-     11. Pricing aylıq/illik toggle — rəqəmlərdə qısa fade/scale (feedback)
-     =================================================================== */
-  const billingSwitch = $('#billingSwitch');
-  const labelMonthly = $('#labelMonthly');
-  const labelYearly = $('#labelYearly');
-  const amounts = $$('.price .amount');
-  const setBilling = (yearly) => {
-    billingSwitch.classList.toggle('is-yearly', yearly);
-    billingSwitch.setAttribute('aria-checked', String(yearly));
-    labelMonthly.classList.toggle('is-active', !yearly);
-    labelYearly.classList.toggle('is-active', yearly);
-    amounts.forEach(el => {
-      el.classList.add('is-swap');
-      setTimeout(() => {
-        el.textContent = '₼' + (yearly ? el.dataset.yearly : el.dataset.monthly);
-        el.classList.remove('is-swap');
-      }, 160);
-    });
-  };
-  billingSwitch.addEventListener('click', () => setBilling(!billingSwitch.classList.contains('is-yearly')));
-
-  /* ===================================================================
-     12. FAQ accordion — bir anda yalnız biri açıq (grid-template-rows)
+     11. FAQ accordion — bir anda yalnız biri açıq (grid-template-rows)
      =================================================================== */
   $$('.faq-item').forEach(item => {
     $('.faq-q', item).addEventListener('click', () => {
@@ -335,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ===================================================================
-     13. "Necə işləyir" — sticky panel + pilləli addımlar (scrollytelling).
+     12. "Necə işləyir" — sticky panel + pilləli addımlar (scrollytelling).
          Hər addım ekranın orta xəttinə ən yaxın olanda aktivləşir;
          sol paneldəki uyğun frame ilə eyni vaxtda dəyişir. Sadə,
          IntersectionObserver-based — əlavə scroll listener YOXDUR.
