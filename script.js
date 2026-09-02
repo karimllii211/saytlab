@@ -302,20 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ===================================================================
-     11. Əlaqə forması — real backend yoxdur, submit-də təşəkkür mesajı.
-     =================================================================== */
-  const contactForm = $('#contactForm');
-  if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const note = $('#contactNote');
-      if (note) note.hidden = false;
-      contactForm.reset();
-    });
-  }
-
-  /* ===================================================================
-     12. Pricing aylıq/illik toggle — rəqəmlərdə qısa fade/scale (feedback)
+     11. Pricing aylıq/illik toggle — rəqəmlərdə qısa fade/scale (feedback)
      =================================================================== */
   const billingSwitch = $('#billingSwitch');
   const labelMonthly = $('#labelMonthly');
@@ -337,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
   billingSwitch.addEventListener('click', () => setBilling(!billingSwitch.classList.contains('is-yearly')));
 
   /* ===================================================================
-     13. FAQ accordion — bir anda yalnız biri açıq (grid-template-rows)
+     12. FAQ accordion — bir anda yalnız biri açıq (grid-template-rows)
      =================================================================== */
   $$('.faq-item').forEach(item => {
     $('.faq-q', item).addEventListener('click', () => {
@@ -348,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ===================================================================
-     14. "Necə işləyir" — sticky panel + pilləli addımlar (scrollytelling).
+     13. "Necə işləyir" — sticky panel + pilləli addımlar (scrollytelling).
          Hər addım ekranın orta xəttinə ən yaxın olanda aktivləşir;
          sol paneldəki uyğun frame ilə eyni vaxtda dəyişir. Sadə,
          IntersectionObserver-based — əlavə scroll listener YOXDUR.
