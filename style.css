@@ -375,21 +375,6 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .faq-a p { padding: 0 4px 22px; color: var(--text-muted); font-size: 0.94rem; max-width: 620px; }
 .faq-item.is-open .faq-a { grid-template-rows: 1fr; }
 
-/* ---------- 20. CTA banner ---------- */
-.cta-banner { text-align: center; overflow: hidden; position: relative; }
-/* Statik mesh — CTA banner fonu (sonsuz fırlanma silindi) */
-.cta-bg {
-  position: absolute; top: 50%; left: 50%;
-  width: 90vmax; height: 90vmax;
-  margin: -45vmax 0 0 -45vmax;
-  z-index: 0; opacity: 0.4;
-  background: conic-gradient(from 40deg, #0d1e17, #1f6b4a, #c9954a, #3a2a5c, #1f6b4a, #0d1e17);
-  filter: blur(28px);
-}
-.cta-inner { position: relative; z-index: 1; max-width: 620px; margin: 0 auto; }
-.cta-inner h2 { font-size: clamp(2rem, 5vw, 3.2rem); }
-.cta-inner p { color: var(--text-muted); margin: 16px 0 30px; }
-
 /* ---------- 21. Footer ---------- */
 .site-footer { border-top: 1px solid var(--border); padding-top: 64px; }
 /* Header ilə eyni məntiq: footer sətirləri --container (1180px) daxilində sıxılmır,
