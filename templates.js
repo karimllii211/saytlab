@@ -1,23 +1,22 @@
-/* Saytlab — şablon vitrini (templates.html), 200 kart.
-   Dörd iş görür:
-     1) Kateqoriya akkordeonu — başlığa klik açır/bağlayır (aria-expanded + [hidden]).
-     2) Şəkil lazy-load — IntersectionObserver (rootMargin 200px) yalnız görünüş
-        sahəsinə yaxınlaşan kartın şəklini yükləyir (img[data-src] → src), yüklənəndə
-        .loaded ilə fade-in. İlk yükləmədə heç bir şəkil sorğusu getmir.
-     3) "Daha çox göstər" — hər kateqoriyada ilk 20 kart görünür, qalanları
-        [data-extra] ilə gizlidir; düymə onları açır və observer-ə qeyd edir.
-     4) Canlı axtarış — ad, dizayner və kateqoriya açar sözlərinə görə filtr;
-        axtarış zamanı gizli (pagination) kartlar da nəzərə alınır, uyğun kateqoriya
-        avtomatik açılır, nəticə yoxdursa mesaj görünür, sahə boşalanda hər şey
-        başlanğıc vəziyyətinə (bağlı akkordeon + sıfırlanmış pagination) qayıdır.
+/* Saytlab — şablon vitrini (templates.html), 200 kart, sidebar filtr modeli.
+   Üç iş görür:
+     1) Kateqoriya filtri — sidebar düymələri kartları data-category üzrə süzür
+        (.is-hidden), "Hamısı" hamısını qaytarır.
+     2) Şəkil lazy-load — IntersectionObserver (rootMargin 300px). Bütün şəkillər
+        açılışda observer-ə yazılır; filtrlə gizlədilən kart display:none olduğu
+        üçün kəsişmir, görünən kimi avtomatik yüklənir. loading="lazy" ilə yanaşı
+        data-src → src keçidi prefetch-in də qarşısını alır.
+     3) Canlı axtarış — ad, dizayner və kateqoriya açar sözləri üzrə; axtarış
+        başlayanda aktiv filtr "Hamısı"na keçir, sahə boşalanda hər şey qayıdır.
    CSP: inline script yoxdur — bu fayl <script defer> ilə qoşulur. */
 (function () {
-  var root = document.getElementById('templateCategories');
-  if (!root) return;
+  var grid = document.getElementById('templateGrid');
+  if (!grid) return;
 
+  var cardsEls = [].slice.call(grid.querySelectorAll('.template-card'));
+  var buttons = [].slice.call(document.querySelectorAll('.template-filter-btn'));
   var search = document.getElementById('templateSearch');
   var noResults = document.querySelector('.template-no-results');
-  var categories = [].slice.call(root.querySelectorAll('.template-category'));
 
   /* ---- 2. şəkil observer ---- */
   function markLoaded(img) { img.classList.add('loaded'); }
@@ -35,53 +34,47 @@
       img.src = src;
       if (img.complete && img.naturalWidth > 0) markLoaded(img);   /* keşdən dərhal gəldi */
     });
-  }, { rootMargin: '200px 0px' }) : null;
+  }, { rootMargin: '300px 0px' }) : null;
 
-  function observe(scope) {
-    var imgs = scope.querySelectorAll('img[data-src]');
-    for (var i = 0; i < imgs.length; i++) {
-      if (io) io.observe(imgs[i]);
-      else {                                   /* IO dəstəklənmirsə sadəcə yüklə */
-        imgs[i].src = imgs[i].getAttribute('data-src');
-        imgs[i].removeAttribute('data-src');
-        markLoaded(imgs[i]);
-      }
-    }
-  }
-
-  /* ---- 1. akkordeon ---- */
-  function setOpen(cat, open) {
-    var toggle = cat.querySelector('.template-category-toggle');
-    var grid = cat.querySelector('.template-grid');
-    if (!toggle || !grid) return;
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    grid.hidden = !open;
-    var more = cat.querySelector('.template-load-more');
-    if (more && more.dataset.available === 'true') more.hidden = !open || grid.classList.contains('show-extra');
-    if (open) observe(grid);
-  }
-
-  categories.forEach(function (cat) {
-    var toggle = cat.querySelector('.template-category-toggle');
-    var more = cat.querySelector('.template-load-more');
-    if (more) more.dataset.available = 'true';
-    if (toggle) {
-      toggle.addEventListener('click', function () {
-        setOpen(cat, toggle.getAttribute('aria-expanded') !== 'true');
-      });
-    }
-    /* ---- 3. daha çox göstər ---- */
-    if (more) {
-      more.addEventListener('click', function () {
-        var grid = cat.querySelector('.template-grid');
-        grid.classList.add('show-extra');
-        more.hidden = true;
-        observe(grid);
-      });
+  var imgs = [].slice.call(grid.querySelectorAll('img[data-src]'));
+  imgs.forEach(function (img) {
+    if (io) io.observe(img);
+    else {                                     /* IO dəstəklənmirsə sadəcə yüklə */
+      img.src = img.getAttribute('data-src');
+      img.removeAttribute('data-src');
+      markLoaded(img);
     }
   });
 
-  /* ---- 4. axtarış ---- */
+  /* ---- ortaq: nəticə sayı ---- */
+  function updateEmptyState() {
+    if (!noResults) return;
+    var any = cardsEls.some(function (c) { return !c.classList.contains('is-hidden'); });
+    noResults.classList.toggle('visible', !any);
+  }
+
+  function setActive(btn) {
+    buttons.forEach(function (b) { b.classList.toggle('is-active', b === btn); });
+  }
+
+  /* ---- 1. kateqoriya filtri ---- */
+  function applyCategory(value) {
+    cardsEls.forEach(function (card) {
+      var hit = value === 'all' || card.getAttribute('data-category') === value;
+      card.classList.toggle('is-hidden', !hit);
+    });
+    updateEmptyState();
+  }
+
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      setActive(btn);
+      if (search) search.value = '';           /* filtr və axtarış bir-birini əvəz edir */
+      applyCategory(btn.getAttribute('data-filter'));
+    });
+  });
+
+  /* ---- 3. axtarış ---- */
   if (!search) return;
 
   var MAP = { 'ə': 'e', 'ı': 'i', 'ö': 'o', 'ü': 'u', 'ğ': 'g', 'ş': 's', 'ç': 'c', 'é': 'e', 'ä': 'a', 'ø': 'o', 'ć': 'c' };
@@ -89,59 +82,21 @@
     return (str || '').toLowerCase().replace(/[əıöüğşçéäøć]/g, function (c) { return MAP[c]; });
   }
 
-  var cards = [].slice.call(root.querySelectorAll('.template-card')).map(function (card) {
-    return {
-      el: card,
-      cat: card.closest('.template-category'),
-      hay: norm(card.getAttribute('data-name') + ' ' + (card.getAttribute('data-keywords') || ''))
-    };
+  var haystacks = cardsEls.map(function (card) {
+    return norm(card.getAttribute('data-name') + ' ' + (card.getAttribute('data-keywords') || ''));
   });
 
-  function reset() {
-    cards.forEach(function (c) { c.el.hidden = false; });
-    categories.forEach(function (cat) {
-      cat.hidden = false;
-      cat.querySelector('.template-grid').classList.remove('show-extra');
-      var more = cat.querySelector('.template-load-more');
-      if (more && more.dataset.available === 'true') more.hidden = true;
-      setOpen(cat, false);
-      var count = cat.querySelector('.template-count');
-      if (count) count.textContent = count.getAttribute('data-total');
-    });
-    if (noResults) noResults.classList.remove('visible');
-  }
+  var allBtn = buttons.filter(function (b) { return b.getAttribute('data-filter') === 'all'; })[0];
 
-  function applyFilter() {
+  search.addEventListener('input', function () {
     var q = norm(search.value).trim();
-    if (!q) { reset(); return; }
+    if (allBtn) setActive(allBtn);             /* axtarış bütün kateqoriyalarda gedir */
 
-    var found = 0;
-    categories.forEach(function (cat) { cat.dataset.hits = '0'; });
+    if (!q) { applyCategory('all'); return; }
 
-    cards.forEach(function (c) {
-      var hit = c.hay.indexOf(q) !== -1;
-      c.el.hidden = !hit;
-      if (hit) {
-        found++;
-        c.cat.dataset.hits = String(Number(c.cat.dataset.hits) + 1);
-      }
+    cardsEls.forEach(function (card, i) {
+      card.classList.toggle('is-hidden', haystacks[i].indexOf(q) === -1);
     });
-
-    categories.forEach(function (cat) {
-      var hits = Number(cat.dataset.hits);
-      cat.hidden = hits === 0;
-      if (!hits) return;
-      /* pagination-la gizlədilmiş kartlar da nəticəyə daxil olsun */
-      cat.querySelector('.template-grid').classList.add('show-extra');
-      var more = cat.querySelector('.template-load-more');
-      if (more) more.hidden = true;
-      var count = cat.querySelector('.template-count');
-      if (count) count.textContent = hits + ' nəticə';
-      setOpen(cat, true);
-    });
-
-    if (noResults) noResults.classList.toggle('visible', found === 0);
-  }
-
-  search.addEventListener('input', applyFilter);
+    updateEmptyState();
+  });
 })();
