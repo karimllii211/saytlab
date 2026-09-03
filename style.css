@@ -104,6 +104,65 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .section-head h2 { font-size: clamp(1.9rem, 4.2vw, 3rem); }
 .section-lead, .section-head .section-lead { margin-top: 16px; color: var(--text-muted); font-size: 1.05rem; }
 
+/* ---------- 3b. `.led-border` — sürünən LED işıq (paylaşılan utility) ----------
+   Elementin perimetri boyunca fasiləsiz gəzən qızılı zolaq. Elementin öz
+   border-i toxunulmur: üstünə maskalanmış conic-gradient qatı (::before) gəlir.
+   Yalnız --led-angle custom property animasiya olunur → layout/reflow yoxdur.
+   İstifadə: elementin class siyahısına `led-border` əlavə et (bax .hero-stats,
+   .price-card.is-featured). Məzmun üçün `position: relative; z-index: 2` lazımdır. */
+@property --led-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.led-border { position: relative; }
+
+.led-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;                /* mövcud 1px border-in üstünə oturur */
+  border-radius: inherit;
+  padding: 1px;               /* işıq zolağının qalınlığı */
+  background: conic-gradient(
+    from var(--led-angle),
+    transparent 0%,
+    transparent 62%,
+    rgba(230, 184, 102, 0.18) 72%,
+    var(--accent-2) 84%,
+    var(--accent) 90%,
+    var(--accent-2) 94%,
+    rgba(230, 184, 102, 0.18) 97%,
+    transparent 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: source-out;   /* köhnə WebKit/Safari */
+  -webkit-mask-composite: xor;          /* WebKit */
+          mask-composite: exclude;      /* standart */
+  filter: drop-shadow(0 0 5px var(--glow));
+  pointer-events: none;
+  z-index: 1;
+  animation: led-border-spin 4s linear infinite;
+}
+
+@keyframes led-border-spin {
+  to { --led-angle: 360deg; }
+}
+
+/* @property dəstəyi olmayan brauzerlərdə conic fırlanmır → sadəcə incə qızılı kontur qalsın. */
+@supports not (background: conic-gradient(from var(--led-angle), red, blue)) {
+  .led-border::before { background: none; filter: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .led-border::before {
+    animation: none !important;
+    background: linear-gradient(var(--border-strong) 0 0);   /* statik incə qızılı sərhəd */
+    filter: none;
+  }
+}
+
 /* ---------- 4. Düymələr ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
@@ -305,60 +364,6 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .hero-stats span { order: -1; font-family: var(--font-display); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); }
 .hero-stats strong { font-family: var(--font-display); font-size: clamp(1.5rem, 3.2vw, 2.1rem); font-weight: 600; color: var(--text); }
 
-/* Sürünən LED işıq — statistika qutusunun perimetri boyunca gəzən qızılı zolaq.
-   Statik incə border yerində qalır; üstünə maskalanmış conic-gradient qatı gəlir.
-   Yalnız --angle custom property animasiya olunur → layout/reflow yoxdur. */
-@property --led-angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-
-.hero-stats::before {
-  content: "";
-  position: absolute;
-  inset: -1px;                /* mövcud 1px border-in üstünə oturur */
-  border-radius: inherit;
-  padding: 1px;               /* işıq zolağının qalınlığı */
-  background: conic-gradient(
-    from var(--led-angle),
-    transparent 0%,
-    transparent 62%,
-    rgba(230, 184, 102, 0.18) 72%,
-    var(--accent-2) 84%,
-    var(--accent) 90%,
-    var(--accent-2) 94%,
-    rgba(230, 184, 102, 0.18) 97%,
-    transparent 100%
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-          mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: source-out;   /* köhnə WebKit/Safari */
-  -webkit-mask-composite: xor;          /* WebKit */
-          mask-composite: exclude;      /* standart */
-  filter: drop-shadow(0 0 5px var(--glow));
-  pointer-events: none;
-  z-index: 1;
-  animation: hero-stats-led 4s linear infinite;
-}
-
-@keyframes hero-stats-led {
-  to { --led-angle: 360deg; }
-}
-
-/* @property dəstəyi olmayan brauzerlərdə conic fırlanmır → sadəcə incə qızılı kontur qalsın. */
-@supports not (background: conic-gradient(from var(--led-angle), red, blue)) {
-  .hero-stats::before { background: none; filter: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-stats::before {
-    animation: none !important;
-    background: linear-gradient(var(--border-strong) 0 0);   /* statik incə qızılı sərhəd */
-    filter: none;
-  }
-}
-
 /* Giriş animasiyası — söz maskası (JS .is-in klassı əlavə edir).
    Gizli başlanğıc yalnız js-reveal ilə — JS olmadan mətn görünür. */
 [data-hero] { transition: transform 0.6s var(--ease), opacity 0.45s var(--ease); }
@@ -454,8 +459,10 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .price-card { padding: 32px 28px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); position: relative; transition: transform 0.25s var(--ease), border-color 0.25s var(--ease); will-change: transform; }
 .price-card.is-featured { border-color: var(--accent); background: linear-gradient(180deg, var(--surface-2), var(--surface)); box-shadow: 0 20px 60px rgba(0,0,0,0.4); transform: translateY(-10px); }
 .price-card:hover { border-color: var(--border-strong); transform: translateY(-4px); }
-.price-card.is-featured:hover { transform: translateY(-14px); }
-.price-card .badge { position: absolute; top: -12px; left: 28px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-display); font-size: 0.72rem; padding: 5px 12px; border-radius: 999px; letter-spacing: 0.04em; }
+.price-card.is-featured:hover { transform: translateY(-14px); border-color: var(--accent); }  /* hover-də qızılı statik border sönməsin — LED ilə uyğun qalsın */
+.price-card .badge { position: absolute; z-index: 3; top: -12px; left: 28px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-display); font-size: 0.72rem; padding: 5px 12px; border-radius: 999px; letter-spacing: 0.04em; }
+/* LED overlay (.led-border::before, z-index: 1) kartın məzmununu örtməsin. */
+.price-card > * { position: relative; z-index: 2; }
 .price-card h3 { font-size: 1.2rem; margin-bottom: 6px; }
 .price-tag { display: flex; align-items: baseline; gap: 4px; margin-bottom: 22px; font-family: var(--font-display); }
 .price-tag strong { font-size: 2.4rem; font-weight: 600; color: var(--accent-2); }
