@@ -72,14 +72,14 @@
         <h2>İstifadə qaydaları</h2>
       </header>
       <div class="legal-body">
-        <p>SaytLab domen təminatı, veb-sayt hazırlanması, peşəkar e-poçt quraşdırılması və davamlı texniki dəstək xidmətləri göstərir. Aşağıdakı qaydalar bizimlə əməkdaşlığın çərçivəsini müəyyən edir.</p>
-        <p><strong>Sifariş və başlanğıc.</strong> Layihə brief-in təsdiqlənməsi və ilkin ödənişin daxil olması ilə başlayır. Hər paketə 1 domen, 1 peşəkar veb-sayt, 1 peşəkar e-poçt və seçilmiş müddət ərzində limitsiz dəstək daxildir.</p>
-        <p><strong>Müddət və təhvil.</strong> Standart saytlar razılaşdırılmış məzmun tam təqdim edildikdən sonra adətən 3–7 gün ərzində hazırlanır. Müştəri tərəfindən məlumatın gec verilməsi təhvil tarixini dəyişə bilər.</p>
-        <p><strong>Ödəniş.</strong> Ödənişin 50%-i işə başlamazdan əvvəl, qalan 50%-i isə iş tamamlandıqdan sonra alınır. Qiymətlər seçilən müddətə görə dəyişir: 1 illik – 100 ₼, 2 illik – 150 ₼, 3 illik – 200 ₼.</p>
-        <p><strong>Pul geri qaytarılması.</strong> Pul geri qaytarılması yalnız layihənin ilk mərhələsində — müştəri təqdim olunan dizaynı bəyənmədiyi halda — mümkündür. Domen və peşəkar e-poçt seçilib qeydiyyatdan keçirildikdən sonra ödənişin geri qaytarılması mümkün deyil.</p>
-        <p><strong>Dəyişikliklər.</strong> Təhvildən sonra saytınızın məzmununda pulsuz dəyişiklik edə bilərsiniz. Dizaynın yenidən qurulması və ya əlavə səhifələr kimi böyük işlər ayrıca razılaşdırılır.</p>
-        <p><strong>Yeniləmə.</strong> Seçilən müddət başa çatdıqda domen, hostinq və dəstəyin davam etməsi üçün paket yenilənməlidir. Yeniləmə şərtləri müddət bitməzdən əvvəl bildirilir.</p>
-        <p class="legal-back"><a href="/" class="btn btn-outline">← Ana səhifəyə qayıt</a></p>
+        <p class="reveal" data-dir="up">SaytLab domen təminatı, veb-sayt hazırlanması, peşəkar e-poçt quraşdırılması və davamlı texniki dəstək xidmətləri göstərir. Aşağıdakı qaydalar bizimlə əməkdaşlığın çərçivəsini müəyyən edir.</p>
+        <p class="reveal" data-dir="up"><strong>Sifariş və başlanğıc.</strong> Layihə brief-in təsdiqlənməsi və ilkin ödənişin daxil olması ilə başlayır. Hər paketə 1 domen, 1 peşəkar veb-sayt, 1 peşəkar e-poçt və seçilmiş müddət ərzində limitsiz dəstək daxildir.</p>
+        <p class="reveal" data-dir="up"><strong>Müddət və təhvil.</strong> Standart saytlar razılaşdırılmış məzmun tam təqdim edildikdən sonra adətən 3–7 gün ərzində hazırlanır. Müştəri tərəfindən məlumatın gec verilməsi təhvil tarixini dəyişə bilər.</p>
+        <p class="reveal" data-dir="up"><strong>Ödəniş.</strong> Ödənişin 50%-i işə başlamazdan əvvəl, qalan 50%-i isə iş tamamlandıqdan sonra alınır. Qiymətlər seçilən müddətə görə dəyişir: 1 illik – 100 ₼, 2 illik – 150 ₼, 3 illik – 200 ₼.</p>
+        <p class="reveal" data-dir="up"><strong>Pul geri qaytarılması.</strong> Pul geri qaytarılması yalnız layihənin ilk mərhələsində — müştəri təqdim olunan dizaynı bəyənmədiyi halda — mümkündür. Domen və peşəkar e-poçt seçilib qeydiyyatdan keçirildikdən sonra ödənişin geri qaytarılması mümkün deyil.</p>
+        <p class="reveal" data-dir="up"><strong>Dəyişikliklər.</strong> Təhvildən sonra saytınızın məzmununda pulsuz dəyişiklik edə bilərsiniz. Dizaynın yenidən qurulması və ya əlavə səhifələr kimi böyük işlər ayrıca razılaşdırılır.</p>
+        <p class="reveal" data-dir="up"><strong>Yeniləmə.</strong> Seçilən müddət başa çatdıqda domen, hostinq və dəstəyin davam etməsi üçün paket yenilənməlidir. Yeniləmə şərtləri müddət bitməzdən əvvəl bildirilir.</p>
+        <p class="legal-back reveal" data-dir="up"><a href="/" class="btn btn-outline">← Ana səhifəyə qayıt</a></p>
       </div>
     </div>
   </section>
@@ -110,6 +110,30 @@
     </div>
   </div>
 </footer>
+
+<!-- Scroll-reveal — index.html-dəki .reveal sistemi ilə eyni (fade + yüngül translate).
+     Bu səhifələr script.js-i yükləmir, ona görə kiçik müstəqil observer. Çıxış animasiyası
+     onsuz da <head>-dəki `is-leaving` fade-out mexanizmi ilə bütün <body>-yə tətbiq olunur. -->
+<script>
+  (function () {
+    var els = document.querySelectorAll('.reveal');
+    if (!els.length) return;
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function (el) { el.setAttribute('data-visible', ''); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) entry.target.setAttribute('data-visible', '');
+        else entry.target.removeAttribute('data-visible');
+      });
+    }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (el, i) {
+      el.style.transitionDelay = (i * 55) + 'ms';
+      io.observe(el);
+    });
+  })();
+</script>
 
 </body>
 </html>

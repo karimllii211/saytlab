@@ -348,7 +348,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 /* ---------- 12. Logo marquee ---------- */
 .logos { padding-block: clamp(48px, 7vw, 84px); }
 .marquee { overflow: hidden; position: relative; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
-.marquee-track { display: flex; align-items: center; gap: 64px; width: max-content; animation: marquee 26s linear infinite; animation-play-state: var(--anim-state, running); will-change: transform; }
+.marquee-track { display: flex; align-items: center; gap: 46px; width: max-content; animation: marquee 26s linear infinite; animation-play-state: var(--anim-state, running); will-change: transform; }
 .marquee:hover .marquee-track { animation-play-state: paused; }
 /* Hər logo bərabər ölçülü qutuya yerləşir və öz rəngindən asılı olmayaraq
    mask-image + background ilə vahid AĞ silueyə çevrilir. Qutu sabit olduğu
@@ -371,6 +371,11 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 }
 .marquee:hover .marquee-track .marquee-logo,
 .marquee-track .marquee-logo:hover { opacity: 1; }
+/* Framer loqosu mənbədə daha kiçik/nazikdir — digərləri ilə tarazlaşması üçün bir az böyüdülür. */
+.marquee-track .marquee-logo--framer {
+  width: clamp(96px, 11.5vw, 126px);
+  height: clamp(31px, 3.8vw, 39px);
+}
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 /* ---------- 13. Benefits 3x2 ---------- */
@@ -521,10 +526,25 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   .hero-stats { gap: 0; }
   .hero-stats .stat { flex: 1 1 45%; }
 
+  /* Footer marka bloku — mobil-də logo, "Saytlab" yazısı və təsvir mərkəzdə */
+  .footer-brand { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .footer-brand .logo { justify-content: center; }
+  .footer-brand p { margin-inline: auto; }
+
   /* mobil GPU-larda blur bahalıdır — reveal-də filter söndürülür, yalnız translate+opacity qalır */
   .reveal { transition: transform 640ms var(--ease-reveal), opacity 560ms var(--ease-reveal); }
   .js-reveal .reveal,
   .js-reveal .reveal[data-visible] { filter: none; }
+}
+
+/* Hero məzmununu yalnız geniş ekranlarda bir qədər sola çək — mərkəzləmə çox "sıx" görünürdü.
+   margin-left auto-nun bir hissəsini "yeyir", amma max() ilə heç vaxt gutter-dən aşağı düşmür,
+   yəni məzmun ekran kənarına YAPIŞMIR. Kiçik desktop / mobil-də təsirsizdir (max() gutter qaytarır). */
+@media (min-width: 1180px) {
+  .hero .hero-inner {
+    margin-left: max(var(--gutter), calc((100% - var(--container)) / 2 - clamp(0px, 3vw, 60px)));
+    margin-right: auto;
+  }
 }
 
 @media (max-width: 420px) {
