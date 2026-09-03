@@ -20,6 +20,23 @@
       if (revealed) return;
       revealed = true;
       document.body.classList.add('page-ready');
+      // Hero giriş animasiyasını MƏHZ İNDİ başlat (preloader sönən an) — script.js onu
+      // window.__saytlabPlayHeroReveal-a təyin edib, səhifə yüklənən kimi tetikləmir ki,
+      // sözlərin "qalxması" overlay-in arxasında görünməz qalmasın.
+      if (typeof window.__saytlabPlayHeroReveal === 'function') {
+        window.__saytlabPlayHeroReveal();
+      } else {
+        var heroTries = 0;
+        var heroWait = setInterval(function () {
+          heroTries++;
+          if (typeof window.__saytlabPlayHeroReveal === 'function') {
+            window.__saytlabPlayHeroReveal();
+            clearInterval(heroWait);
+          } else if (heroTries > 40) {   // ~2s cəhddən sonra vaz keç
+            clearInterval(heroWait);
+          }
+        }, 50);
+      }
     }
     function dismissPreloader(fast) {
       var pre = document.getElementById('preloader');

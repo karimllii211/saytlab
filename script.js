@@ -384,12 +384,23 @@ document.addEventListener('DOMContentLoaded', () => {
      9. Hero giriş animasiyası — bir dəfəlik "delight" büdcəsi (səhifə açılışı)
      =================================================================== */
   const heroEls = $$('[data-hero]').sort((a, b) => +a.dataset.hero - +b.dataset.hero);
-  if (motion) {
-    // Stagger sıxlaşdırıldı (60ms -> 28ms): 11 element olsa belə son element ~370ms-də başlayır,
-    // öz 0.85s transition-u ilə birlikdə hero cəmi ~1.2s-dən ~0.9s-ə enir — "gec açılır" hissini azaldır.
-    heroEls.forEach((el, i) => setTimeout(() => el.classList.add('is-in'), 60 + i * 28));
+  function playHeroReveal() {
+    if (motion) {
+      // Stagger sıxlaşdırıldı (60ms -> 28ms): 11 element olsa belə son element ~370ms-də başlayır,
+      // öz 0.85s transition-u ilə birlikdə hero cəmi ~1.2s-dən ~0.9s-ə enir — "gec açılır" hissini azaldır.
+      heroEls.forEach((el, i) => setTimeout(() => el.classList.add('is-in'), 60 + i * 28));
+    } else {
+      heroEls.forEach(el => el.classList.add('is-in'));
+    }
+  }
+  // Preloader VARSA, hero animasiyası səhifə yüklənən kimi (overlay-in arxasında, gizli) YOX,
+  // preloader sönüb page-ready elan edəndə başlamalıdır — <head>-dəki preloader script-i
+  // window.__saytlabPlayHeroReveal-i reveal() içində çağırır. Preloader yoxdursa (terms/privacy,
+  // və ya artıq silinibsə) — köhnə davranış: dərhal başlat.
+  if (document.getElementById('preloader')) {
+    window.__saytlabPlayHeroReveal = playHeroReveal;
   } else {
-    heroEls.forEach(el => el.classList.add('is-in'));
+    playHeroReveal();
   }
 
   /* ===================================================================
