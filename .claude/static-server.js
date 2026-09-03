@@ -31,9 +31,11 @@ function resolve(urlPath, cb) {
 // Mirrors vercel.json "headers" so local preview reflects the production CSP / security headers.
 const SECURITY_HEADERS = {
   'Content-Security-Policy':
-    "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://fonts.googleapis.com; " +
-    "img-src 'self' data:; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-ancestors 'none'; " +
-    "base-uri 'self'; form-action 'none'; object-src 'none'; upgrade-insecure-requests",
+    "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://connect.facebook.net; " +
+    "style-src 'self' https://fonts.googleapis.com; img-src 'self' data: https://www.facebook.com; " +
+    "font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.facebook.com https://connect.facebook.net; " +
+    "frame-src https://www.facebook.com; frame-ancestors 'none'; base-uri 'self'; " +
+    "form-action 'self' https://www.facebook.com; object-src 'none'; upgrade-insecure-requests",
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
