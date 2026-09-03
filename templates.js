@@ -1,53 +1,93 @@
-/* Saytlab — şablon vitrini (templates.html).
-   Üç iş görür:
+/* Saytlab — şablon vitrini (templates.html), 200 kart.
+   Dörd iş görür:
      1) Kateqoriya akkordeonu — başlığa klik açır/bağlayır (aria-expanded + [hidden]).
-     2) Şəkillər yalnız kateqoriya ilk dəfə açılanda yüklənir (img[data-src] → src),
-        yəni ilk yükləmədə 67 şəkil üçün heç bir sorğu getmir.
-     3) Canlı axtarış — şablon adı, dizayner və kateqoriya açar sözlərinə görə filtr;
-        uyğun kart olan kateqoriya avtomatik açılır.
+     2) Şəkil lazy-load — IntersectionObserver (rootMargin 200px) yalnız görünüş
+        sahəsinə yaxınlaşan kartın şəklini yükləyir (img[data-src] → src), yüklənəndə
+        .loaded ilə fade-in. İlk yükləmədə heç bir şəkil sorğusu getmir.
+     3) "Daha çox göstər" — hər kateqoriyada ilk 20 kart görünür, qalanları
+        [data-extra] ilə gizlidir; düymə onları açır və observer-ə qeyd edir.
+     4) Canlı axtarış — ad, dizayner və kateqoriya açar sözlərinə görə filtr;
+        axtarış zamanı gizli (pagination) kartlar da nəzərə alınır, uyğun kateqoriya
+        avtomatik açılır, nəticə yoxdursa mesaj görünür, sahə boşalanda hər şey
+        başlanğıc vəziyyətinə (bağlı akkordeon + sıfırlanmış pagination) qayıdır.
    CSP: inline script yoxdur — bu fayl <script defer> ilə qoşulur. */
 (function () {
   var root = document.getElementById('templateCategories');
   if (!root) return;
 
   var search = document.getElementById('templateSearch');
-  var empty = document.getElementById('templateEmpty');
+  var noResults = document.querySelector('.template-no-results');
   var categories = [].slice.call(root.querySelectorAll('.template-category'));
 
-  /* Azərbaycan hərflərini sadələşdirir ki, "kafe" ilə "kafé", "tehsil" ilə "təhsil" tapılsın. */
-  var MAP = { 'ə': 'e', 'ı': 'i', 'ö': 'o', 'ü': 'u', 'ğ': 'g', 'ş': 's', 'ç': 'c', 'é': 'e', 'ä': 'a', 'ő': 'o' };
-  function norm(str) {
-    return (str || '').toLowerCase().replace(/[əıöüğşçéäő]/g, function (c) { return MAP[c]; });
-  }
+  /* ---- 2. şəkil observer ---- */
+  function markLoaded(img) { img.classList.add('loaded'); }
 
-  function loadImages(grid) {
-    var imgs = grid.querySelectorAll('img[data-src]');
+  var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var img = entry.target;
+      io.unobserve(img);
+      var src = img.getAttribute('data-src');
+      if (!src) return;
+      img.removeAttribute('data-src');
+      img.addEventListener('load', function () { markLoaded(img); });
+      img.addEventListener('error', function () { markLoaded(img); });
+      img.src = src;
+      if (img.complete && img.naturalWidth > 0) markLoaded(img);   /* keşdən dərhal gəldi */
+    });
+  }, { rootMargin: '200px 0px' }) : null;
+
+  function observe(scope) {
+    var imgs = scope.querySelectorAll('img[data-src]');
     for (var i = 0; i < imgs.length; i++) {
-      imgs[i].src = imgs[i].getAttribute('data-src');
-      imgs[i].removeAttribute('data-src');
+      if (io) io.observe(imgs[i]);
+      else {                                   /* IO dəstəklənmirsə sadəcə yüklə */
+        imgs[i].src = imgs[i].getAttribute('data-src');
+        imgs[i].removeAttribute('data-src');
+        markLoaded(imgs[i]);
+      }
     }
   }
 
+  /* ---- 1. akkordeon ---- */
   function setOpen(cat, open) {
     var toggle = cat.querySelector('.template-category-toggle');
     var grid = cat.querySelector('.template-grid');
     if (!toggle || !grid) return;
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     grid.hidden = !open;
-    if (open) loadImages(grid);
+    var more = cat.querySelector('.template-load-more');
+    if (more && more.dataset.available === 'true') more.hidden = !open || grid.classList.contains('show-extra');
+    if (open) observe(grid);
   }
 
-  /* 1 + 2 — akkordeon */
   categories.forEach(function (cat) {
     var toggle = cat.querySelector('.template-category-toggle');
-    if (!toggle) return;
-    toggle.addEventListener('click', function () {
-      setOpen(cat, toggle.getAttribute('aria-expanded') !== 'true');
-    });
+    var more = cat.querySelector('.template-load-more');
+    if (more) more.dataset.available = 'true';
+    if (toggle) {
+      toggle.addEventListener('click', function () {
+        setOpen(cat, toggle.getAttribute('aria-expanded') !== 'true');
+      });
+    }
+    /* ---- 3. daha çox göstər ---- */
+    if (more) {
+      more.addEventListener('click', function () {
+        var grid = cat.querySelector('.template-grid');
+        grid.classList.add('show-extra');
+        more.hidden = true;
+        observe(grid);
+      });
+    }
   });
 
-  /* 3 — axtarış */
+  /* ---- 4. axtarış ---- */
   if (!search) return;
+
+  var MAP = { 'ə': 'e', 'ı': 'i', 'ö': 'o', 'ü': 'u', 'ğ': 'g', 'ş': 's', 'ç': 'c', 'é': 'e', 'ä': 'a', 'ø': 'o', 'ć': 'c' };
+  function norm(str) {
+    return (str || '').toLowerCase().replace(/[əıöüğşçéäøć]/g, function (c) { return MAP[c]; });
+  }
 
   var cards = [].slice.call(root.querySelectorAll('.template-card')).map(function (card) {
     return {
@@ -57,20 +97,23 @@
     };
   });
 
+  function reset() {
+    cards.forEach(function (c) { c.el.hidden = false; });
+    categories.forEach(function (cat) {
+      cat.hidden = false;
+      cat.querySelector('.template-grid').classList.remove('show-extra');
+      var more = cat.querySelector('.template-load-more');
+      if (more && more.dataset.available === 'true') more.hidden = true;
+      setOpen(cat, false);
+      var count = cat.querySelector('.template-count');
+      if (count) count.textContent = count.getAttribute('data-total');
+    });
+    if (noResults) noResults.classList.remove('visible');
+  }
+
   function applyFilter() {
     var q = norm(search.value).trim();
-
-    if (!q) {                                   /* boş sorğu → başlanğıc vəziyyət */
-      cards.forEach(function (c) { c.el.hidden = false; });
-      categories.forEach(function (cat) {
-        cat.hidden = false;
-        setOpen(cat, false);
-        var count = cat.querySelector('.template-count');
-        if (count) count.textContent = count.getAttribute('data-total');
-      });
-      if (empty) empty.hidden = true;
-      return;
-    }
+    if (!q) { reset(); return; }
 
     var found = 0;
     categories.forEach(function (cat) { cat.dataset.hits = '0'; });
@@ -87,12 +130,17 @@
     categories.forEach(function (cat) {
       var hits = Number(cat.dataset.hits);
       cat.hidden = hits === 0;
+      if (!hits) return;
+      /* pagination-la gizlədilmiş kartlar da nəticəyə daxil olsun */
+      cat.querySelector('.template-grid').classList.add('show-extra');
+      var more = cat.querySelector('.template-load-more');
+      if (more) more.hidden = true;
       var count = cat.querySelector('.template-count');
-      if (count && hits) count.textContent = hits + ' nəticə';
-      if (hits) setOpen(cat, true);
+      if (count) count.textContent = hits + ' nəticə';
+      setOpen(cat, true);
     });
 
-    if (empty) empty.hidden = found !== 0;
+    if (noResults) noResults.classList.toggle('visible', found === 0);
   }
 
   search.addEventListener('input', applyFilter);
