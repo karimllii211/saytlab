@@ -355,27 +355,39 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ===================================================================
-     8. Sayğac animasiyası — scroll ilə görünəndə 0 → hədəf (bir dəfə)
+     8. Sayğac animasiyası — hero statistikası HƏR DƏFƏ ekrana gələndə 0 → hədəf.
+        Element görünmə sahəsindən çıxanda "0"-a sıfırlanır, təkrar girəndə yenidən sayılır.
+        Hər çağırış yeni "dövr" (el._countRun) alır → sürətli scroll-da köhnə rAF dövrü
+        özünü dayandırır (rəqəm titrəməsi / yanlış dəyər olmasın).
      =================================================================== */
   const fmt = (n) => n >= 1000 ? Math.round(n / 1000) + 'K' : String(Math.round(n));
   const animateCount = (el) => {
     const target = +el.dataset.count;
     const suffix = el.dataset.suffix || '';
     const dur = 1400;
+    const run = (el._countRun || 0) + 1;
+    el._countRun = run;
+    if (!motion) { el.textContent = fmt(target) + suffix; return; }
     const start = performance.now();
-    let done = false;
-    const finish = () => { if (!done) { done = true; el.textContent = fmt(target) + suffix; } };
+    const finish = () => { if (el._countRun === run) el.textContent = fmt(target) + suffix; };
     const tick = (now) => {
+      if (el._countRun !== run) return;                       // yeni dövr başlayıb — bunu dayandır
       const p = Math.min((now - start) / dur, 1);
       el.textContent = fmt(target * (1 - Math.pow(1 - p, 3))) + suffix;
       if (p < 1) requestAnimationFrame(tick); else finish();
     };
-    if (motion) { requestAnimationFrame(tick); setTimeout(finish, dur + 400); }
-    else finish();
+    requestAnimationFrame(tick);
+    setTimeout(finish, dur + 400);
   };
   const countIO = new IntersectionObserver((entries) => {
     for (const entry of entries) {
-      if (entry.isIntersecting) { animateCount(entry.target); countIO.unobserve(entry.target); }
+      const el = entry.target;
+      if (entry.isIntersecting) {
+        animateCount(el);
+      } else if (motion) {
+        el._countRun = (el._countRun || 0) + 1;               // gedən animasiyanı ləğv et
+        el.textContent = '0' + (el.dataset.suffix || '');     // sıfırla → təkrar girəndə animasiya azadan
+      }
     }
   }, { threshold: 0.6 });
   $$('[data-count]').forEach(el => countIO.observe(el));
@@ -456,11 +468,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ===================================================================
-     10c. Ayrı səhifələrə (Qaydalar / Məxfilik) keçiddə sürətli fade-out,
+     10c. Ayrı səhifələrə (Qaydalar / Məxfilik / Şablonlar) keçiddə sürətli fade-out,
           sonra yönləndir — belə ki keçid hər iki tərəfdən hamar görünsün.
-          (privacy.html / terms.html öz daxili script-i ilə fade-in edir.)
+          (o səhifələr legal.js ilə fade-in edir.)
      =================================================================== */
-  $$('a[href="/terms"], a[href="/privacy"]').forEach(link => {
+  $$('a[href="/terms"], a[href="/privacy"], a[href="/templates"]').forEach(link => {
     link.addEventListener('click', (e) => {
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0 || link.target === '_blank') return;
       e.preventDefault();
