@@ -573,6 +573,78 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   transition: opacity .18s var(--ease-reveal), transform .18s var(--ease-reveal);
 }
 
+/* ---------- 22d. Preloader — giriş animasiyası (logo + "şüşə qırılması") ----------
+   Yalnız index.html-də (.preloader elementi orada var). Yalnız html.js-reveal aktivdirsə
+   göstərilir (sinif head-də sinxron əlavə olunur) — JS yoxdursa overlay heç görünmür. */
+.preloader { display: none; }
+.js-reveal .preloader {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  transition: opacity 0.45s var(--ease), visibility 0.45s var(--ease);
+}
+.preloader-logo-wrap {
+  position: relative;
+  width: clamp(66px, 13vw, 96px);
+  height: clamp(66px, 13vw, 96px);
+}
+.preloader-logo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.72);
+  animation: preloaderLogoIn 0.5s var(--ease) 0.1s forwards;
+}
+@keyframes preloaderLogoIn { to { opacity: 1; transform: scale(1); } }
+
+/* Şüşə qırıqları — eyni logo şəklinin clip-path ilə kəsilmiş 8 üçbucaq parçası (üst-üstə).
+   Hər parçaya öz uçuş istiqaməti (--tx/--ty) və fırlanması (--rot) verilir; kənarları
+   dairəyə maskalanır ki, kvadrat şəklin küncləri görünməsin. Məsafələr vmin ilə → mobil-də proporsional. */
+.preloader-shards { position: absolute; inset: 0; opacity: 0; }
+.preloader-shards .shard {
+  position: absolute;
+  inset: 0;
+  background: url("logo-saytlab-round.png") center / 100% 100% no-repeat;
+  -webkit-mask: radial-gradient(circle closest-side, #000 92%, transparent 100%);
+  mask: radial-gradient(circle closest-side, #000 92%, transparent 100%);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.55s ease-out, filter 0.2s var(--ease);
+}
+.preloader-shards .shard:nth-child(1) { clip-path: polygon(50% 50%, 50% 0, 100% 0);      --tx:   6vmin; --ty: -12vmin; --rot:  34deg; }
+.preloader-shards .shard:nth-child(2) { clip-path: polygon(50% 50%, 100% 0, 100% 52%);   --tx:  13vmin; --ty:  -3vmin; --rot: -26deg; }
+.preloader-shards .shard:nth-child(3) { clip-path: polygon(50% 50%, 100% 52%, 100% 100%);--tx:  13vmin; --ty:   6vmin; --rot:  40deg; }
+.preloader-shards .shard:nth-child(4) { clip-path: polygon(50% 50%, 100% 100%, 46% 100%);--tx:   5vmin; --ty:  13vmin; --rot: -32deg; }
+.preloader-shards .shard:nth-child(5) { clip-path: polygon(50% 50%, 46% 100%, 0 100%);   --tx:  -6vmin; --ty:  13vmin; --rot:  28deg; }
+.preloader-shards .shard:nth-child(6) { clip-path: polygon(50% 50%, 0 100%, 0 44%);      --tx: -13vmin; --ty:   5vmin; --rot: -38deg; }
+.preloader-shards .shard:nth-child(7) { clip-path: polygon(50% 50%, 0 44%, 0 0);         --tx: -12vmin; --ty:  -6vmin; --rot:  24deg; }
+.preloader-shards .shard:nth-child(8) { clip-path: polygon(50% 50%, 0 0, 50% 0);         --tx:  -6vmin; --ty: -12vmin; --rot: -36deg; }
+
+.preloader.is-breaking .preloader-logo { opacity: 0; animation: none; transition: opacity 0.14s var(--ease); }
+.preloader.is-breaking .preloader-shards { opacity: 1; }
+.preloader.is-breaking .preloader-shards .shard {
+  transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+  opacity: 0;
+  filter: brightness(1.3);            /* şüşə qırığının işıqda parıltısı */
+  will-change: transform, opacity;
+}
+
+.preloader.is-done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader-logo { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .preloader-shards { display: none !important; }   /* qırılma yoxdur — sadəcə fade-out */
+}
+
 /* ---------- 22c. Xüsusi cursor — kiçik dot + interaktiv elementlərdə LED glow ----------
    Yalnız JS fine-pointer + motion cihazlarda işə düşür (html.cursor-custom).
    Mobil/touch və reduced-motion → sinif əlavə olunmur, sistem cursoru qalır. */

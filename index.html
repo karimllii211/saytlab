@@ -6,16 +6,53 @@
      (hero mətninin bir an "yanıb-sönməsinin" qarşısını alır) + səhifə fade-in tetikləyicisi -->
 <script>
   document.documentElement.classList.add('js-reveal');
-  addEventListener('DOMContentLoaded', function () {
-    var ready = function () { document.body.classList.add('page-ready'); };
-    requestAnimationFrame(ready);
-    setTimeout(ready, 60);          // arxa-plan tab / rAF gecikməsi üçün ehtiyat
-  });
-  addEventListener('pageshow', function (e) {
-    // brauzer "geri" düyməsi (bfcache) — səhifə keşdən qayıdanda görünən qalsın
-    if (e.persisted) document.body.classList.remove('is-leaving');
-    document.body.classList.add('page-ready');
-  });
+
+  /* Giriş preloader-i + səhifə fade-in tetikləyicisi.
+     page-ready ARTIQ sadə 60ms gecikmə ilə deyil, YALNIZ preloader animasiyası
+     bitəndə əlavə olunur (aşağıdakı dismissPreloader). Beləliklə hero-nun mövcud
+     fade-in-i preloader sönən an başlayır — iki animasiya bir-birini "döymür".
+     Preloader yalnız index.html-dədir; terms/privacy-də #preloader yoxdur → dərhal page-ready. */
+  (function () {
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var revealed = false;
+
+    function reveal() {
+      if (revealed) return;
+      revealed = true;
+      document.body.classList.add('page-ready');
+    }
+    function dismissPreloader(fast) {
+      var pre = document.getElementById('preloader');
+      if (pre) {
+        pre.classList.add('is-done');
+        setTimeout(function () { if (pre.parentNode) pre.remove(); }, fast ? 250 : 600);
+      }
+      reveal();
+    }
+    function startPreloader() {
+      var pre = document.getElementById('preloader');
+      if (!pre) { reveal(); return; }                                  // preloader yoxdur → sadə davranış
+      if (reduceMotion) { setTimeout(function () { dismissPreloader(true); }, 350); return; }
+      setTimeout(function () { pre.classList.add('is-breaking'); }, 780);   // logo → şüşə qırılması
+      setTimeout(function () { dismissPreloader(false); }, 1320);          // overlay sönür + hero açılır
+    }
+
+    if (document.readyState === 'loading') addEventListener('DOMContentLoaded', startPreloader);
+    else startPreloader();
+
+    // Təhlükəsizlik klapanı: nə olursa olsun sayt görünsün
+    setTimeout(function () { dismissPreloader(true); }, 4000);
+
+    addEventListener('pageshow', function (e) {
+      // brauzer "geri" düyməsi (bfcache) — preloader-i TƏKRAR oynatma, birbaşa aç
+      if (e.persisted) {
+        document.body.classList.remove('is-leaving');
+        var pre = document.getElementById('preloader');
+        if (pre && pre.parentNode) pre.remove();
+        document.body.classList.add('page-ready');
+      }
+    });
+  })();
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Saytlab</title>
@@ -37,6 +74,20 @@
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+<!-- ================= PRELOADER (giriş animasiyası — yalnız ilk yüklənmə) =================
+     Logo fade/scale-in → "şüşə kimi" 8 parçaya qırılıb dağılır → overlay sönür, hero açılır.
+     Yalnız index.html-də. Yalnız html.js-reveal aktivdirsə görünür (JS yoxdursa heç görünmür). -->
+<div class="preloader" id="preloader" aria-hidden="true">
+  <div class="preloader-logo-wrap">
+    <img src="logo-saytlab-round.png" alt="" class="preloader-logo" id="preloaderLogo" />
+    <!-- Parçalar: eyni logonun clip-path ilə kəsilmiş 8 üçbucağı (CSS :nth-child). -->
+    <div class="preloader-shards" id="preloaderShards" aria-hidden="true">
+      <div class="shard"></div><div class="shard"></div><div class="shard"></div><div class="shard"></div>
+      <div class="shard"></div><div class="shard"></div><div class="shard"></div><div class="shard"></div>
+    </div>
+  </div>
+</div>
 
 <!-- Səhifə yuxarısındakı scroll proqres zolağı -->
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
