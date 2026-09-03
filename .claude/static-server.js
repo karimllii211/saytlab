@@ -28,16 +28,31 @@ function resolve(urlPath, cb) {
   });
 }
 
+// Mirrors vercel.json "headers" so local preview reflects the production CSP / security headers.
+const SECURITY_HEADERS = {
+  'Content-Security-Policy':
+    "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://fonts.googleapis.com; " +
+    "img-src 'self' data:; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; frame-ancestors 'none'; " +
+    "base-uri 'self'; form-action 'none'; object-src 'none'; upgrade-insecure-requests",
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()',
+};
+
 http.createServer((req, res) => {
   const urlPath = decodeURIComponent(req.url.split('?')[0]);
   resolve(urlPath, (filePath) => {
     fs.readFile(filePath, (err, data) => {
       if (err) {
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.writeHead(404, { 'Content-Type': 'text/plain', ...SECURITY_HEADERS });
         res.end('Not found');
         return;
       }
-      res.writeHead(200, { 'Content-Type': TYPES[path.extname(filePath)] || 'application/octet-stream' });
+      res.writeHead(200, {
+        'Content-Type': TYPES[path.extname(filePath)] || 'application/octet-stream',
+        ...SECURITY_HEADERS,
+      });
       res.end(data);
     });
   });

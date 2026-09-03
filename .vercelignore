@@ -1,0 +1,8 @@
+# Bu fayllar Vercel deploy artefaktına DÜŞMƏMƏLİDİR — yalnız lokal inkişaf üçündür.
+# Vercel .git-i onsuz da avtomatik istisna edir; .claude/ standart deyil, açıq yazılır.
+
+.claude/
+.git/
+
+# İnkişaf sənədləri / qeydlər (əgər layihə kökünə əlavə olunarsa) ictimai deploy-a düşməsin.
+*.md

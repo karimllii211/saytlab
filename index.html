@@ -3,74 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <!-- Hər şeydən əvvəl: reveal-in gizli başlanğıcını body render olunmadan aktivləşdir
-     (hero mətninin bir an "yanıb-sönməsinin" qarşısını alır) + səhifə fade-in tetikləyicisi -->
-<script>
-  document.documentElement.classList.add('js-reveal');
-
-  /* Giriş preloader-i + səhifə fade-in tetikləyicisi.
-     page-ready ARTIQ sadə 60ms gecikmə ilə deyil, YALNIZ preloader animasiyası
-     bitəndə əlavə olunur (aşağıdakı dismissPreloader). Beləliklə hero-nun mövcud
-     fade-in-i preloader sönən an başlayır — iki animasiya bir-birini "döymür".
-     Preloader yalnız index.html-dədir; terms/privacy-də #preloader yoxdur → dərhal page-ready. */
-  (function () {
-    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var revealed = false;
-
-    function reveal() {
-      if (revealed) return;
-      revealed = true;
-      document.body.classList.add('page-ready');
-      // Hero giriş animasiyasını MƏHZ İNDİ başlat (preloader sönən an) — script.js onu
-      // window.__saytlabPlayHeroReveal-a təyin edib, səhifə yüklənən kimi tetikləmir ki,
-      // sözlərin "qalxması" overlay-in arxasında görünməz qalmasın.
-      if (typeof window.__saytlabPlayHeroReveal === 'function') {
-        window.__saytlabPlayHeroReveal();
-      } else {
-        var heroTries = 0;
-        var heroWait = setInterval(function () {
-          heroTries++;
-          if (typeof window.__saytlabPlayHeroReveal === 'function') {
-            window.__saytlabPlayHeroReveal();
-            clearInterval(heroWait);
-          } else if (heroTries > 40) {   // ~2s cəhddən sonra vaz keç
-            clearInterval(heroWait);
-          }
-        }, 50);
-      }
-    }
-    function dismissPreloader(fast) {
-      var pre = document.getElementById('preloader');
-      if (pre) {
-        pre.classList.add('is-done');
-        setTimeout(function () { if (pre.parentNode) pre.remove(); }, fast ? 250 : 600);
-      }
-      reveal();
-    }
-    function startPreloader() {
-      var pre = document.getElementById('preloader');
-      if (!pre) { reveal(); return; }                                  // preloader yoxdur → sadə davranış
-      if (reduceMotion) { setTimeout(function () { dismissPreloader(true); }, 350); return; }
-      setTimeout(function () { pre.classList.add('is-breaking'); }, 780);   // logo → şüşə qırılması
-      setTimeout(function () { dismissPreloader(false); }, 1320);          // overlay sönür + hero açılır
-    }
-
-    if (document.readyState === 'loading') addEventListener('DOMContentLoaded', startPreloader);
-    else startPreloader();
-
-    // Təhlükəsizlik klapanı: nə olursa olsun sayt görünsün
-    setTimeout(function () { dismissPreloader(true); }, 4000);
-
-    addEventListener('pageshow', function (e) {
-      // brauzer "geri" düyməsi (bfcache) — preloader-i TƏKRAR oynatma, birbaşa aç
-      if (e.persisted) {
-        document.body.classList.remove('is-leaving');
-        var pre = document.getElementById('preloader');
-        if (pre && pre.parentNode) pre.remove();
-        document.body.classList.add('page-ready');
-      }
-    });
-  })();
-</script>
+     (hero mətninin bir an "yanıb-sönməsinin" qarşısını alır) + preloader / səhifə fade-in.
+     SİNXRON (defer YOX) — .js-reveal body render-dən əvvəl əlavə olunmalıdır. -->
+<script src="preloader.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Saytlab</title>
 <meta name="description" content="Saytlab — Veb-sayt, Domain və Özəl E-poçt xidmətləri bir yerdə." />
@@ -80,12 +15,12 @@
 <link rel="apple-touch-icon" href="logo-saytlab-round.png" />
 
 <!-- Tipoqrafiya: Space Grotesk (başlıq) + Inter (mətn) — render-blok OLMADAN yüklənir.
-     media="print" + onload trick: brauzer stylesheet-i arxa planda çəkir, hazır olanda tətbiq edir.
-     Səhifə dərhal fallback fontlarla görünür, sonra yumşaq keçir. -->
+     media="print" ilə arxa planda çəkilir; preloader.js hazır olanda media="all" edir
+     (əvvəlki inline onload="this.media='all'" əvəzi — CSP üçün). Fallback fontlar dərhal görünür. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'">
+<link id="fontCss" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"></noscript>
 
 <link rel="stylesheet" href="style.css" />
@@ -105,18 +40,9 @@
     </div>
   </div>
 </div>
-<script>
-  /* #preloader-i <body>-dən çıxarıb birbaşa <html>-ə köçür.
-     Səbəb: `.js-reveal body { opacity: 0 }` (page-ready gələnə qədər) body daxilindəki
-     HƏR ŞEYİ — bu overlay-i də — render səviyyəsində gizlədir; page-ready isə məhz
-     preloader animasiyası bitəndə tetiklənir → dövri blokaj ("boş yaşıl ekran").
-     <body>-dən kənarda preloader body-nin opacity-sindən tamamilə asılı olmur.
-     Element artıq parse olunduğu üçün bu skript onu dərhal, paint-dən əvvəl köçürür. */
-  (function () {
-    var p = document.getElementById('preloader');
-    if (p && p.parentNode === document.body) document.documentElement.appendChild(p);
-  })();
-</script>
+<!-- #preloader-i <body>-dən çıxarıb <html>-ə köçürür (body-nin opacity:0 fade-i onu gizlətməsin).
+     SİNXRON, elementdən dərhal sonra — paint-dən əvvəl işləyir. -->
+<script src="preloader-move.js"></script>
 
 <!-- Səhifə yuxarısındakı scroll proqres zolağı -->
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
@@ -268,22 +194,22 @@
     <div class="marquee" aria-hidden="true">
       <div class="marquee-track">
         <!-- Logolar mask-image ilə vahid ağ silueyə çevrilir (öz rəngləri deyil).
-             Fayl yolu --logo dəyişənindən gəlir; CSS: mask-image: var(--logo). -->
-        <span class="marquee-logo" role="img" aria-label="Canva"   style="--logo:url(CanvaLogo.webp)"></span>
-        <span class="marquee-logo" role="img" aria-label="Gemini"  style="--logo:url(GeminiLogoPng.png)"></span>
-        <span class="marquee-logo" role="img" aria-label="Claude"  style="--logo:url(ClaudeLogo.png)"></span>
-        <span class="marquee-logo" role="img" aria-label="Figma"   style="--logo:url(FigmaLogo.svg)"></span>
-        <span class="marquee-logo marquee-logo--framer" role="img" aria-label="Framer" style="--logo:url(FramerLogo.webp)"></span>
-        <span class="marquee-logo" role="img" aria-label="ChatGPT" style="--logo:url(ChatGptLogo.png)"></span>
-        <span class="marquee-logo" role="img" aria-label="Adobe"   style="--logo:url(AdobeLogo.webp)"></span>
+             Fayl yolu CSS-də --logo dəyişəni ilə verilir (:nth-child) — inline style YOX (CSP). -->
+        <span class="marquee-logo" role="img" aria-label="Canva"></span>
+        <span class="marquee-logo" role="img" aria-label="Gemini"></span>
+        <span class="marquee-logo" role="img" aria-label="Claude"></span>
+        <span class="marquee-logo" role="img" aria-label="Figma"></span>
+        <span class="marquee-logo marquee-logo--framer" role="img" aria-label="Framer"></span>
+        <span class="marquee-logo" role="img" aria-label="ChatGPT"></span>
+        <span class="marquee-logo" role="img" aria-label="Adobe"></span>
         <!-- Sonsuz axın üçün məzmun təkrarlanır -->
-        <span class="marquee-logo" role="img" aria-label="Canva"   style="--logo:url(CanvaLogo.webp)"></span>
-        <span class="marquee-logo" role="img" aria-label="Gemini"  style="--logo:url(GeminiLogoPng.png)"></span>
-        <span class="marquee-logo" role="img" aria-label="Claude"  style="--logo:url(ClaudeLogo.png)"></span>
-        <span class="marquee-logo" role="img" aria-label="Figma"   style="--logo:url(FigmaLogo.svg)"></span>
-        <span class="marquee-logo marquee-logo--framer" role="img" aria-label="Framer" style="--logo:url(FramerLogo.webp)"></span>
-        <span class="marquee-logo" role="img" aria-label="ChatGPT" style="--logo:url(ChatGptLogo.png)"></span>
-        <span class="marquee-logo" role="img" aria-label="Adobe"   style="--logo:url(AdobeLogo.webp)"></span>
+        <span class="marquee-logo" role="img" aria-label="Canva"></span>
+        <span class="marquee-logo" role="img" aria-label="Gemini"></span>
+        <span class="marquee-logo" role="img" aria-label="Claude"></span>
+        <span class="marquee-logo" role="img" aria-label="Figma"></span>
+        <span class="marquee-logo marquee-logo--framer" role="img" aria-label="Framer"></span>
+        <span class="marquee-logo" role="img" aria-label="ChatGPT"></span>
+        <span class="marquee-logo" role="img" aria-label="Adobe"></span>
       </div>
     </div>
   </section>
@@ -411,7 +337,6 @@
         <div class="contact-direct reveal" data-dir="up">
           <h3>Birbaşa əlaqə</h3>
           <ul>
-            <!-- Aşağıdakı əlaqə məlumatlarını real dəyərlərlə əvəz et. -->
             <li>
               <span class="contact-ic" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
@@ -467,7 +392,7 @@
 
 <!-- Lenis smooth-scroll — inertial/yumşaq scroll (Framer saytlarındakı hiss).
      defer + script.js-dən əvvəl: hər ikisi sənəd sırası ilə icra olunur, Lenis hazır olur. -->
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" defer integrity="sha384-tKsJDT6PlUI0pSBt9/sBKJluKgA19/a6mBrDsZaXotLB4ZYfMGM6xt6/WgGpYhTm" crossorigin="anonymous"></script>
 <script src="script.js" defer></script>
 </body>
 </html>

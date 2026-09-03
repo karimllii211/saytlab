@@ -3,33 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!-- Səhifə keçidi: yumşaq fade-in + naviqasiyada fade-out (index.html ilə eyni hiss) -->
-<script>
-  document.documentElement.classList.add('js-reveal');
-  (function () {
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    addEventListener('pageshow', function (e) {
-      if (e.persisted) document.body.classList.remove('is-leaving');
-      document.body.classList.add('page-ready');
-    });
-    addEventListener('DOMContentLoaded', function () {
-      var ready = function () { document.body.classList.add('page-ready'); };
-      requestAnimationFrame(ready);
-      setTimeout(ready, 60);
-      document.querySelectorAll('a[href]').forEach(function (a) {
-        var raw = a.getAttribute('href');
-        if (!raw || raw.charAt(0) === '#' || a.target === '_blank' || /^(https?:|mailto:|tel:)/i.test(raw)) return;
-        a.addEventListener('click', function (e) {
-          if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
-          e.preventDefault();
-          if (reduce) { window.location.href = a.href; return; }
-          document.body.classList.add('is-leaving');
-          setTimeout(function () { window.location.href = a.href; }, 190);
-        });
-      });
-    });
-  })();
-</script>
+<!-- Səhifə keçidi: yumşaq fade-in + naviqasiyada fade-out. SİNXRON (defer YOX) — .js-reveal FOUC-suz. -->
+<script src="legal.js"></script>
 <title>Məxfilik Siyasəti — Saytlab</title>
 <meta name="description" content="Saytlab müştərilərinin məlumatlarının necə toplandığı və istifadə edildiyi barədə məxfilik siyasəti." />
 
@@ -41,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'">
+<link id="fontCss" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" media="print">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"></noscript>
 
 <link rel="stylesheet" href="style.css" />
@@ -110,29 +85,8 @@
   </div>
 </footer>
 
-<!-- Scroll-reveal — index.html-dəki .reveal sistemi ilə eyni (fade + yüngül translate).
-     Bu səhifələr script.js-i yükləmir, ona görə kiçik müstəqil observer. Çıxış animasiyası
-     onsuz da <head>-dəki `is-leaving` fade-out mexanizmi ilə bütün <body>-yə tətbiq olunur. -->
-<script>
-  (function () {
-    var els = document.querySelectorAll('.reveal');
-    if (!els.length) return;
-    if (!('IntersectionObserver' in window)) {
-      els.forEach(function (el) { el.setAttribute('data-visible', ''); });
-      return;
-    }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) entry.target.setAttribute('data-visible', '');
-        else entry.target.removeAttribute('data-visible');
-      });
-    }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
-    els.forEach(function (el, i) {
-      el.style.transitionDelay = (i * 55) + 'ms';
-      io.observe(el);
-    });
-  })();
-</script>
+<!-- Scroll-reveal — index.html-dəki .reveal sistemi ilə eyni. Ayrıca fayl (CSP: inline script yox). -->
+<script src="legal-reveal.js"></script>
 
 </body>
 </html>

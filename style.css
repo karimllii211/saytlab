@@ -371,6 +371,15 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 }
 .marquee:hover .marquee-track .marquee-logo,
 .marquee-track .marquee-logo:hover { opacity: 1; }
+/* Hər logonun maska şəkli — əvvəllər HTML-də inline style="--logo:url(...)" idi,
+   CSP (style-src 'unsafe-inline' olmasın) üçün buraya köçürüldü. Sıra: 7 logo ×2 təkrar. */
+.marquee-track .marquee-logo:nth-child(7n+1) { --logo: url("CanvaLogo.webp"); }
+.marquee-track .marquee-logo:nth-child(7n+2) { --logo: url("GeminiLogoPng.png"); }
+.marquee-track .marquee-logo:nth-child(7n+3) { --logo: url("ClaudeLogo.png"); }
+.marquee-track .marquee-logo:nth-child(7n+4) { --logo: url("FigmaLogo.svg"); }
+.marquee-track .marquee-logo:nth-child(7n+5) { --logo: url("FramerLogo.webp"); }
+.marquee-track .marquee-logo:nth-child(7n+6) { --logo: url("ChatGptLogo.png"); }
+.marquee-track .marquee-logo:nth-child(7n+7) { --logo: url("AdobeLogo.webp"); }
 /* Framer loqosu mənbədə daha kiçik/nazikdir — digərləri ilə tarazlaşması üçün bir az böyüdülür. */
 .marquee-track .marquee-logo--framer {
   width: clamp(96px, 11.5vw, 126px);
