@@ -589,6 +589,12 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 
 .template-card {
   display: flex; flex-direction: column;
+  /* 200 kart eyni anda DOM-dadır — ekranda olmayanların layout/paint işi təxirə salınır.
+     contain-intrinsic-size yer ayırır ki, scrollbar tullanmasın. Dəstəkləməyən
+     brauzerlərdə (köhnə Safari) sadəcə nəzərə alınmır — davranış dəyişmir. */
+  content-visibility: auto;
+  contain-intrinsic-width: none;          /* en grid track-dən gəlsin (əks halda kart yığılır) */
+  contain-intrinsic-height: auto 320px;   /* hündürlük üçün yer tutulur — scrollbar tullanmır */
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
   background: var(--surface);
@@ -773,11 +779,14 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   .main-nav { display: none; }
   .menu-toggle { display: flex; }
   .header-close { display: inline-flex; }
-  /* Mobil-də header arxa fonu daha qatı — altdakı kontent görünüb mətni pozmasın */
+  /* Mobil-də header arxa fonu daha qatı — altdakı kontent görünüb mətni pozmasın.
+     Fon 0.94 qatı olduğu üçün blur-un vizual töhfəsi minimaldır, ona görə 18px→8px:
+     backdrop-filter WebKit/Safari-də scroll boyu hər frame-də hesablanır və ən bahalı
+     effektlərdəndir. Görünüş demək olar dəyişmir, jank isə aradan qalxır. */
   .site-header.is-scrolled {
     background: rgba(10, 23, 18, 0.94);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
   .benefit-grid, .price-grid { grid-template-columns: 1fr 1fr; }
   .service-grid { grid-template-columns: 1fr; }
