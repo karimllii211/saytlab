@@ -483,7 +483,8 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 .price-card .badge { position: absolute; z-index: 3; top: -12px; left: 28px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-display); font-size: 0.72rem; padding: 5px 12px; border-radius: 999px; letter-spacing: 0.04em; }
 /* LED overlay (.led-border::before, z-index: 1) kartın məzmununu örtməsin. */
 .price-card > * { position: relative; z-index: 2; }
-.price-card h3 { font-size: 1.2rem; margin-bottom: 6px; }
+/* Qiymət göstəricisi (.price-tag) HTML-dən çıxarılıb — başlıqdan sonrakı boşluq onun yerini tutur. */
+.price-card h3 { font-size: 1.2rem; margin-bottom: 22px; }
 .price-tag { display: flex; align-items: baseline; gap: 4px; margin-bottom: 22px; font-family: var(--font-display); }
 .price-tag strong { font-size: 2.4rem; font-weight: 600; color: var(--accent-2); }
 .price-tag span { color: var(--text-dim); font-size: 1rem; }

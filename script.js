@@ -496,17 +496,17 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ===================================================================
-     12. Pricing "Sifariş et" — hər kart üçün plan adı + qiymətlə əvvəlcədən
-         doldurulmuş WhatsApp mesajı qurulur. HTML-dəki href yalnız fallback.
+     12. Pricing "Sifariş et" — yalnız paket adı ilə əvvəlcədən doldurulmuş
+         WhatsApp mesajı. Qiymət saytda göstərilmir, mesajda da keçmir.
+         HTML-dəki href yalnız fallback (JS işləməzsə).
      =================================================================== */
   const WA_NUMBER = '994103136941';
   $$('.price-card').forEach(card => {
     const link = $('a[data-order]', card);
     if (!link) return;
     const plan = ($('h3', card)?.textContent || '').trim();
-    const price = ($('.price-tag strong', card)?.textContent || '').trim();
-    if (!plan || !price) return;
-    const msg = `Salam, ${plan} planını (₼${price}) sifariş etmək istəyirəm.`;
+    if (!plan) return;
+    const msg = `Salam! ${plan} paketi ilə maraqlanıram, ətraflı məlumat almaq istəyirəm.`;
     link.href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
   });
 
