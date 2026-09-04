@@ -216,6 +216,25 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 /* Aşağı doğru scroll edəndə gizlən, yuxarı doğru scroll edəndə (və ya səhifənin başında) görün.
    Sinif idarəsi JS-də, rAF-də, yalnız istiqamət dəyişəndə (bax script.js). */
 .site-header.is-hidden { transform: translate3d(0, -100%, 0); }
+/* İstifadəçinin özü bağladığı hal — scroll məntiqindən (is-hidden) tam ayrıdır.
+   Səhifənin başına qayıdanda JS bu sinfi silir (bax script.js / header-mobile.js). */
+.site-header.is-manually-closed { transform: translate3d(0, -100%, 0); }
+
+/* Mobil "başlığı bağla" düyməsi — masaüstündə görünmür (aşağıda 960px media-da açılır). */
+.header-close {
+  display: none;
+  width: 36px; height: 36px;
+  margin-left: 6px;
+  align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.header-close:hover, .header-close:focus-visible { color: var(--accent); border-color: var(--accent); }
+.header-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 /* Header konteyneri tam enə yayılır — loqo ekranın sol kənarına (yalnız --gutter qədər),
    menyu isə sağ kənara "yapışır". Ortada süni boşluq qalmır.
    Sayt bölmələri əvvəlki kimi --container (1180px) daxilində mərkəzləşməkdə davam edir. */
@@ -649,8 +668,14 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
   .template-filter-btn { flex: 0 0 auto; white-space: nowrap; }
   .template-grid { grid-template-columns: repeat(2, 1fr); }
 }
+/* Ən dar telefonlarda da 2 sütun qalır — kart daxili ölçülər sıxılır ki, mətn kəsilməsin. */
 @media (max-width: 620px) {
-  .template-grid { grid-template-columns: 1fr; }
+  .template-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .template-info { padding: 12px 12px 14px; }
+  .template-info h4 { font-size: 0.88rem; }
+  .template-designer { font-size: 0.7rem; margin-bottom: 10px; }
+  .template-actions { gap: 6px; }
+  .template-actions .btn-sm { flex: 1 1 100%; padding: 7px 8px; font-size: 0.74rem; }
 }
 
 /* ---------- 21. Footer ---------- */
@@ -747,6 +772,13 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height
 @media (max-width: 960px) {
   .main-nav { display: none; }
   .menu-toggle { display: flex; }
+  .header-close { display: inline-flex; }
+  /* Mobil-də header arxa fonu daha qatı — altdakı kontent görünüb mətni pozmasın */
+  .site-header.is-scrolled {
+    background: rgba(10, 23, 18, 0.94);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
   .benefit-grid, .price-grid { grid-template-columns: 1fr 1fr; }
   .service-grid { grid-template-columns: 1fr; }
   .about-grid { grid-template-columns: 1fr; }

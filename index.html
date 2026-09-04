@@ -75,6 +75,11 @@ src="https://www.facebook.com/tr?id=4331233943803470&ev=PageView&noscript=1"
     <button class="menu-toggle" id="menuToggle" aria-label="Menyunu aç" aria-expanded="false">
       <span></span><span></span>
     </button>
+    <button class="header-close" id="headerClose" type="button" aria-label="Başlığı bağla" title="Başlığı bağla">
+      <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+        <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+      </svg>
+    </button>
   </div>
 </header>
 
@@ -404,5 +409,9 @@ src="https://www.facebook.com/tr?id=4331233943803470&ev=PageView&noscript=1"
      defer + script.js-dən əvvəl: hər ikisi sənəd sırası ilə icra olunur, Lenis hazır olur. -->
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" defer integrity="sha384-tKsJDT6PlUI0pSBt9/sBKJluKgA19/a6mBrDsZaXotLB4ZYfMGM6xt6/WgGpYhTm" crossorigin="anonymous"></script>
 <script src="script.js" defer></script>
+
+<!-- Mobil header: əl ilə bağlama düyməsi + is-scrolled (CSP: inline script yox). -->
+<script src="header-mobile.js" defer></script>
+
 </body>
 </html>
