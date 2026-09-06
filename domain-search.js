@@ -49,20 +49,55 @@
      Ona görə .az seçiləndə heç bir sorğu getmir — birbaşa WhatsApp. */
   const MANUAL_TLDS = ['.az'];
 
-  /* ÖLÇÜLMÜŞ DAVRANIŞ (bu rəqəmləri dəyişməzdən əvvəl oxu):
-     • Uğurlu cavab adətən ~0.7–0.9 san gəlir.
-     • Servisin ÖZ daxili RDAP timeout-u ~8.3 san-dır: uğursuz halda təxminən
-       o vaxtdan sonra `available: null` qaytarır.
-     Ona görə bizim timeout ondan bir qədər BÖYÜK olmalıdır — əks halda
-     8.2 san-də uğurla bitəcək sorğunu özümüz kəsirik. */
-  const TIMEOUT_MS = 10000;
+  /* ===================================================================
+     TIMEOUT — NİYƏ TLD-YƏ GÖRƏ FƏRQLİDİR
+
+     ARXA PLAN: domen mövcudluğu son nəticədə hər uzantının öz registrisindən
+     soruşulur və cavab sürətini BİZ deyil, həmin registri müəyyən edir.
+     ICANN ölçmələrinə görə (OCTO-024) gTLD registriləri orta ~0.77 san,
+     ccTLD registriləri isə orta ~1.5+ san cavab verir. Bu səbəbdən .io/.co
+     kimi ccTLD-lərə daha geniş vaxt ayırırıq.
+
+     ⚠ ÖLÇÜLMÜŞ REALLIQ (2026-09, bu rəqəmləri dəyişməzdən əvvəl OXU):
+     Biz registriyə BİRBAŞA getmirik — arada domainee.dev vasitəçisi var və
+     onun ÖZ daxili limiti təxminən 8.3–8.5 san-dır. Yəni:
+       • Uğurlu cavab adətən ~0.5–1.2 san gəlir.
+       • Uğursuz halda vasitəçi ~8.4 san-də HTTP 200 + `available: null`
+         qaytarır (bizim timeout işə düşmür, sorğu kəsilmir).
+       • 12 ölçmədə ən uzun cavab 8460 ms olub — yəni PRAKTİKADA nə 10 san,
+         nə də 16 san həddi işə düşmür; onlar yalnız TƏHLÜKƏSİZLİK PAYIDIR.
+     Nəticə: aşağıdakı rəqəmləri artırmaq mövcud vasitəçi ilə uğursuzluq
+     faizini AZALTMIR — vasitəçi onsuz da bizdən əvvəl əl çəkir. Bu hədlər
+     provayder dəyişdirildikdə (birbaşa RDAP və ya başqa servis) məna kəsb
+     edəcək; həqiqi yaxşılaşma üçün ya nəticəsiz cavabda təkrar sorğu, ya da
+     ikinci provayder lazımdır — ikisi də ayrıca qərar tələb edir.
+
+     Qeyd: .io və .co üçün vasitəçi RDAP yox, DNS delegasiya yoxlaması edir
+     (".io publishes no RDAP service" — cavabdakı registrarHint), ona görə
+     onlarda RDAP gecikməsi arqumenti birbaşa tətbiq olunmur.
+
+     .az bu məntiqə daxil deyil — o, MANUAL_TLDS-dədir, sorğu heç getmir.
+     =================================================================== */
+  const SLOW_TLDS = ['.io', '.co'];
+
+  const TIMEOUT_MS      = 10000;   // gTLD — .com .net .org .info
+  const TIMEOUT_SLOW_MS = 16000;   // ccTLD — .io .co
 
   /* Təkrar cəhd YALNIZ sorğu TEZ uğursuz olanda edilir (şəbəkə kəsintisi,
-     429 limit, CSP blok — bunlar dərhal qayıdır). Əgər sorğu artıq ~8 san
-     yeyibsə, ikinci cəhd gözləməni 17 san-ə çıxarardı — bu, istifadəçi üçün
-     fallback mesajından daha pisdir, ona görə birbaşa fallback göstəririk. */
-  const RETRY_IF_FAILED_WITHIN_MS = 3000;
+     429 limit, CSP blok — bunlar dərhal qayıdır). Əgər sorğu artıq uzun
+     müddət yeyibsə, ikinci cəhd gözləməni ikiqat artırardı — bu, istifadəçi
+     üçün fallback mesajından daha pisdir, ona görə birbaşa fallback göstəririk.
+     Yavaş TLD-lərdə ümumi timeout böyüdüyü üçün bu hədd də mütənasib böyüyür.
+     (Qeyd: vasitəçinin ~8.4 san-lik cavabı hər iki həddi keçdiyinə görə
+     tipik uğursuzluqda retry İŞƏ DÜŞMÜR — retry əsasən şəbəkə/limit
+     xətaları üçündür.) */
+  const RETRY_IF_FAILED_WITHIN_MS      = 3000;   // gTLD
+  const RETRY_IF_FAILED_WITHIN_SLOW_MS = 5000;   // ccTLD
   const RETRY_DELAY_MS = 400;
+
+  const isSlowTld       = (tld) => SLOW_TLDS.includes(tld);
+  const timeoutFor      = (tld) => (isSlowTld(tld) ? TIMEOUT_SLOW_MS : TIMEOUT_MS);
+  const retryWindowFor  = (tld) => (isSlowTld(tld) ? RETRY_IF_FAILED_WITHIN_SLOW_MS : RETRY_IF_FAILED_WITHIN_MS);
 
   /* ---------- 2. DOM ---------- */
   const section = document.getElementById('domain');
@@ -185,7 +220,7 @@
   /* Provayderə bir sorğu. Nəticə: true / false / null (bilinmir). Heç vaxt throw etmir. */
   async function ask(label, tld, fqdn) {
     const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
+    const timer = setTimeout(() => ctrl.abort(), timeoutFor(tld));
     try {
       const res = await fetch(PROVIDER.buildUrl(label, tld.slice(1)), { signal: ctrl.signal });
       return res.ok ? PROVIDER.parse(await res.json(), fqdn) : null;
@@ -240,7 +275,7 @@
     const startedAt = Date.now();
     let available = await ask(label, reqTld, fqdn);
 
-    if (available === null && myReq === reqId && Date.now() - startedAt < RETRY_IF_FAILED_WITHIN_MS) {
+    if (available === null && myReq === reqId && Date.now() - startedAt < retryWindowFor(reqTld)) {
       await new Promise(r => setTimeout(r, RETRY_DELAY_MS));
       available = await ask(label, reqTld, fqdn);
     }
