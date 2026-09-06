@@ -47,6 +47,15 @@ window.addEventListener('load', () => {
   else window.scrollTo(0, 0);
 });
 
+/* ===================================================================
+   WhatsApp nömrəsi — TƏK MƏNBƏ.
+   Həm bu fayldakı "Sifariş et" düymələri, həm də domain-search.js bunu
+   istifadə edir; nömrə heç yerdə təkrar yazılmır (window-a da verilir ki,
+   ayrıca fayl ona müraciət edə bilsin).
+   =================================================================== */
+const WA_NUMBER = '994103136941';
+window.SAYTLAB_WA_NUMBER = WA_NUMBER;
+
 document.addEventListener('DOMContentLoaded', () => {
 
   const prefersReduced = REDUCED_MOTION;
@@ -500,7 +509,6 @@ document.addEventListener('DOMContentLoaded', () => {
          WhatsApp mesajı. Qiymət saytda göstərilmir, mesajda da keçmir.
          HTML-dəki href yalnız fallback (JS işləməzsə).
      =================================================================== */
-  const WA_NUMBER = '994103136941';
   $$('.price-card').forEach(card => {
     const link = $('a[data-order]', card);
     if (!link) return;

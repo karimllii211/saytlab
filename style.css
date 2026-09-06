@@ -989,3 +989,139 @@ html.cursor-custom, html.cursor-custom * { cursor: none !important; }
   .js-reveal body,
   .js-reveal body.is-leaving { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
+
+/* ---------- 26. Domen axtarışı (#domain) ----------
+   YALNIZ mövcudluq göstərilir (tutulub / tutulmayıb) — qiymət yoxdur.
+   Məntiq: domain-search.js. Nəticə vəziyyətləri: is-free / is-taken /
+   is-manual / is-invalid / is-loading. */
+.domain-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: clamp(22px, 4vw, 38px);
+  box-shadow: var(--shadow-1);
+  max-width: 780px;
+}
+
+.domain-form { display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap; }
+
+.domain-field {
+  position: relative;
+  flex: 1 1 260px;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 18px 4px 20px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-2);
+  transition: border-color 0.2s var(--ease);
+}
+.domain-field:focus-within { border-color: var(--accent); }
+
+.domain-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 12px 0;
+  border: none;
+  background: none;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+}
+.domain-input::placeholder { color: var(--text-dim); }
+.domain-input:focus { outline: none; }
+
+.domain-suffix {
+  flex: 0 0 auto;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--accent);
+  letter-spacing: 0.01em;
+}
+
+.domain-submit { flex: 0 0 auto; padding-inline: 30px; }
+.domain-submit.is-busy { opacity: 0.6; cursor: progress; }
+
+.domain-tlds { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.domain-tld {
+  padding: 7px 15px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: none;
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease), background-color 0.2s var(--ease);
+}
+.domain-tld:hover { color: var(--text); border-color: var(--border-strong); }
+.domain-tld:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.domain-tld.is-active {
+  background: rgba(230, 184, 102, 0.14);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Nəticə — boş olanda heç bir yer tutmur. */
+.domain-result { display: none; }
+.domain-result.is-visible {
+  display: block;
+  margin-top: 22px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--text-dim);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  animation: domainResultIn 0.32s var(--ease-out) both;
+}
+@keyframes domainResultIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .domain-result.is-visible { animation: none; }
+}
+
+.domain-result.is-free    { border-left-color: #59c08a; }
+.domain-result.is-taken   { border-left-color: #d1785f; }
+.domain-result.is-manual  { border-left-color: var(--accent); }
+.domain-result.is-invalid { border-left-color: var(--accent-deep); }
+.domain-result.is-loading { display: flex; align-items: center; gap: 12px; }
+
+.domain-result-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.domain-result.is-free  .domain-result-title { color: #7fd6a6; }
+.domain-result.is-taken .domain-result-title { color: #e79b83; }
+
+.domain-result-note { margin-top: 6px; color: var(--text-muted); font-size: 0.92rem; }
+.domain-wa { margin-top: 16px; }
+
+.domain-spinner {
+  flex: 0 0 auto;
+  width: 18px; height: 18px;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: domainSpin 0.7s linear infinite;
+}
+@keyframes domainSpin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .domain-spinner { animation-duration: 2.4s; }
+}
+
+.domain-hint { margin-top: 18px; color: var(--text-dim); font-size: 0.82rem; }
+
+@media (max-width: 560px) {
+  .domain-form { gap: 10px; }
+  .domain-field { flex: 1 1 100%; }
+  .domain-submit { width: 100%; }
+  .domain-tlds { gap: 6px; }
+  .domain-tld { padding: 9px 14px; font-size: 0.82rem; }
+  .domain-wa { width: 100%; justify-content: center; }
+}

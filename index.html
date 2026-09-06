@@ -66,6 +66,7 @@ src="https://www.facebook.com/tr?id=4331233943803470&ev=PageView&noscript=1"
 
     <nav class="main-nav" id="mainNav" aria-label="Əsas naviqasiya">
       <a href="#services">Xidmətlər</a>
+      <a href="#domain">Domen</a>
       <a href="#pricing">Qiymətlər</a>
       <a href="/templates">Şablonlar</a>
       <a href="#faq">Suallar</a>
@@ -87,6 +88,7 @@ src="https://www.facebook.com/tr?id=4331233943803470&ev=PageView&noscript=1"
 <div class="mobile-overlay" id="mobileOverlay" aria-hidden="true" data-lenis-prevent>
   <nav class="mobile-nav">
     <a href="#services">Xidmətlər</a>
+    <a href="#domain">Domen</a>
     <a href="#pricing">Qiymətlər</a>
     <a href="/templates">Şablonlar</a>
     <a href="#faq">Suallar</a>
@@ -178,6 +180,54 @@ src="https://www.facebook.com/tr?id=4331233943803470&ev=PageView&noscript=1"
 
       <div class="services-cta reveal" data-dir="up">
         <a href="#contact" class="btn btn-solid btn-lg">Layihəni danış</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DOMEN AXTARIŞI ================= -->
+  <!-- YALNIZ MÖVCUDLUQ yoxlanılır (tutulub / tutulmayıb) — qiymət GÖSTƏRİLMİR.
+       Məntiq domain-search.js-dədir; inline script yoxdur (CSP). -->
+  <section class="section domain" id="domain">
+    <div class="container">
+      <header class="section-head reveal" data-dir="up">
+        <p class="kicker">Domen</p>
+        <h2>Domen adınız boşdurmu?</h2>
+        <p class="section-lead">Adı yazın, uzantını seçin — domenin sərbəst olub-olmadığını dərhal göstərək. Qeydiyyat və detalları isə WhatsApp-da birlikdə danışaq.</p>
+      </header>
+
+      <div class="domain-card reveal" data-dir="up">
+        <form class="domain-form" id="domainForm" novalidate>
+          <div class="domain-field">
+            <input
+              class="domain-input"
+              id="domainInput"
+              type="text"
+              name="domain"
+              placeholder="menimbrendim"
+              aria-label="Domen adı"
+              autocomplete="off"
+              autocapitalize="none"
+              autocorrect="off"
+              spellcheck="false"
+              maxlength="63" />
+            <span class="domain-suffix" id="domainSuffix" aria-hidden="true">.com</span>
+          </div>
+          <button class="btn btn-solid domain-submit" id="domainSubmit" type="submit">Axtar</button>
+        </form>
+
+        <div class="domain-tlds" role="group" aria-label="Domen uzantısı">
+          <button class="domain-tld is-active" type="button" data-tld=".com" aria-pressed="true">.com</button>
+          <button class="domain-tld" type="button" data-tld=".net" aria-pressed="false">.net</button>
+          <button class="domain-tld" type="button" data-tld=".org" aria-pressed="false">.org</button>
+          <button class="domain-tld" type="button" data-tld=".io" aria-pressed="false">.io</button>
+          <button class="domain-tld" type="button" data-tld=".co" aria-pressed="false">.co</button>
+          <button class="domain-tld" type="button" data-tld=".info" aria-pressed="false">.info</button>
+          <button class="domain-tld" type="button" data-tld=".az" aria-pressed="false">.az</button>
+        </div>
+
+        <div class="domain-result" id="domainResult" role="status" aria-live="polite"></div>
+
+        <p class="domain-hint">Nəticə yalnız domenin boş olub-olmadığını göstərir. Qiymət və şərtləri WhatsApp-da dəqiqləşdiririk.</p>
       </div>
     </div>
   </section>
@@ -409,6 +459,7 @@ src="https://www.facebook.com/tr?id=4331233943803470&ev=PageView&noscript=1"
 
 <!-- Mobil header: əl ilə bağlama düyməsi + is-scrolled (CSP: inline script yox). -->
 <script src="header-mobile.js" defer></script>
+<script src="domain-search.js" defer></script>
 
 </body>
 </html>

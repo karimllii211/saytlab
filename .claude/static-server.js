@@ -33,7 +33,7 @@ const SECURITY_HEADERS = {
   'Content-Security-Policy':
     "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://connect.facebook.net; " +
     "style-src 'self' https://fonts.googleapis.com; img-src 'self' data: https://www.facebook.com; " +
-    "font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.facebook.com https://connect.facebook.net; " +
+    "font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.facebook.com https://connect.facebook.net https://api.domainee.dev; " +
     "frame-src https://www.facebook.com; frame-ancestors 'none'; base-uri 'self'; " +
     "form-action 'self' https://www.facebook.com; object-src 'none'; upgrade-insecure-requests",
   'X-Content-Type-Options': 'nosniff',
