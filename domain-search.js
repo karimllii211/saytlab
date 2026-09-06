@@ -23,7 +23,12 @@
 (() => {
   'use strict';
 
-  /* ---------- 1. Provayder (tək dəyişdirmə nöqtəsi) ---------- */
+  /* ---------- 1. Provayder (tək dəyişdirmə nöqtəsi) ----------
+     MƏXFİLİK QEYDİ: sorğu istifadəçinin brauzerindən BİRBAŞA bu üçüncü tərəf
+     servisə gedir — yəni istifadəçinin yazdığı domen adı və IP ünvanı bizim
+     nəzarətimizdə olmayan servisə görünür. Bu, privacy.html-də "Domen axtarışı"
+     bölməsində açıq şəkildə istifadəçiyə bildirilir. Provayder dəyişdirilərsə
+     həmin mətn də yenilənməlidir. */
   const PROVIDER = {
     /* GET https://api.domainee.dev/v1/tools/domain-availability-checker?name=<ad>&tlds=<uzanti>
        Cavab: { ok: true, data: { name, results: [ { tld, fqdn, available, method, registrarHint } ] } }

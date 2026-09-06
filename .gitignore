@@ -1,0 +1,6 @@
+# Daxili iş qeydləri / agent çıxışları — repo public ola bilər, ictimai olmamalıdır.
+# (.vercelignore yalnız Vercel deploy artefaktına təsir edir, GitHub-a YOX.)
+Claude outputs/
+
+# macOS
+.DS_Store

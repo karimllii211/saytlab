@@ -18,9 +18,27 @@
    ========================================================================= */
 
 /* Səhifə yenilənəndə (F5) HƏMİŞƏ başdan açılsın — brauzerin scroll-bərpasını söndür.
-   Faylın ən başında, DOMContentLoaded-dən kənarda: mümkün qədər tez icra olunsun. */
+   Faylın ən başında, DOMContentLoaded-dən kənarda: mümkün qədər tez icra olunsun.
+
+   İSTİSNA — URL-də #hash varsa sıfırlama EDİLMİR. Alt səhifələrin (templates/terms/
+   privacy) naviqasiyası "/#pricing", "/#faq", "/#contact" kimi linklərlə ana səhifəyə
+   qayıdır; əvvəl bu sıfırlama brauzerin apardığı bölmədən səhifəni geri yuxarı atırdı,
+   yəni daxili keçidlər praktiki olaraq işləmirdi. Hash yoxdursa köhnə davranış eynidir. */
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-window.scrollTo(0, 0);
+if (!location.hash) window.scrollTo(0, 0);
+
+/* Çapa keçidlərində header-in altında qalmamaq üçün sabit offset — aşağıdakı
+   `a[href^="#"]` handler-i ilə eyni dəyər (tək mənbə). */
+const ANCHOR_OFFSET = 78;
+
+/* ANİ scroll. style.css-də `html { scroll-behavior: smooth }` var, ona görə sadə
+   window.scrollTo(0, y) ANİMASİYALI olur — səhifə yüklənəndə hədəf bölməyə "ani"
+   düşmək əvəzinə yuxarıdan aşağı sürüşürdü (və Lenis-lə toqquşurdu). `behavior:
+   'instant'` bunu bir dəfəlik söndürür; dəstəkləməyən brauzerdə köhnə çağırışa düşür. */
+function jumpTo(y) {
+  try { window.scrollTo({ top: y, left: 0, behavior: 'instant' }); }
+  catch (_) { window.scrollTo(0, y); }
+}
 
 /* ===================================================================
    LENIS smooth-scroll — inertial/yumşaq scroll (Framer saytlarındakı hiss).
@@ -40,11 +58,30 @@ if (!REDUCED_MOTION && typeof window.Lenis === 'function') {
   const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf); };
   requestAnimationFrame(raf);
 }
+/* header-mobile.js (bütün səhifələrdə işləyir) mobil menyu açılanda arxa scroll-u
+   kilidləmək üçün buna baxır. Lenis yoxdursa null qalır və orada native overflow işləyir. */
+window.lenis = lenis;
 
-// F5-dən sonra da tam yuxarıda başla (Safari bəzən load-dan sonra köhnə mövqeyə sıçrayır)
+// F5-dən sonra da tam yuxarıda başla (Safari bəzən load-dan sonra köhnə mövqeyə sıçrayır).
+// Hash varsa (alt səhifədən "/#pricing" ilə gəliş) yuxarı atmaq əvəzinə həmin bölməyə sürüşdür.
 window.addEventListener('load', () => {
-  if (lenis) lenis.scrollTo(0, { immediate: true });
-  else window.scrollTo(0, 0);
+  const hash = location.hash;
+  if (!hash || hash.length < 2) {
+    if (lenis) lenis.scrollTo(0, { immediate: true });
+    jumpTo(0);
+    return;
+  }
+  let target = null;
+  try { target = document.getElementById(decodeURIComponent(hash.slice(1))); } catch (_) { /* pozuq hash */ }
+  if (!target) return;                     // belə bölmə yoxdursa heç nə etmə
+  const y = Math.max(0, target.getBoundingClientRect().top + window.pageYOffset - ANCHOR_OFFSET);
+  /* Əvvəlcə Lenis-in daxili hədəfi, sonra native scroll:
+     • Lenis-in `immediate` tətbiqi requestAnimationFrame dövründə baş verir — link
+       yeni fon tabında açılıbsa rAF dondurulur və scroll heç vaxt tətbiq olunmur.
+     • window.scrollTo isə dərhal işləyir. Lenis-in hədəfi eyni dəyərə qoyulduğu üçün
+       tab aktivləşəndə ilk frame-də səhifə geri yuxarı sıçramır. */
+  if (lenis) lenis.scrollTo(y, { immediate: true });
+  jumpTo(y);
 });
 
 /* ===================================================================
@@ -74,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     services: 'Xidmət — Saytlab',
     about:    'Haqqımızda — Saytlab',
     benefits: 'Üstünlüklər — Saytlab',
+    domain:   'Domen — Saytlab',
     pricing:  'Qiymətlər — Saytlab',
     faq:      'Suallar — Saytlab',
     contact:  'Əlaqə — Saytlab',
@@ -272,7 +310,8 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollDirty = false;
       const ratio = clamp(scrollY / docMax, 0, 1);
       progress.style.transform = `scaleX(${ratio.toFixed(4)})`;
-      header.classList.toggle('is-scrolled', scrollY > 24);
+      // `is-scrolled` burada YOX — onu header-mobile.js edir (bütün səhifələrdə eyni məntiq).
+      // Əvvəl hər iki fayl eyni sinfi toggle edirdi; nəticə eyni idi, amma iş iki dəfə görülürdü.
 
       // Header: aşağı scroll → gizlən, yuxarı scroll (və ya başa yaxın) → görün.
       // Kiçik "jitter" (trackpad, mobil bounce) yanlış tetiklənməsin deyə min. fərq şərti qoyulub.
@@ -425,21 +464,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ===================================================================
-     10. Mobil menyu — tam ekran "pərdə" overlay
+     10. Mobil menyu — MƏNTİQ header-mobile.js-DƏDİR.
+         Səbəb: o fayl 4 səhifənin hamısında yüklənir, bu fayl isə yalnız index.html-də.
+         Menyu burada qurulanda alt səhifələrdə (templates/terms/privacy) telefonda
+         naviqasiya heç açıla bilmirdi. Aşağıdakı yerlərdə (loqo, çapa linkləri, səhifə
+         keçidi) menyunu bağlamaq üçün həmin faylın ixrac etdiyi funksiya çağırılır.
+         Fayl yüklənməyibsə (nəzəri hal) çağırış səssizcə heç nə etmir.
      =================================================================== */
-  const menuToggle = $('#menuToggle');
-  const overlay = $('#mobileOverlay');
   const setMenu = (open) => {
-    overlay.classList.toggle('is-open', open);
-    menuToggle.classList.toggle('is-active', open);
-    menuToggle.setAttribute('aria-expanded', String(open));
-    overlay.setAttribute('aria-hidden', String(!open));
-    document.body.style.overflow = open ? 'hidden' : '';
-    if (lenis) { open ? lenis.stop() : lenis.start(); }   // arxa fon scroll-unu kilidlə/aç
+    if (typeof window.saytlabSetMenu === 'function') window.saytlabSetMenu(open);
   };
-  menuToggle.addEventListener('click', () => setMenu(!overlay.classList.contains('is-open')));
-  $$('.mobile-nav a').forEach(a => a.addEventListener('click', () => setMenu(false)));
-  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
 
   /* ===================================================================
      10b. Loqo klikləndə səhifə HƏMİŞƏ tam yuxarıya qayıtsın.
@@ -462,7 +496,8 @@ document.addEventListener('DOMContentLoaded', () => {
            ilə (native "auto" jump əvəzinə). Header hündürlüyü qədər offset.
            Loqo (.logo) istisnadır — öz handler-i var.
      =================================================================== */
-  $$('a[href^="#"]:not(.logo)').forEach(link => {
+  // .skip-link istisnadır: onun məqsədi fokusu <main>-ə köçürməkdir — native davranış lazımdır.
+  $$('a[href^="#"]:not(.logo):not(.skip-link)').forEach(link => {
     const hash = link.getAttribute('href');
     if (!hash || hash.length < 2) return;
     link.addEventListener('click', (e) => {
@@ -470,7 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!target) return;
       e.preventDefault();
       setMenu(false);
-      if (lenis) lenis.scrollTo(target, { offset: -78, duration: 1.1 });
+      if (lenis) lenis.scrollTo(target, { offset: -ANCHOR_OFFSET, duration: 1.1 });
       else target.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
       history.replaceState(null, '', hash);
     });
@@ -496,13 +531,22 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ===================================================================
      11. FAQ accordion — bir anda yalnız biri açıq (grid-template-rows)
      =================================================================== */
-  $$('.faq-item').forEach(item => {
+  const faqItems = $$('.faq-item');
+  const syncFaqAria = () => {
+    faqItems.forEach(i => {
+      const btn = $('.faq-q', i);
+      if (btn) btn.setAttribute('aria-expanded', String(i.classList.contains('is-open')));
+    });
+  };
+  faqItems.forEach(item => {
     $('.faq-q', item).addEventListener('click', () => {
       const open = item.classList.contains('is-open');
-      $$('.faq-item').forEach(i => i.classList.remove('is-open'));
+      faqItems.forEach(i => i.classList.remove('is-open'));
       if (!open) item.classList.add('is-open');
+      syncFaqAria();   // ekran oxuyucusu açıq/bağlı vəziyyəti eşitsin
     });
   });
+  syncFaqAria();
 
   /* ===================================================================
      12. Pricing "Sifariş et" — yalnız paket adı ilə əvvəlcədən doldurulmuş

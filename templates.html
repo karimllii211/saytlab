@@ -8,6 +8,27 @@
 <title>Şablonlar — Saytlab</title>
 <meta name="description" content="Saytlab şablon vitrini — agentlik, SaaS, portfolio, e-ticarət, xidmət, blog, daşınmaz əmlak və restoran üzrə 200 hazır dizayn nümunəsi. Bəyəndiyinizi seçin, biz brendinizə uyğunlaşdıraq." />
 
+<!-- ---------- Paylaşım kartı (Open Graph / Twitter) + canonical ----------
+     WhatsApp / Facebook / Instagram DM-də link paylaşılanda başlıq, təsvir və
+     şəkil görünsün deyə. Şəkil: og-cover.png (1200×630).
+     canonical `cleanUrls: true` səbəbindən .html-siz formadadır. -->
+<link rel="canonical" href="https://www.saytlab.com/templates" />
+<meta name="theme-color" content="#0a1712" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Saytlab" />
+<meta property="og:locale" content="az_AZ" />
+<meta property="og:title" content="200 hazır dizayn nümunəsi — Saytlab" />
+<meta property="og:description" content="Agentlik, SaaS, portfolio, e-ticarət, xidmət, blog, daşınmaz əmlak və restoran üzrə 200 hazır dizayn. Bəyəndiyinizi seçin, biz brendinizə uyğunlaşdıraq." />
+<meta property="og:url" content="https://www.saytlab.com/templates" />
+<meta property="og:image" content="https://www.saytlab.com/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Saytlab — Veb-sayt, Domen və Özəl E-poçt" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="200 hazır dizayn nümunəsi — Saytlab" />
+<meta name="twitter:description" content="Agentlik, SaaS, portfolio, e-ticarət, xidmət, blog, daşınmaz əmlak və restoran üzrə 200 hazır dizayn. Bəyəndiyinizi seçin, biz brendinizə uyğunlaşdıraq." />
+<meta name="twitter:image" content="https://www.saytlab.com/og-cover.png" />
+
 <!-- Favicon / tab ikonası — dairəvi logo -->
 <link rel="icon" type="image/png" href="logo-saytlab-round.png" />
 <link rel="apple-touch-icon" href="logo-saytlab-round.png" />
@@ -23,12 +44,13 @@
 
 <!-- Meta Pixel Code — inline snippet meta-pixel.js-ə köçürülüb (CSP: script-src 'unsafe-inline' yox). -->
 <script src="meta-pixel.js" defer></script>
-<noscript><img height="1" width="1" style="display:none"
+<noscript><img height="1" width="1" class="fb-noscript-pixel" alt=""
 src="https://www.facebook.com/tr?id=4331233943803470&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
 </head>
 <body>
+<a class="skip-link" href="#main">Məzmuna keç</a>
 
 <!-- ================= HEADER (sadələşdirilmiş — terms.html / privacy.html ilə eyni) ================= -->
 <header class="site-header" id="top">
@@ -39,11 +61,15 @@ src="https://www.facebook.com/tr?id=4331233943803470&ev=PageView&noscript=1"
     </a>
     <nav class="main-nav" aria-label="Naviqasiya">
       <a href="/#services">Xidmətlər</a>
+      <a href="/#domain">Domen</a>
       <a href="/#pricing">Qiymətlər</a>
       <a href="/templates" aria-current="page">Şablonlar</a>
       <a href="/#faq">Suallar</a>
       <a href="/#contact">Əlaqə</a>
     </nav>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menyunu aç" aria-expanded="false">
+      <span></span><span></span>
+    </button>
     <button class="header-close" id="headerClose" type="button" aria-label="Başlığı bağla" title="Başlığı bağla">
       <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false">
         <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none"/>
@@ -52,13 +78,28 @@ src="https://www.facebook.com/tr?id=4331233943803470&ev=PageView&noscript=1"
   </div>
 </header>
 
-<main>
+<!-- ================= MOBİL MENYU (tam ekran overlay) =================
+     index.html ilə eyni struktur/siniflər. Mobil-də (<=960px) .main-nav gizlənir,
+     bu overlay olmasa telefonda naviqasiya ümumiyyətlə açıla bilmirdi. -->
+<div class="mobile-overlay" id="mobileOverlay" aria-hidden="true" data-lenis-prevent>
+  <nav class="mobile-nav">
+    <a href="/#services">Xidmətlər</a>
+    <a href="/#domain">Domen</a>
+    <a href="/#pricing">Qiymətlər</a>
+    <a href="/templates" aria-current="page">Şablonlar</a>
+    <a href="/#faq">Suallar</a>
+    <a href="/#contact">Əlaqə</a>
+  </nav>
+</div>
+
+<main id="main" tabindex="-1">
   <section class="section templates-showcase">
     <div class="container">
       <header class="section-head reveal" data-dir="up">
         <p class="kicker">Şablonlar</p>
-        <h2>Hazır dizayn nümunələri</h2>
+        <h1>Hazır dizayn nümunələri</h1>
         <p class="section-lead">200-dən çox hazır dizayn arasından bəyəndiyinizi seçin — biz onu sizin brendinizə, məzmununuza və domeninizə uyğunlaşdırıb hazır sayt kimi təhvil verək.</p>
+        <p class="section-lead">Nümunələr Framer-də dərc olunmuş üçüncü tərəf dizaynlarıdır — hər kartda müəllifin adı göstərilir. Biz seçdiyinizi sizin brendinizə uyğunlaşdırırıq.</p>
       </header>
 
       <div class="template-search reveal" data-dir="up">

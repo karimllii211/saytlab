@@ -6,3 +6,7 @@
 
 # İnkişaf sənədləri / qeydlər (əgər layihə kökünə əlavə olunarsa) ictimai deploy-a düşməsin.
 *.md
+
+# İstifadə olunmayan şəkillər — kodda 0 istinad var, deploy artefaktına düşməsin.
+# Fayllar SİLİNMƏYİB, sadəcə repo-da saxlanılır (bax unused-assets/README.md).
+unused-assets/

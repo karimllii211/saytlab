@@ -1,0 +1,5 @@
+# Saytlab — https://www.saytlab.com
+User-agent: *
+Allow: /
+
+Sitemap: https://www.saytlab.com/sitemap.xml
