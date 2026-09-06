@@ -1,4 +1,4 @@
-/* Saytlab — şablon vitrini (templates.html), 200 kart, sidebar filtr modeli.
+/* Saytlab — şablon vitrini (templates.html), 191 kart, sidebar filtr modeli.
    Üç iş görür:
      1) Kateqoriya filtri — sidebar düymələri kartları data-category üzrə süzür,
         "Hamısı" hamısını qaytarır.
