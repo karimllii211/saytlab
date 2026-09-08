@@ -1150,6 +1150,36 @@ html.cursor-custom, html.cursor-custom * { cursor: none !important; }
 
 .domain-hint { margin-top: 18px; color: var(--text-dim); font-size: 0.82rem; }
 
+/* .az qeydi — axtarış kartının altında, qəsdən ikinci dərəcəli görünüş:
+   kart deyil, sadəcə incə xətlə ayrılmış kiçik mətn bloku (.templates-note
+   ilə eyni dildə), ki axtarış qutusu ilə rəqabət aparmasın. */
+.domain-az-note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 20px;
+  max-width: 780px;
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.domain-az-note p {
+  flex: 1 1 320px;
+  min-width: 0;
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.domain-az-note strong { color: var(--text-muted); font-weight: 600; }
+.domain-az-note .btn { flex: 0 0 auto; }
+
+@media (max-width: 560px) {
+  .domain-az-note { gap: 14px; }
+  .domain-az-note p { flex: 1 1 100%; }
+  .domain-az-note .btn { width: 100%; justify-content: center; }
+}
+
 @media (max-width: 560px) {
   .domain-form { gap: 10px; }
   .domain-field { flex: 1 1 100%; }

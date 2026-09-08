@@ -49,19 +49,20 @@
     },
   };
 
-  /* Avtomatik yoxlanmayan uzantılar: .az üçün pulsuz/açarsız RDAP və ya
-     CORS-a icazə verən WHOIS servisi yoxdur (AZNIC açıq API vermir).
-     Ona görə .az seçiləndə heç bir sorğu getmir — birbaşa WhatsApp. */
-  const MANUAL_TLDS = ['.az'];
-
   /* ===================================================================
-     TIMEOUT — NİYƏ TLD-YƏ GÖRƏ FƏRQLİDİR
+     TIMEOUT — TLD-YƏ GÖRƏ FƏRQLƏNDİRMƏ İMKANI
 
-     ARXA PLAN: domen mövcudluğu son nəticədə hər uzantının öz registrisindən
-     soruşulur və cavab sürətini BİZ deyil, həmin registri müəyyən edir.
-     ICANN ölçmələrinə görə (OCTO-024) gTLD registriləri orta ~0.77 san,
-     ccTLD registriləri isə orta ~1.5+ san cavab verir. Bu səbəbdən .io/.co
-     kimi ccTLD-lərə daha geniş vaxt ayırırıq.
+     AXTARIŞ BAZASI (index.html-dəki .domain-tlds düymələrindən oxunur):
+       .com .shop .store .site .space .fun .sbs
+     Hamısı gTLD-dir (.com — Verisign; .shop — GMO; .store/.site/.space/.fun
+     — Radix; .sbs — ShortDot) və hamısı vasitəçidə RDAP metodu ilə yoxlanır.
+     Aralarında sənədləşdirilmiş sürət fərqi bilmirik, ona görə HAMISI eyni
+     standart TIMEOUT_MS ilə işləyir və SLOW_TLDS boşdur.
+
+     SLOW_TLDS strukturu qəsdən saxlanılıb: gələcəkdə bazaya nəzərəçarpacaq
+     dərəcədə yavaş bir uzantı (məsələn ccTLD) əlavə olunarsa, onu sadəcə bu
+     massivə yazmaq kifayətdir — qalan məntiq özü uyğunlaşır. Əsassız yerə
+     doldurma: yalnız ölçülmüş/sənədləşdirilmiş yavaşlıq varsa əlavə et.
 
      ⚠ ÖLÇÜLMÜŞ REALLIQ (2026-09, bu rəqəmləri dəyişməzdən əvvəl OXU):
      Biz registriyə BİRBAŞA getmirik — arada domainee.dev vasitəçisi var və
@@ -69,35 +70,31 @@
        • Uğurlu cavab adətən ~0.5–1.2 san gəlir.
        • Uğursuz halda vasitəçi ~8.4 san-də HTTP 200 + `available: null`
          qaytarır (bizim timeout işə düşmür, sorğu kəsilmir).
-       • 12 ölçmədə ən uzun cavab 8460 ms olub — yəni PRAKTİKADA nə 10 san,
-         nə də 16 san həddi işə düşmür; onlar yalnız TƏHLÜKƏSİZLİK PAYIDIR.
-     Nəticə: aşağıdakı rəqəmləri artırmaq mövcud vasitəçi ilə uğursuzluq
-     faizini AZALTMIR — vasitəçi onsuz da bizdən əvvəl əl çəkir. Bu hədlər
-     provayder dəyişdirildikdə (birbaşa RDAP və ya başqa servis) məna kəsb
-     edəcək; həqiqi yaxşılaşma üçün ya nəticəsiz cavabda təkrar sorğu, ya da
-     ikinci provayder lazımdır — ikisi də ayrıca qərar tələb edir.
+       • 12 ölçmədə ən uzun cavab 8460 ms olub — yəni PRAKTİKADA aşağıdakı
+         hədlər işə düşmür; onlar yalnız TƏHLÜKƏSİZLİK PAYIDIR.
+     Nəticə: bu rəqəmləri artırmaq mövcud vasitəçi ilə uğursuzluq faizini
+     AZALTMIR — vasitəçi onsuz da bizdən əvvəl əl çəkir. Həqiqi yaxşılaşma
+     üçün ya nəticəsiz cavabda təkrar sorğu, ya da ikinci provayder lazımdır
+     — ikisi də ayrıca qərar tələb edir.
 
-     Qeyd: .io və .co üçün vasitəçi RDAP yox, DNS delegasiya yoxlaması edir
-     (".io publishes no RDAP service" — cavabdakı registrarHint), ona görə
-     onlarda RDAP gecikməsi arqumenti birbaşa tətbiq olunmur.
-
-     .az bu məntiqə daxil deyil — o, MANUAL_TLDS-dədir, sorğu heç getmir.
+     Qeyd: .az bu bazada YOXDUR — avtomatik yoxlanmır (AZNIC pulsuz/açarsız
+     API vermir). O, index.html-də ayrıca "qeyd + WhatsApp" bloku kimi
+     göstərilir (aşağıdakı .az bölməsinə bax).
      =================================================================== */
-  const SLOW_TLDS = ['.io', '.co'];
+  const SLOW_TLDS = [];            // hazırda yavaş kimi tanınan uzantı yoxdur
 
-  const TIMEOUT_MS      = 10000;   // gTLD — .com .net .org .info
-  const TIMEOUT_SLOW_MS = 16000;   // ccTLD — .io .co
+  const TIMEOUT_MS      = 10000;   // bütün baza uzantıları
+  const TIMEOUT_SLOW_MS = 16000;   // yalnız SLOW_TLDS doldurulsa işə düşür
 
   /* Təkrar cəhd YALNIZ sorğu TEZ uğursuz olanda edilir (şəbəkə kəsintisi,
      429 limit, CSP blok — bunlar dərhal qayıdır). Əgər sorğu artıq uzun
      müddət yeyibsə, ikinci cəhd gözləməni ikiqat artırardı — bu, istifadəçi
      üçün fallback mesajından daha pisdir, ona görə birbaşa fallback göstəririk.
-     Yavaş TLD-lərdə ümumi timeout böyüdüyü üçün bu hədd də mütənasib böyüyür.
-     (Qeyd: vasitəçinin ~8.4 san-lik cavabı hər iki həddi keçdiyinə görə
-     tipik uğursuzluqda retry İŞƏ DÜŞMÜR — retry əsasən şəbəkə/limit
-     xətaları üçündür.) */
-  const RETRY_IF_FAILED_WITHIN_MS      = 3000;   // gTLD
-  const RETRY_IF_FAILED_WITHIN_SLOW_MS = 5000;   // ccTLD
+     (Qeyd: vasitəçinin ~8.4 san-lik cavabı bu həddi keçdiyinə görə tipik
+     uğursuzluqda retry İŞƏ DÜŞMÜR — retry əsasən şəbəkə/limit xətaları
+     üçündür.) */
+  const RETRY_IF_FAILED_WITHIN_MS      = 3000;   // standart
+  const RETRY_IF_FAILED_WITHIN_SLOW_MS = 5000;   // yalnız SLOW_TLDS üçün
   const RETRY_DELAY_MS = 400;
 
   const isSlowTld       = (tld) => SLOW_TLDS.includes(tld);
@@ -139,7 +136,18 @@
     for (const t of KNOWN_TLDS) {
       if (v.endsWith(t) && v.length > t.length) { tld = t; v = v.slice(0, -t.length); break; }
     }
-    return { label: v, tld };
+
+    /* Tanımadığımız uzantı (məs. istifadəçi "brendim.az" yazdı) — bunu ayrıca
+       tuturuq. Əks halda nöqtəli mətn LABEL_RE-dən keçmir və istifadəçiyə
+       "adınız yanlışdır" kimi SƏHV mesaj göstərilirdi; halbuki ad düzgündür,
+       sadəcə uzantı axtarış bazamızda yoxdur. */
+    let unknownTld = null;
+    if (!tld) {
+      const m = v.match(/\.([a-z]{2,})$/);
+      if (m) { unknownTld = '.' + m[1]; v = v.slice(0, -unknownTld.length); }
+    }
+
+    return { label: v, tld, unknownTld };
   }
 
   /* Yalnız LDH (hərf-rəqəm-defis) qəbul edilir — beynəlxalq (ə, ö, ğ...) hərflər
@@ -240,8 +248,22 @@
   async function search() {
     if (busy) return;
 
-    const { label, tld } = normalize(input.value);
+    const { label, tld, unknownTld } = normalize(input.value);
     if (tld) setTld(tld);
+
+    /* Bazada olmayan uzantı yazılıb — dəqiq səbəbi de. .az xüsusi haldır:
+       o, qəsdən axtarışa daxil edilməyib, bölmənin altında ayrıca qeyd var. */
+    if (unknownTld) {
+      render({
+        state: 'invalid',
+        title: `${unknownTld} uzantısı avtomatik axtarışa daxil deyil`,
+        note: unknownTld === '.az'
+          ? '.az domenləri əlavə xidmətdir — aşağıdakı qeyddən bizə yazın, mövcudluğunu özümüz yoxlayaq.'
+          : `Hazırda yoxlaya bildiyimiz uzantılar: ${KNOWN_TLDS.join(', ')}. Adı uzantısız yazıb yuxarıdan birini seçin.`,
+      });
+      input.focus();
+      return;
+    }
 
     if (!label) {
       render({ state: 'invalid', title: 'Əvvəlcə domen adını yazın', note: 'Məsələn: menimbrendim' });
@@ -259,18 +281,6 @@
     }
 
     const fqdn = label + activeTld;
-
-    /* .az — avtomatik yoxlama yoxdur, birbaşa WhatsApp. */
-    if (MANUAL_TLDS.includes(activeTld)) {
-      render({
-        state: 'manual',
-        title: `${fqdn} — bunu birlikdə yoxlayaq`,
-        note: '.az domenlərinin mövcudluğunu avtomatik göstərə bilmirik. Bizə yazın, yoxlayıb dərhal cavab verək.',
-        waText: `Salam! ${fqdn} domenini yoxlamaq və almaq istəyirəm.`,
-        waLabel: 'WhatsApp-dan yoxlayaq',
-      });
-      return;
-    }
 
     const myReq = ++reqId;
     setBusy(true);
@@ -336,6 +346,17 @@
     resultEl.className = 'domain-result';
     resultEl.replaceChildren();
   });
+
+  /* ---------- 6. .az qeydi ----------
+     .az avtomatik yoxlanmır (AZNIC pulsuz/açarsız API vermir), ona görə
+     axtarış bazasında yoxdur. Bölmənin altındakı qeyd blokundakı WhatsApp
+     linkini burada əvvəlcədən doldurulmuş mesajla təchiz edirik — nömrə
+     yenə tək mənbədən (window.SAYTLAB_WA_NUMBER) gəlir.
+     HTML-dəki href yalnız fallback-dır (JS işləməzsə). */
+  const azLink = document.querySelector('#domain [data-az-wa]');
+  if (azLink) {
+    azLink.href = waLink('Salam! .az domeni ilə maraqlanıram — mövcudluğunu və şərtləri öyrənmək istəyirəm.');
+  }
 
   setTld(activeTld);
 })();

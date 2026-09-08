@@ -237,20 +237,32 @@ src="https://www.facebook.com/tr?id=4331233943803470&ev=PageView&noscript=1"
           <button class="btn btn-solid domain-submit" id="domainSubmit" type="submit">Axtar</button>
         </form>
 
+        <!-- Axtarıla bilən baza. Bu siyahı domain-search.js-də KNOWN_TLDS-in
+             yeganə mənbəyidir (data-tld atributlarından oxunur) — uzantı
+             əlavə/çıxarmaq üçün yalnız buranı dəyişmək kifayətdir. -->
         <div class="domain-tlds" role="group" aria-label="Domen uzantısı">
           <button class="domain-tld is-active" type="button" data-tld=".com" aria-pressed="true">.com</button>
-          <button class="domain-tld" type="button" data-tld=".net" aria-pressed="false">.net</button>
-          <button class="domain-tld" type="button" data-tld=".org" aria-pressed="false">.org</button>
-          <button class="domain-tld" type="button" data-tld=".io" aria-pressed="false">.io</button>
-          <button class="domain-tld" type="button" data-tld=".co" aria-pressed="false">.co</button>
-          <button class="domain-tld" type="button" data-tld=".info" aria-pressed="false">.info</button>
-          <button class="domain-tld" type="button" data-tld=".az" aria-pressed="false">.az</button>
+          <button class="domain-tld" type="button" data-tld=".shop" aria-pressed="false">.shop</button>
+          <button class="domain-tld" type="button" data-tld=".store" aria-pressed="false">.store</button>
+          <button class="domain-tld" type="button" data-tld=".site" aria-pressed="false">.site</button>
+          <button class="domain-tld" type="button" data-tld=".space" aria-pressed="false">.space</button>
+          <button class="domain-tld" type="button" data-tld=".fun" aria-pressed="false">.fun</button>
+          <button class="domain-tld" type="button" data-tld=".sbs" aria-pressed="false">.sbs</button>
         </div>
 
         <div class="domain-result" id="domainResult" role="status" aria-live="polite"></div>
 
         <p class="domain-hint">Nəticə yalnız domenin boş olub-olmadığını göstərir və xarici açıq yoxlama servisi vasitəsilə alınır. Qiymət və şərtləri WhatsApp-da dəqiqləşdiririk.</p>
       </div>
+
+      <!-- .az yuxarıdakı axtarış bazasına daxil DEYİL (avtomatik yoxlanmır) —
+           ayrıca xidmət kimi, ikinci dərəcəli qeyd formasında göstərilir.
+           Aşağıdakı href yalnız fallback-dır (JS işləməzsə); domain-search.js
+           onu əvvəlcədən doldurulmuş mesajla əvəz edir. -->
+      <aside class="domain-az-note reveal" data-dir="up">
+        <p><strong>.az domenləri</strong> əlavə xidmətdir və avtomatik axtarışa daxil deyil. Onları sifariş forması ilə deyil, birbaşa bizimlə əlaqə saxlayaraq sorğulaya bilərsiniz.</p>
+        <a class="btn btn-outline btn-sm" href="https://wa.me/994103136941" target="_blank" rel="noopener noreferrer" data-az-wa>.az üçün bizə yazın</a>
+      </aside>
     </div>
   </section>
 
@@ -390,7 +402,7 @@ src="https://www.facebook.com/tr?id=4331233943803470&ev=PageView&noscript=1"
           </div>
           <div class="faq-item">
             <button class="faq-q" id="faq-q-3" type="button" aria-expanded="false" aria-controls="faq-a-3">Pul geri qaytarılırmı?<i></i></button>
-            <div class="faq-a" id="faq-a-3" role="region" aria-labelledby="faq-q-3"><div class="faq-a-in"><p>Bəli. Dizayn ilk mərhələdə bəyənilmədikdə və ya uyğunsuzluq yarandıqda, mümkün olan halda ödəniş geri qaytarılır. Domen və e-poçt alındıqdan sonra isə geri qaytarma mümkün deyil.</p></div></div>
+            <div class="faq-a" id="faq-a-3" role="region" aria-labelledby="faq-q-3"><div class="faq-a-in"><p>Domen sizin adınıza qeydiyyatdan keçirildikdən sonra ödəniş geri qaytarılmır — domen qeydiyyatı registri tərəfindən geri dönməyən xidmətdir. Məhz buna görə işi əvvəlcə görürük: ödənişi yalnız sayt hazır olduqda, domen alınmazdan əvvəl alırıq.</p></div></div>
           </div>
           <div class="faq-item">
             <button class="faq-q" id="faq-q-4" type="button" aria-expanded="false" aria-controls="faq-a-4">Hazır saytda özüm dəyişiklik edə biləcəyəmmi?<i></i></button>
@@ -402,7 +414,7 @@ src="https://www.facebook.com/tr?id=4331233943803470&ev=PageView&noscript=1"
           </div>
           <div class="faq-item">
             <button class="faq-q" id="faq-q-6" type="button" aria-expanded="false" aria-controls="faq-a-6">Ödəniş şərtləri necədir?<i></i></button>
-            <div class="faq-a" id="faq-a-6" role="region" aria-labelledby="faq-q-6"><div class="faq-a-in"><p>Ödənişin 50%-i əvvəlcədən, qalan 50%-i isə iş tamamlandıqdan sonra alınır.</p></div></div>
+            <div class="faq-a" id="faq-a-6" role="region" aria-labelledby="faq-q-6"><div class="faq-a-in"><p>Ödəniş sayt hazır olduqdan sonra, domen qeydiyyatdan keçirilməzdən əvvəl alınır. Dəyəri sifarişdən əvvəl WhatsApp-da dəqiqləşdiririk.</p></div></div>
           </div>
         </div>
       </div>
